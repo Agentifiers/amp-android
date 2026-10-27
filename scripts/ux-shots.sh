@@ -115,6 +115,8 @@ record_baseline
 echo "device before: $(describe_device)"
 trap 'restore_device; echo "device after:  $(describe_device)"' EXIT
 settle_device
+# The app asks for notification permission on first launch; that ask would cover every capture, as in flows.sh.
+sh_ pm grant com.agentifiers.amp android.permission.POST_NOTIFICATIONS
 
 while read -r name; do rm -f "$outdir/$name"; done < <(expected_shots)
 

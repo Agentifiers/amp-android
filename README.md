@@ -2,6 +2,44 @@
 
 Amp for Android is an unofficial native Android client for [Amp](https://ampcode.com), the coding agent. It is built for large foldables such as the Samsung Galaxy Z TriFold, whose inner display fits three panes side by side, and it works on every other Android window size, from a phone's cover screen to a DeX monitor. The agent runs in an orb, on a runner, or in a CLI session. The app shows that work and lets you direct it: read your threads, talk to the agent, answer its approvals, review and ship its changes, use its terminal and files, and get notified when it needs you.
 
+![Triage on the Galaxy Z TriFold: the thread list, a thread an automation runs with its next run line, and the thread's live changes](docs/screenshots/trifold-triage.png)
+
+## Why use it instead of ampcode.com in a browser
+
+The app speaks the same protocol as Amp's own clients, uses ampcode.com's colors and words, and adds what a phone and a foldable can do that a browser tab can't.
+
+- **Three panes on the TriFold, with edges on the hinges.** The inner display shows the thread list, the transcript, and the thread's machine side by side: Changes, Files, Terminal, Portal, and Desktop. Pane edges snap to the two hinges, and sheets and menus open inside one panel, so no text sits on a fold.
+- **An arrangement for each job.** Triage, Review, Terminal, Read, Puck, and Focus are one tap apart. Review gives the diff two panels and shows it side by side. Each window keeps its own arrangement.
+- **Made for folding.** The cover screen shows one pane at a time with a bottom bar. The cover and the inner display each keep their own saved layout, and folding or unfolding resizes the window without restarting the app.
+- **Notifications that Amp doesn't send.** Amp sends no push for a thread while any client has it open, so a forgotten ampcode.com tab silences your phone too (spike S23 in `spikes/protocol/RESULTS.md`). With **Notify even when a thread is open elsewhere**, on by default, the app checks for finished turns itself: every 3 minutes while a thread works, for up to 2 hours, though Android can delay a check while the phone sleeps. A turn never notifies twice, because the app's check and Amp's push both name the turn's last message, and whichever arrives second posts nothing.
+- **Answer from the notification.** Reply to the agent from the shade without opening the app. An approval names the tool and the command. **Allow** appears only when the whole command fits in the notification. Otherwise **Review** opens the thread at the approval, so nobody allows a command they couldn't read. **Deny** is always there.
+- **Push your way.** Notifications arrive through Firebase and your own relay, through UnifiedPush and ntfy on a phone without Google Play services, or through background checks with nothing set up at all.
+- **A bad connection doesn't lose messages.** A message sent offline waits in an outbox, shows its state in the transcript, and sends when the connection returns. It keeps its message ID, so a resend never posts it twice. While you look at a thread, reconnecting never gives up.
+- **Five accounts and many windows.** Keep up to five Amp accounts signed in, each with its own web profile. Open a thread, a machine pane, or a file in its own window, on the inner display or on a DeX monitor.
+- **Keyboard and mouse.** Hardware keyboard shortcuts show in Android's shortcut helper, over DeX or Bluetooth. The terminal takes mouse selection, wheel scrolling, and right-click to copy or paste.
+- **Attach from the phone.** Attach a screenshot of the app, a screen recording with or without the microphone, the latest recording on the device, or any file.
+- **App Lock.** Turn it on, and the app asks for your biometrics or your device PIN before it shows anything.
+- **Wakes orbs only when you look.** Opening a thread wakes its sleeping orb, as the web does. Background refresh, notifications, and replies from the shade never wake one, so the phone never starts billing an orb you aren't looking at.
+
+## Screenshots
+
+The TriFold screenshots show a release build on a Samsung Galaxy Z TriFold, signed in to a real account. The rest come from the TriFold emulator against the app's built-in fake server, `:fake-amp`.
+
+| | |
+|---|---|
+| ![Review arrangement with a side-by-side diff](docs/screenshots/trifold-review-diff.png) | ![The orb's terminal next to the transcript](docs/screenshots/trifold-terminal.png) |
+| **Review.** The diff takes two panels and reads side by side, with Ship, Review, Restack, Rebase, and Sync under it. | **Terminal.** A shell on the thread's orb, in a native terminal emulator, beside the transcript. |
+| ![A Markdown file rendered in the Files tab](docs/screenshots/trifold-files.png) | ![Tool calls streaming while the agent works](docs/screenshots/trifold-working.png) |
+| **Files.** Browse the executor's checkout and read a file rendered or as source. | **Working.** Tool calls stream in as they run, and the composer turns into **Steer**. |
+| ![The arrangement menu](docs/screenshots/trifold-arrangements.png) | ![An approval inline in the thread](docs/screenshots/emulator-gate-approval.png) |
+| **Arrangements.** Six layouts for the inner display, one tap apart. | **Approvals.** The agent's request waits in the thread with **Allow** and **Deny**. |
+| ![Approve and reply from the notification shade](docs/screenshots/emulator-notifications.png) | ![The New Thread executor picker](docs/screenshots/emulator-newthread-executor-picker.png) |
+| **Notifications.** Allow, deny, or reply without opening the app. | **New thread.** Start work on a new orb, a self-hosted provider, or one of your runners. |
+| ![Thread, Changes, and Terminal on the cover screen](docs/screenshots/emulator-cover.png) | ![The Desktop tab streaming an executor's screen](docs/screenshots/emulator-desktop-tab.png) |
+| **Cover screen.** One pane at a time with a bottom bar: Threads, Thread, Machine, and Terminal. | **Desktop.** Watch an executor's desktop next to the thread. |
+| ![Portrait on the inner display](docs/screenshots/emulator-portrait.png) | |
+| **Portrait.** The rail, the thread, and its changes side by side. | |
+
 ## Read this first
 
 - This project is not affiliated with, endorsed by, or supported by Amp. "Amp" and the Amp logo belong to their owner. The app uses them only to name the service it connects to.
