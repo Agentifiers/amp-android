@@ -8,9 +8,7 @@ import com.agentifiers.amp.fake.Scenario
 import com.agentifiers.amp.fake.ScenarioSpec
 import com.agentifiers.amp.fake.World
 import com.agentifiers.amp.fake.array
-import com.agentifiers.amp.fake.bool
 import com.agentifiers.amp.fake.json
-import com.agentifiers.amp.fake.minus
 import com.agentifiers.amp.fake.obj
 import com.agentifiers.amp.fake.plus
 import com.agentifiers.amp.fake.element
@@ -49,10 +47,10 @@ private class SettingsMethods : InternalMethods {
     /** Env var names and kinds per target key; the fake never keeps a value. */
     private val envVars = mutableMapOf("user" to linkedMapOf("GITHUB_TOKEN" to "secret", "NODE_ENV" to "env"))
 
-    private val automations = linkedMapOf(
-        Settings.NIGHTLY to automation(Settings.NIGHTLY, "Nightly dependency check", RUNNER_THREAD, "0 9 * * *", "Every day at 9:00", true, "2026-10-24T09:00:00.000Z"),
-        Settings.CHANGELOG to automation(Settings.CHANGELOG, "Weekly changelog", GATE_THREAD, "0 17 * * 5", "Fridays at 17:00", false, null),
-    )
+    private val automations = AutomationBook(listOf(
+        AutomationBook.automation(Settings.NIGHTLY, "Nightly dependency check", RUNNER_THREAD, "Every day at 9:00", true, "2026-10-24T09:00:00.000Z", "2026-10-22T09:00:00.000Z"),
+        AutomationBook.automation(Settings.CHANGELOG, "Weekly changelog", GATE_THREAD, "Fridays at 17:00", false, null, "2026-10-22T09:00:00.000Z"),
+    ))
 
     private var vocabulary = "Rivet, Ghostty, Kotlin Multiplatform"
 
@@ -63,16 +61,13 @@ private class SettingsMethods : InternalMethods {
     private val projects = mutableMapOf(Settings.PROJECT_ID to project())
     private var snapshots = 2
 
-    override fun answer(method: String, params: JsonObject, identity: FakeIdentity): JsonObject? = when (method) {
+    override fun answer(method: String, params: JsonObject, identity: FakeIdentity): JsonObject? = automations.answer(method, params) ?: when (method) {
         "getUserInfo" -> ok(World.userInfo(identity) + mapOf("team" to team))
         "listRunnerShares" -> ok(json("shares" to shares.toList()))
         "shareRunner" -> shareRunner(params)
         "revokeRunnerShare" -> revokeRunnerShare(params)
         "listEnvVarSecrets" -> ok(json("items" to envVars[targetKey(params)].orEmpty().map { (name, kind) -> envVar(name, kind) }))
         "setEnvVarSecret" -> setEnvVarSecret(params)
-        "listAutomations" -> ok(json("automations" to automations.values.map { it - "prompt" + mapOf("targetThreadTitle" to element(null)) }))
-        "updateAutomation" -> updateAutomation(params)
-        "deleteAutomation" -> params.string("automationID")?.let { automations.remove(it) }?.let { ok(json()) } ?: World.notFound("Automation not found")
         "getDictationVocabulary" -> ok(json("vocabulary" to vocabulary))
         "setDictationVocabulary" -> setDictationVocabulary(params)
         "listMCPServerApprovals" -> ok(json(
@@ -129,18 +124,6 @@ private class SettingsMethods : InternalMethods {
         val kind = params.string("kind") ?: names[name] ?: "secret"
         names[name] = kind
         return ok(json("name" to name, "kind" to kind, "created" to created))
-    }
-
-    private fun updateAutomation(params: JsonObject): JsonObject {
-        val id = params.string("automationID")
-        val current = automations[id] ?: return World.notFound("Automation not found")
-        val updated = current + listOfNotNull(
-            params.string("title")?.let { "title" to element(it) },
-            params.bool("enabled")?.let { "enabled" to element(it) },
-            "updatedAt" to element("2026-10-23T12:00:00.000Z"),
-        ).toMap()
-        automations[id!!] = updated
-        return ok(updated)
     }
 
     private fun setDictationVocabulary(params: JsonObject): JsonObject {
@@ -200,14 +183,6 @@ private class SettingsMethods : InternalMethods {
     private fun envVar(name: String, kind: String) = json(
         "name" to name, "kind" to kind, "createdBy" to "devuser", "createdByUserID" to USER_ID,
         "updatedBy" to "devuser", "updatedByUserID" to USER_ID, "updatedAt" to "2026-10-20T15:04:00.000Z",
-    )
-
-    private fun automation(id: String, title: String, thread: String, cron: String, label: String, enabled: Boolean, nextRunAt: String?) = json(
-        "id" to id, "title" to title, "prompt" to "Run the $title routine and report what changed.", "targetThreadID" to thread,
-        "trigger" to json("provider" to "schedule", "schedule" to cron, "scheduleLabel" to label),
-        "runMode" to "existing", "agentMode" to null, "enabled" to enabled, "disabledReason" to if (enabled) null else "Paused by user",
-        "nextRunAt" to nextRunAt, "lastRunAt" to "2026-10-22T09:00:00.000Z", "lastRunError" to null,
-        "createdAt" to "2026-09-30T10:00:00.000Z", "updatedAt" to "2026-10-22T09:00:05.000Z",
     )
 
     private fun client(id: String, clientId: String, name: String, scopes: List<String>, redirects: List<String>, type: String = "client-side") = json(

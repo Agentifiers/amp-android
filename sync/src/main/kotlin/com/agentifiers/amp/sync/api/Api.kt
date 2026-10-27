@@ -168,6 +168,9 @@ public interface AccountScope {
     /** Account settings reads, one typed key per listing. Loading until the first fetch. */
     public fun <T> read(resource: AccountResource<T>): StateFlow<Loadable<T>>
 
+    /** Fetches [resource] again; a [read] fetches only once. The thread view refreshes Automations as the web does. */
+    public fun refresh(resource: AccountResource<*>)
+
     /** Account settings writes, through the same routing as ThreadHandle.dispatch. Each settles once in [commandResults]. */
     public fun dispatch(command: AccountCommand): IntentId
 

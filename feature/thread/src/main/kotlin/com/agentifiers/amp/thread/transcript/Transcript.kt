@@ -81,12 +81,14 @@ import com.agentifiers.amp.model.SendState
 import com.agentifiers.amp.model.ImageSource
 import com.agentifiers.amp.model.Step
 import com.agentifiers.amp.model.ThreadIntent
+import com.agentifiers.amp.model.ThreadSchedule
 import com.agentifiers.amp.model.ThreadState
 import com.agentifiers.amp.model.TranscriptView
 import com.agentifiers.amp.model.TurnEnd
 import com.agentifiers.amp.model.TurnKey
 import com.agentifiers.amp.model.UserBlock
 import com.agentifiers.amp.sync.api.ThreadHandle
+import com.agentifiers.amp.thread.schedule.ScheduleRow
 import com.agentifiers.amp.thread.toolcards.ToolCallView
 import com.agentifiers.amp.thread.toolcards.ToolCardContext
 import com.agentifiers.amp.thread.toolcards.ToolStatusGlyph
@@ -106,6 +108,8 @@ fun ThreadTranscript(
     find: FindState,
     hits: List<FindHit>,
     links: TranscriptLinks,
+    schedule: ThreadSchedule?,
+    onOpenSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (val view = state.transcript) {
@@ -113,7 +117,7 @@ fun ThreadTranscript(
         is TranscriptView.Failed -> Box(modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Text("Couldn't load the transcript: ${view.reason}", color = AmpTheme.colors.status.danger, modifier = Modifier.testTag(ThreadTags.error))
         }
-        is TranscriptView.Ready -> key(handle.id) { ReadyTranscript(view, state, handle, images, find, hits, links, modifier) }
+        is TranscriptView.Ready -> key(handle.id) { ReadyTranscript(view, state, handle, images, find, hits, links, schedule, onOpenSchedule, modifier) }
     }
 }
 
@@ -129,11 +133,13 @@ private fun ReadyTranscript(
     find: FindState,
     hits: List<FindHit>,
     links: TranscriptLinks,
+    schedule: ThreadSchedule?,
+    onOpenSchedule: () -> Unit,
     modifier: Modifier,
 ) {
     var expansion by remember { mutableStateOf(Expansion.None) }
-    val rows = remember(view, state.activity, state.error, state.pending, expansion) {
-        transcriptRows(view, state.activity, state.error, state.pending, expansion)
+    val rows = remember(view, state.activity, state.error, state.pending, expansion, schedule) {
+        transcriptRows(view, state.activity, state.error, state.pending, expansion, schedule)
     }
     val list = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -218,7 +224,7 @@ private fun ReadyTranscript(
             itemsIndexed(rows, key = { _, row -> row.key }, contentType = { _, row -> row::class }) { index, row ->
                 val gap = if (index == 0 || flushUnder(rows[index - 1], row)) AmpTheme.spacing.toolGap else AmpTheme.spacing.blockGap
                 Box(Modifier.padding(top = gap)) {
-                    TranscriptRowView(row, handle, images, highlight, links, cards, expansion, gatePending, loadEarlier) { expansion = it }
+                    TranscriptRowView(row, handle, images, highlight, links, cards, expansion, gatePending, loadEarlier, onOpenSchedule) { expansion = it }
                 }
             }
         }
@@ -288,6 +294,7 @@ private fun TranscriptRowView(
     expansion: Expansion,
     gatePending: Boolean,
     onLoadEarlier: () -> Unit,
+    onOpenSchedule: () -> Unit,
     onExpansion: (Expansion) -> Unit,
 ) {
     when (row) {
@@ -328,6 +335,7 @@ private fun TranscriptRowView(
             onWeb = links.openOnWeb,
         )
         is TranscriptRow.PendingRow -> PendingBubble(row.send, handle)
+        is TranscriptRow.ScheduleRow -> ScheduleRow(row.schedule, onOpenSchedule)
     }
 }
 

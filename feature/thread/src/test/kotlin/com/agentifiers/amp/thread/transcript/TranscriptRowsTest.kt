@@ -17,6 +17,12 @@ import com.agentifiers.amp.model.Turn
 import com.agentifiers.amp.model.TurnEnd
 import com.agentifiers.amp.model.TurnKey
 import com.agentifiers.amp.model.UserBlock
+import com.agentifiers.amp.model.AutomationInfo
+import com.agentifiers.amp.model.AutomationStatus
+import com.agentifiers.amp.model.ScheduleLead
+import com.agentifiers.amp.model.ThreadId
+import com.agentifiers.amp.model.ThreadSchedule
+import kotlin.time.Instant
 import com.agentifiers.amp.thread.toolcards.call
 import com.agentifiers.amp.thread.toolcards.done
 import kotlinx.collections.immutable.persistentListOf
@@ -56,6 +62,24 @@ class TranscriptRowsTest {
     @Test
     fun `an idle agent with no error has no error row`() {
         assertEquals(listOf("prompt-U-1", "step-A-1:0", "prompt-U-2", "step-A-2:0"), keys())
+    }
+
+    @Test
+    fun `the schedule ends an idle transcript and gives way to the activity row while the agent works`() {
+        val automation = AutomationInfo(
+            "automation-00000001", ThreadId.parse("T-01a16702-3202-73fb-8f52-e4498ccd3721")!!, "Rollout check", "Every 15 minutes",
+            AutomationStatus.Active, Instant.parse("2026-10-27T12:05:59Z"), null, null,
+        )
+        val schedule = ThreadSchedule(automation, ScheduleLead.NextRun(Instant.parse("2026-10-27T12:05:59Z")))
+        val error = AgentError("rate limited", null)
+        assertEquals(
+            listOf("prompt-U-1", "step-A-1:0", "prompt-U-2", "step-A-2:0", "error", "schedule"),
+            transcriptRows(view(), AgentActivity.Idle, error, emptyList(), Expansion.None, schedule).map { it.key },
+        )
+        assertEquals(
+            listOf("prompt-U-1", "step-A-1:0", "prompt-U-2", "step-A-2:0", "activity"),
+            transcriptRows(view(), AgentActivity.Working, null, emptyList(), Expansion.None, schedule).map { it.key },
+        )
     }
 
     @Test

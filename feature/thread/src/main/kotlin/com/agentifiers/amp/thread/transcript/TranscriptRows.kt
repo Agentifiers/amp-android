@@ -15,6 +15,7 @@ import com.agentifiers.amp.model.ToolCall
 import com.agentifiers.amp.model.ToolCallId
 import com.agentifiers.amp.model.ToolRun
 import com.agentifiers.amp.model.ToolRunKind
+import com.agentifiers.amp.model.ThreadSchedule
 import com.agentifiers.amp.model.TranscriptView
 import com.agentifiers.amp.model.TurnEnd
 import com.agentifiers.amp.model.TurnKey
@@ -47,6 +48,8 @@ sealed interface TranscriptRow {
     /** A null [error] means the agent state says error but no `error_set` has told us the message. */
     data class ErrorRow(val error: AgentError?) : TranscriptRow { override val key get() = "error" }
     data class PendingRow(val send: PendingSend) : TranscriptRow { override val key get() = "pending-${send.id.raw}" }
+    /** The thread's schedule, last while the agent is idle: the web's idle indicator, where the working one sits while busy. */
+    data class ScheduleRow(val schedule: ThreadSchedule) : TranscriptRow { override val key get() = "schedule" }
 }
 
 /** What the reader opened. A step group with an active call is open regardless, as screens.md asks. */
@@ -64,6 +67,7 @@ fun transcriptRows(
     error: AgentError?,
     pending: List<PendingSend>,
     expansion: Expansion,
+    schedule: ThreadSchedule? = null,
 ): List<TranscriptRow> {
     val rows = ArrayList<TranscriptRow>()
     if (view.earlier != EarlierHistory.None) rows += TranscriptRow.LoadEarlier(view.earlier)
@@ -90,6 +94,7 @@ fun transcriptRows(
         error != null -> rows += TranscriptRow.ErrorRow(error)
         activity == AgentActivity.Failed -> rows += TranscriptRow.ErrorRow(null)
     }
+    if (schedule != null && activity !is AgentActivity.Busy) rows += TranscriptRow.ScheduleRow(schedule)
     return rows
 }
 

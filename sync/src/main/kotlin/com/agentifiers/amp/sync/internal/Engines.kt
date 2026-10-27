@@ -400,6 +400,8 @@ internal class DefaultEngines(
 
         override fun <T> read(resource: AccountResource<T>): StateFlow<Loadable<T>> = settings.read(resource)
 
+        override fun refresh(resource: AccountResource<*>) = settings.refresh(resource)
+
         override fun dispatch(command: AccountCommand): IntentId = settings.dispatch(command)
 
         override val commandResults: SharedFlow<AccountCommandResult> get() = settings.commandResults

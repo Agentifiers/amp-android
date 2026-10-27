@@ -534,6 +534,24 @@ The app renders each `amp-view` block as a card holding a sandboxed WebView (`do
 
 Tag `amp-view-<messageId>-<index>`.
 
+### Schedule line
+
+A thread that an automation runs ends its transcript with one quiet line, as ampcode.com does (web chunk `e2ccdf0e.js`, `$a` passed as `idleIndicatorContent`, crawled 2026-10-27). The line takes the slot the activity row holds while the agent works, so it shows only while the agent is idle. Its tag is `transcript-schedule`.
+
+| Automation | Line | Source |
+|---|---|---|
+| Enabled, a run scheduled | "Next run in 5m", plus "· Last run 2h ago" once it has run | `iV`, `aV` in `e2ccdf0e.js` |
+| Paused by the user | "Automation paused" | `rt` in `fa551f92.js` |
+| Paused after a failed run | "Automation paused · last run failed", in the danger color | `rt`, `X` (`attention`) |
+| No upcoming runs | "Automation completed", only when it ran after the thread opened | `rt`, `$a` |
+| Enabled, nothing scheduled | No line | `$a` |
+
+The countdown is the web's: "<1m" under a minute and past due, then "5m", "2h", "2h 5m", "1d", "1d 3h" (`c24136b7.js`, `u`, the CLI's `vzt`). The last run reads "<1m", then the largest whole unit: "5m", "2h", "3d", "1mo", "1y" (`c24136b7.js`, `i` with `approximate`). The web ticks every second. Neither text changes inside a minute, so the app moves the line when its text next changes. Several automations on one thread resolve by the CLI's order: enabled first, then the soonest run, then the title.
+
+The app reads internal `listAutomations` with the account's key. The web's own source, the remote `getThreadAutomationDetails`, answers 401 to that key (`spikes/protocol/RESULTS.md`, S25). The list is read again when the thread opens and when a run ends, which is when the web reads its own.
+
+A tap on the line opens a sheet, the web's automation popover (`fa551f92.js`, `pt`). It holds the title with a switch (**Pause automation** or **Enable automation**), the schedule's label with the line, the reason the automation stopped, and **Delete Automation**. Delete asks first, with the web's words: "“<title>” will be permanently deleted and will no longer run." The switch sends `updateAutomation{automationID, enabled}`, and Delete sends `deleteAutomation{automationID}`. Both read the list again, so the line under the sheet changes when the write lands. A refused write shows "Could not pause automation", "Could not enable automation", or "Could not delete automation" in the sheet. The web's popover also shows the saved prompt, which only `getAutomation` carries. No client is seen calling it with a key, so the sheet leaves it out.
+
 ### Other transcript rows
 
 | Row | Behavior | Source |
@@ -542,7 +560,7 @@ Tag `amp-view-<messageId>-<index>`.
 | Compaction | A divider "Compacted earlier messages". | Amp's docs |
 | Error | The error message with **Retry** and **Dismiss**. When the agent state is error but no `error_set` has named the message, the row says "The agent stopped with an error." and adds **Open on Web** (UX-03). A scheduled retry shows "Retrying in N s (attempt X of Y)". | Amp's docs |
 | Cancelled | "Interrupted" at the end of the turn. | `spikes/protocol/RESULTS.md:15` |
-| Automation | Title, schedule, next run, saved prompt, a pause switch, and delete. A failed run shows its error. | Amp's docs. `listAutomations` and `updateAutomation` are read, not observed (`docs/design/sketch/COVERAGE.md`, row `automations-schedules`). Fallback **Open on web**. |
+| Schedule | The thread's automation as one line at the end of an idle transcript. See [Schedule line](#schedule-line). | Web chunk `e2ccdf0e.js`, `idleIndicatorContent` |
 | Linear session | An expandable **Linear session** row at the top with the start instructions. | Amp's docs |
 | Model not available | "Model Not Available" when Allowed Models disabled the thread's model. | Amp's docs |
 | Setup failure | **Repository Setup Failed** with **Setup Log** and **Retry Setup**. | Amp's docs |

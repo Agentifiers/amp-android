@@ -67,6 +67,8 @@ import com.agentifiers.amp.thread.transcript.FindState
 import com.agentifiers.amp.thread.transcript.ThreadTranscript
 import com.agentifiers.amp.thread.transcript.TranscriptLinks
 import com.agentifiers.amp.thread.transcript.findHits
+import com.agentifiers.amp.thread.schedule.ScheduleSheet
+import com.agentifiers.amp.thread.schedule.rememberThreadSchedule
 import com.agentifiers.amp.thread.watch.watchMenuItem
 import com.agentifiers.amp.design.components.AmpButton
 import com.agentifiers.amp.design.components.AmpButtonRank
@@ -113,7 +115,10 @@ fun ThreadPane(
                 controls = titleControls(scope, handle, state),
             )
         }
-        ThreadTranscript(state, handle, scope.images.coil, find, hits, links, Modifier.weight(1f))
+        val schedule = rememberThreadSchedule(scope, dest.id, state.activity is AgentActivity.Busy)
+        var openSchedule by remember(dest.id) { mutableStateOf<String?>(null) }
+        ThreadTranscript(state, handle, scope.images.coil, find, hits, links, schedule, { openSchedule = schedule?.automation?.id }, Modifier.weight(1f))
+        schedule?.takeIf { it.automation.id == openSchedule }?.let { ScheduleSheet(scope, it) { openSchedule = null } }
         val composerText = rememberComposerText(handle.id)
         QueueStrip(state, handle, composerText)
         key(dest.id) {

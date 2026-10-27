@@ -33,7 +33,6 @@ sealed interface SecretTarget {
 }
 
 data class SecretEntry(val name: String, val isSecret: Boolean)
-data class AutomationInfo(val id: String, val thread: ThreadId, val title: String, val nextRun: Instant?, val enabled: Boolean)
 /** One `listMCPServerApprovals` row. Approvals are held per user or per workspace; the list carries no thread or project scope. */
 data class McpApprovalInfo(val serverName: String, val specHash: String, val owner: McpApprovalOwner)
 

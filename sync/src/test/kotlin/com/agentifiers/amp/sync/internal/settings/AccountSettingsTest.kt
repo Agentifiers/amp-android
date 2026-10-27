@@ -4,6 +4,7 @@ import com.agentifiers.amp.fake.FakeAmp
 import com.agentifiers.amp.model.AccountCommand
 import com.agentifiers.amp.model.AccountResource
 import com.agentifiers.amp.model.AutomationInfo
+import com.agentifiers.amp.model.AutomationStatus
 import com.agentifiers.amp.model.ExtensionsGlance
 import com.agentifiers.amp.model.IntentId
 import com.agentifiers.amp.model.McpApprovalInfo
@@ -67,8 +68,14 @@ class AccountSettingsTest {
         assertEquals(emptyList<SecretEntry>(), ready(settings, AccountResource.Secrets(SecretTarget.Workspace)))
         assertEquals(
             listOf(
-                AutomationInfo("auto_01JX3N7Q8K2M4P6R8T0V2W4Y6A", thread("T-01a16702-3202-73fb-8f52-e4498ccd3721"), "Nightly dependency check", Instant.parse("2026-10-24T09:00:00Z"), true),
-                AutomationInfo("auto_01JX3N9B1D3F5H7J9L1N3Q5S7U", thread("T-01a16738-2ec2-7354-98e9-688bc413f079"), "Weekly changelog", null, false),
+                AutomationInfo(
+                    "auto_01JX3N7Q8K2M4P6R8T0V2W4Y6A", thread("T-01a16702-3202-73fb-8f52-e4498ccd3721"), "Nightly dependency check", "Every day at 9:00",
+                    AutomationStatus.Active, Instant.parse("2026-10-24T09:00:00Z"), Instant.parse("2026-10-22T09:00:00Z"), null,
+                ),
+                AutomationInfo(
+                    "auto_01JX3N9B1D3F5H7J9L1N3Q5S7U", thread("T-01a16738-2ec2-7354-98e9-688bc413f079"), "Weekly changelog", "Fridays at 17:00",
+                    AutomationStatus.Paused, null, Instant.parse("2026-10-22T09:00:00Z"), null,
+                ),
             ),
             ready(settings, AccountResource.Automations),
         )
@@ -203,6 +210,41 @@ class AccountSettingsTest {
         assertEquals(2, listed)
         assertSame(first, automations.value)
     }
+
+    @Test
+    fun `an automation's disabledReason names why it stopped and a refresh reads the next run again`() = runBlocking {
+        var listed = 0
+        val settings = scripted { method ->
+            if (method != "listAutomations") return@scripted null
+            listed++
+            val next = if (listed == 1) "2026-10-27T12:05:59.000Z" else "2026-10-27T12:20:59.000Z"
+            200 to """{"ok":true,"result":{"automations":[
+                ${automationJson("a1", "T-01a16702-3202-73fb-8f52-e4498ccd3721", """{"provider":"schedule","schedule":"*/15 * * * *","scheduleLabel":"Every 15 minutes"}""", true, null, next, null)},
+                ${automationJson("a2", "T-01a16738-2ec2-7354-98e9-688bc413f079", """{"provider":"schedule","schedule":"0 9 * * *"}""", false, "last-run-failed", null, "2026-10-27T09:00:00.000Z")},
+                ${automationJson("a3", "T-01a16738-2ec2-7354-98e9-688bc413f079", """{"provider":"slack","event":"message","slackChannelID":"C00000001"}""", false, "schedule-exhausted", null, null)},
+                ${automationJson("a4", "T-01a16738-2ec2-7354-98e9-688bc413f079", """{"provider":"schedule","schedule":"0 9 * * *"}""", false, "user-paused", null, null)}
+            ]}}"""
+        }
+        val automations = settings.read(AccountResource.Automations)
+        assertEquals(
+            listOf(
+                listOf("a1", "Every 15 minutes", AutomationStatus.Active, Instant.parse("2026-10-27T12:05:59Z"), null),
+                listOf("a2", "0 9 * * *", AutomationStatus.Failed, null, Instant.parse("2026-10-27T09:00:00Z")),
+                listOf("a3", "New Slack messages", AutomationStatus.Completed, null, null),
+                listOf("a4", "0 9 * * *", AutomationStatus.Paused, null, null),
+            ),
+            (settle(automations) as Loadable.Ready).value.map { listOf(it.id, it.trigger, it.status, it.nextRun, it.lastRun) },
+        )
+        settings.refresh(AccountResource.Automations)
+        val refreshed = withTimeout(10_000) { automations.first { (it as? Loadable.Ready)?.value?.first()?.nextRun == Instant.parse("2026-10-27T12:20:59Z") } }
+        assertEquals(2, listed)
+        assertEquals("a1", (refreshed as Loadable.Ready).value.first().id)
+    }
+
+    private fun automationJson(id: String, thread: String, trigger: String, enabled: Boolean, reason: String?, next: String?, last: String?) =
+        """{"id":"$id","title":"Rollout check","targetThreadID":"$thread","trigger":$trigger,"runMode":"existing","agentMode":null,""" +
+            """"enabled":$enabled,"disabledReason":${reason?.let { "\"$it\"" }},"nextRunAt":${next?.let { "\"$it\"" }},""" +
+            """"lastRunAt":${last?.let { "\"$it\"" }},"lastRunError":null,"createdAt":"2026-10-01T00:00:00.000Z","updatedAt":"2026-10-01T00:00:00.000Z","targetThreadTitle":null}"""
 
     /** Served at the recording moment, so the seed's times read back as recorded. */
     private fun fake(): AccountSettings {

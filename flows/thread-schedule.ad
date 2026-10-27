@@ -1,0 +1,34 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-schedule"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+click id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721
+wait id=transcript-schedule 20000
+# The fake serves the next run 5 minutes 59 seconds after it started, so the line reads 5m for the first 59 seconds.
+wait text "Next run in 5m" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-schedule-next-run.png
+# The line moves on the minute without a new read.
+wait text "Next run in 4m" 75000
+click id=transcript-schedule
+wait id=schedule-sheet 10000
+wait text "Every 15 minutes · Next run in 4m" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-schedule-sheet.png
+click id=schedule-enabled
+wait text "Every 15 minutes · Automation paused" 10000
+click id=schedule-enabled
+wait text "Every 15 minutes · Next run in 4m" 10000
+back
+wait absent id=schedule-sheet 10000
+click id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079
+wait text "Automation paused · Last run 2h ago" 20000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-schedule-paused.png
+click id=transcript-schedule
+wait id=schedule-sheet 10000
+click id=schedule-delete
+wait id=schedule-delete-confirm 5000
+wait text "“Morning digest” will be permanently deleted and will no longer run." 5000
+click id=schedule-delete-confirm
+wait absent id=schedule-sheet 10000
+wait absent id=transcript-schedule 10000
+close

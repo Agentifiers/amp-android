@@ -3,6 +3,7 @@ package com.agentifiers.amp.sync.internal.settings
 import com.agentifiers.amp.model.AccountCommand
 import com.agentifiers.amp.model.AccountResource
 import com.agentifiers.amp.model.AutomationInfo
+import com.agentifiers.amp.model.AutomationStatus
 import com.agentifiers.amp.model.ExtensionsGlance
 import com.agentifiers.amp.model.IntentId
 import com.agentifiers.amp.model.McpApprovalInfo
@@ -19,6 +20,7 @@ import com.agentifiers.amp.model.ThreadId
 import com.agentifiers.amp.sync.api.AccountCommandResult
 import com.agentifiers.amp.sync.api.Loadable
 import com.agentifiers.amp.sync.internal.net.AmpHttp
+import com.agentifiers.amp.sync.internal.wire.obj
 import com.agentifiers.amp.sync.internal.wire.string
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -58,6 +60,11 @@ internal class AccountSettings(http: AmpHttp, private val scope: CoroutineScope)
         val cell = cells.computeIfAbsent(resource) { Cell(resource) } as Cell<T>
         cell.fetchIfIdle()
         return cell.flow
+    }
+
+    /** Fetches [resource] again, for a listing the server changes on its own, such as an automation's next run. */
+    fun refresh(resource: AccountResource<*>) {
+        cells.computeIfAbsent(resource) { Cell(resource) }.refetch()
     }
 
     fun dispatch(command: AccountCommand): IntentId {
@@ -270,9 +277,17 @@ private fun JsonObject.automation(): AutomationInfo = AutomationInfo(
     id = need("id"),
     thread = ThreadId.parse(need("targetThreadID")) ?: shape(),
     title = need("title"),
-    nextRun = string("nextRunAt")?.let { runCatching { Instant.parse(it) }.getOrNull() ?: shape() },
-    enabled = flag("enabled"),
+    trigger = obj("trigger")?.let { if (it.need("provider") == "schedule") it.string("scheduleLabel") ?: it.need("schedule") else "New Slack messages" } ?: shape(),
+    status = if (flag("enabled")) AutomationStatus.Active else STOPPED[string("disabledReason")] ?: AutomationStatus.Paused,
+    nextRun = instant("nextRunAt"),
+    lastRun = instant("lastRunAt"),
+    lastRunError = string("lastRunError"),
 )
+
+/** The web's `X()`: any other reason, `user-paused` among them, reads as paused (chunk fa551f92.js). */
+private val STOPPED = mapOf("last-run-failed" to AutomationStatus.Failed, "schedule-exhausted" to AutomationStatus.Completed)
+
+private fun JsonObject.instant(key: String): Instant? = string(key)?.let { runCatching { Instant.parse(it) }.getOrNull() ?: shape() }
 
 /** Only repositories that exist are listed; each is its clone URL (`/git/@<owner>/-/plugins` or `/-/skills`). */
 private fun JsonObject.repositories(): PersistentList<String> = objects("repositories").filter { it.flag("exists") }.map { it.need("cloneURL") }.toPersistentList()

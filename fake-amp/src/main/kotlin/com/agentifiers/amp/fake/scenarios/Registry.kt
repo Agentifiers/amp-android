@@ -40,6 +40,7 @@ internal val SCENARIOS: List<ScenarioSpec> = listOf(
     PuckChat,
     Auth,
     Settings,
+    ThreadSchedule,
     NewThread,
     NewThreadSpawnFails,
     NewThreadSelfHosted,

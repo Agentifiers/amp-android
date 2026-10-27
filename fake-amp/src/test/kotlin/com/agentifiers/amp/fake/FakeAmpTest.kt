@@ -145,7 +145,7 @@ class FakeAmpTest {
                 "fleet-basic", "live-turn", "steer-interrupt", "plugin-dialog", "approvals", "gate-plugins", "gate-choice",
                 "changes", "changes-order-fails", "changes-large", "changes-oversize-snapshot", "changes-oversize-order", "changes-ahead", "changes-no-repo", "orb-asleep", "orb-wake-fails", "terminal", "files", "attachments", "portal", "push", "push-gates", "thread-long", "thread-blocks", "thread-tools",
                 "thread-follow", "suggested-replies", "gallery", "widget-fleet", "voice-call", "desktop",
-                "fleet-organize", "share-presence", "puck-chat", "auth", "settings",
+                "fleet-organize", "share-presence", "puck-chat", "auth", "settings", "thread-schedule",
                 "newthread", "newthread-spawn-fails", "newthread-self-hosted", "newthread-self-hosted-web", "newthread-self-hosted-web-gone", "outbox", "e2e-day",
             ),
             FakeAmp.scenarios,
