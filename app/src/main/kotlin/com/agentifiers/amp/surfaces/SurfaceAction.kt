@@ -8,7 +8,7 @@ import com.agentifiers.amp.model.ThreadId
 /**
  * What a launcher shortcut, a widget tap, or the Quick Settings tile asks the app to do. Each one is an
  * explicit intent to [SurfaceActivity], parsed back here, so the launcher never holds a free-form route.
- * `res/xml/shortcuts.xml` repeats the action strings of the static shortcuts.
+ * `app/src/surfaces/shortcuts.xml` repeats the action strings of the static shortcuts.
  */
 sealed interface SurfaceAction {
     val intentAction: String

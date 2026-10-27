@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The template for res/xml/shortcuts.xml. The build writes one per variant with its package in ${applicationId},
+     because a shortcut intent's targetPackage takes no resource reference. -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
@@ -9,7 +11,7 @@
         <intent
             android:action="com.agentifiers.amp.surface.NEW_THREAD"
             android:targetClass="com.agentifiers.amp.surfaces.SurfaceActivity"
-            android:targetPackage="com.agentifiers.amp" />
+            android:targetPackage="${applicationId}" />
     </shortcut>
     <shortcut
         android:enabled="true"
@@ -20,6 +22,6 @@
         <intent
             android:action="com.agentifiers.amp.surface.CALL_PUCK"
             android:targetClass="com.agentifiers.amp.surfaces.SurfaceActivity"
-            android:targetPackage="com.agentifiers.amp" />
+            android:targetPackage="${applicationId}" />
     </shortcut>
 </shortcuts>

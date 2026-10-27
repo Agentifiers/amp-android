@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Enabled by `git config core.hooksPath scripts/hooks`. See scripts/check-private.sh.
+exec "$(git rev-parse --show-toplevel)/scripts/check-private.sh" --staged

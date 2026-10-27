@@ -23,9 +23,16 @@ val releaseSigning = localProperties.getProperty("amp.releaseSigning")?.let(::fi
     Properties().apply { file.inputStream().use(::load) }
 }
 
+// A release for a device that already runs this app under another package name keeps that name, so the update
+// keeps the app's data and push setup. Debug builds always use the default, which the flows and scripts open.
+val defaultApplicationId = "com.agentifiers.amp"
+val releaseApplicationId: String? = localProperties.getProperty("amp.releaseApplicationId")?.trim()?.takeIf { it.isNotEmpty() }?.also {
+    require(it.matches(Regex("[A-Za-z]\\w*(\\.[A-Za-z]\\w*)+"))) { "amp.releaseApplicationId must be a package name, got $it" }
+}
+
 android {
     defaultConfig {
-        applicationId = "com.agentifiers.amp"
+        applicationId = defaultApplicationId
         versionCode = 1
         versionName = "0.1.0"
         buildConfigField("String", "RIVET_PUBLISHABLE_TOKEN", "\"$rivetPublishableToken\"")
@@ -50,6 +57,30 @@ android {
         }
     }
     sourceSets.getByName("main").res.srcDir("src/surfaces/res")
+}
+
+/** Writes res/xml/shortcuts.xml from src/surfaces/shortcuts.xml with the variant's package. */
+abstract class ShortcutsTask : DefaultTask() {
+    @get:InputFile abstract val template: RegularFileProperty
+    @get:Input abstract val applicationId: Property<String>
+    @get:OutputDirectory abstract val outputDir: DirectoryProperty
+
+    @TaskAction
+    fun write() {
+        val xml = template.get().asFile.readText().replace("\${applicationId}", applicationId.get())
+        outputDir.get().dir("xml").asFile.apply { mkdirs() }.resolve("shortcuts.xml").writeText(xml)
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.applicationId.set(if (variant.buildType == "release") releaseApplicationId ?: defaultApplicationId else defaultApplicationId)
+        val shortcuts = tasks.register<ShortcutsTask>("generate${variant.name.replaceFirstChar(Char::uppercase)}Shortcuts") {
+            template.set(file("src/surfaces/shortcuts.xml"))
+            applicationId.set(variant.applicationId)
+        }
+        variant.sources.res?.addGeneratedSourceDirectory(shortcuts, ShortcutsTask::outputDir)
+    }
 }
 
 dependencies {

@@ -177,7 +177,8 @@ internal class PollWorker(context: Context, params: WorkerParameters) : Coroutin
             val request = PeriodicWorkRequestBuilder<PollWorker>(15, TimeUnit.MINUTES)
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
                 .build()
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(PERIODIC, ExistingPeriodicWorkPolicy.KEEP, request)
+            // UPDATE, not KEEP: an update that renamed this worker's class replaces the old spec at the next start.
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(PERIODIC, ExistingPeriodicWorkPolicy.UPDATE, request)
         }
 
         /** A relay wake message: the account's sync, once and expedited. */

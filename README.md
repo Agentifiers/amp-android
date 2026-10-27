@@ -87,14 +87,23 @@ A fresh clone builds and runs with no extra files. The debug build talks to `:fa
 | `amp.rivetPublishableToken` | The Rivet publishable token embedded in the Amp CLI. The app opens thread sockets with it. `scripts/rivet-token.sh` copies it from the Amp CLI at `~/.amp/bin/amp`, or from `$AMP_CLI`, and never prints it. | The build succeeds, and the debug build still opens thread sockets to `:fake-amp` on this machine (`localhost`, `127.0.0.1`, or the emulator's `10.0.2.2`), so the flows run. No thread socket opens to ampcode.com. |
 | `amp.pushRelayUrl` | The base URL of your deployment of the push relay in `relay/`, for example `https://amp-push-relay.<your-subdomain>.workers.dev/`. It must start with `http://` or `https://` and end with `/`, or the build fails. The app registers each account's Web Push endpoint there, and the relay forwards Amp's pushes over FCM. | The app never uses a relay. It receives notifications through UnifiedPush when a distributor is installed, and otherwise by polling. |
 | `amp.releaseSigning` | The path to a Java properties file with `storeFile`, `storePassword`, `keyAlias`, and `keyPassword`. The release build is signed with that key. | `assembleRelease` writes an unsigned `app-release-unsigned.apk`. |
+| `amp.releaseApplicationId` | The package name of the release build, for a device that already runs the app under another name, such as a fork's. The update then keeps the app's data, permissions, and push setup. Debug builds keep `com.agentifiers.amp`, which the flows and scripts open. | The release build is `com.agentifiers.amp`. |
 
 ### `app/google-services.json`
 
-The Firebase config for your own Firebase project, with an Android app for the package `com.agentifiers.amp`. When the file exists, `notify/build.gradle.kts` reads its project id, sender id, app id, and API key into `BuildConfig`, and the app can receive pushes over FCM from your relay. Without it, the build still succeeds, and the app uses UnifiedPush or polling. FCM delivery needs both this file and `amp.pushRelayUrl`.
+The Firebase config for your own Firebase project, with an Android app for the package `com.agentifiers.amp`, or for `amp.releaseApplicationId` when you set one. When the file exists, `notify/build.gradle.kts` reads its project id, sender id, app id, and API key into `BuildConfig`, and the app can receive pushes over FCM from your relay. Without it, the build still succeeds, and the app uses UnifiedPush or polling. FCM delivery needs both this file and `amp.pushRelayUrl`.
 
 ### The push relay
 
 The relay is optional. It turns Amp's Web Push into FCM messages for one Firebase project. `relay/README.md` shows how to create its D1 database, set its secrets, and deploy it with `wrangler`. `docs/design/push-relay.md` is its design.
+
+### Check commits for private data
+
+Spike captures, fixtures, and screenshots come from real accounts, so check what you commit. `scripts/check-private.sh --staged` refuses a change that adds a string or a path you list in `.git/info/private-patterns`, one per line, with `path:` before a path prefix. That file stays outside the repository. Then it runs `gitleaks` on the same change. To run it on every commit, in this checkout and its worktrees:
+
+```sh
+git config core.hooksPath scripts/hooks
+```
 
 ## Build
 

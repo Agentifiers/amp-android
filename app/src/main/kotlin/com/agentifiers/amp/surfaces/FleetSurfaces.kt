@@ -89,7 +89,7 @@ class FleetSurfaces(private val context: Context, private val engines: AmpEngine
     private companion object {
         const val TAG = "AmpSurface"
 
-        /** New Thread and Call Puck in res/xml/shortcuts.xml. */
+        /** New Thread and Call Puck in app/src/surfaces/shortcuts.xml. */
         const val STATIC_SHORTCUTS = 2
         const val SHORT_LABEL = 25
     }
