@@ -1,0 +1,44 @@
+context platform=android timeout=120000
+# Watch: opting a working thread in from More Actions starts the specialUse service with a Live Update; the turn finishing ends it.
+# --no-test-ime: replies go in as key events, which do not depend on SystemUI binding the IME (see notify-inject.ad).
+open com.agentifiers.amp --relaunch --no-test-ime
+# Home collapses a notification shade an earlier failed flow left open; a relaunch alone stays under it.
+home
+open com.agentifiers.amp --relaunch --no-test-ime
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"push-gates"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Ready when you are.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-watchflow000001\"}"
+swipe 1080 2 1080 1200
+wait text "Ready when you are." 15000
+press label=Reply
+# The reply field takes text only once it has focus, and Send enables once the field holds the text.
+wait id=com.android.systemui:id/remote_input_text focused=true 10000
+type "watch this one"
+wait label=Send enabled=true 10000
+press label=Send
+wait text "You: watch this one" 20000
+back
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+wait id=thread-menu 30000
+click id=thread-menu
+# U11's organize items push Watch below the menu's first screen.
+scroll down 0.5 --until id=thread-menu-watch
+click id=thread-menu-watch
+wait 2000
+swipe 1080 2 1080 1200
+wait text "Watching 1 agent" 20000
+wait text "Clean the build directory" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-watch-live-update.png
+back
+wait id=approval-allow 30000
+click id=approval-allow
+swipe 1080 2 1080 1200
+wait absent "text=\"Watching 1 agent\"" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-watch-ended.png
+back
+click id=thread-menu
+scroll down 0.5 --until id=thread-menu-watch
+click id=thread-menu-watch
+close

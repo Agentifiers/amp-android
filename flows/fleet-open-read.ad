@@ -1,0 +1,26 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-basic"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+wait id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-status-done 30000
+wait id=needs-you-T-01a16702-3202-73fb-8f52-e4498ccd3721-read 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-open-read-unread.png
+click id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721
+# Idle rows show no status word (UX-06), so reading the thread shows as the done word going away.
+wait absent id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-status-done 15000
+is visible id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721
+wait absent id=needs-you-T-01a16702-3202-73fb-8f52-e4498ccd3721-read 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-open-read-opened.png
+click id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-more
+click id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-mark-unread
+wait id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-status-done 10000
+wait id=needs-you-T-01a16702-3202-73fb-8f52-e4498ccd3721-read 10000
+# The reload reads hasUnreadMessages true back from the fake. The thread is still shown, and it stays unread.
+wait 3000
+click id=sidebar-refresh
+wait 3000
+wait id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721-status-done 2000
+wait id=needs-you-T-01a16702-3202-73fb-8f52-e4498ccd3721-read 2000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-open-read-marked-unread.png
+close

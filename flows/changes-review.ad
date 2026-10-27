@@ -1,0 +1,59 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=pane-more 30000
+click id=pane-more
+wait text "Order Files Alphabetically" 30000
+back
+find text "Live" exists
+wait id=diff-file-notes/plan.md 10000
+wait id=diff-file-calc.py 10000
+wait id=diff-file-legacy.py 10000
+wait id=changes-section-summary-unstaged 10000
+# The Triage machine pane's file list shows about three rows, and the muted .pyc sorts last. Each swipe flings the
+# list to its end, where calc.py, legacy.py, and the .pyc are on screen.
+swipe 1790 950 1790 750
+wait id=diff-file-__pycache__/calc.cpython-312.pyc 10000
+wait id=changes-section-empty-staged 10000
+find text "Nothing staged" exists
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-triage-files.png
+click id=diff-file-calc.py
+wait id=diff-hunk-calc.py-0 10000
+wait id=diff-line-calc.py-new-1 10000
+# The 363dp Triage pane is under 600dp, so it shows the unified diff and offers no split toggle, even in More Actions.
+is absent id=changes-layout
+click id=pane-more
+wait text "Order Files Alphabetically" 10000
+is absent "text=\"Show Split Diff\""
+back
+click id=diff-hunk-explain-calc.py-0
+wait id=diff-explanation-calc.py-0 30000
+click id=diff-hunk-comment-calc.py-0
+wait id=diff-comment-input 10000
+fill id=diff-comment-input "Keep add as an alias."
+click id=diff-comment-add
+wait id=diff-comments-send 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-triage-comment.png
+click id=diff-back
+# Back returns the list to its top, and the pending comment strip leaves room for one row.
+swipe 1790 950 1790 750
+wait id=diff-file-stage-calc.py 10000
+click id=diff-file-stage-calc.py
+wait id=diff-file-unstage-calc.py 30000
+click id=diff-comments-send
+wait id=transcript-activity 30000
+scroll down 0.6
+find text "Diff review comments:" exists
+find text "calc.py:1-2 - Keep add as an alias." exists
+click id=changes-ship
+wait id=changes-confirm-prompt 10000
+click id=changes-confirm-send
+wait id=queue-strip 30000
+find id queued- exists
+wait text "Already asked the agent to ship or push these changes." 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-triage-ship-queued.png
+close

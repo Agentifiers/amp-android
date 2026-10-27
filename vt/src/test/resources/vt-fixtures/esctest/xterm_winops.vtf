@@ -1,0 +1,5 @@
+name: XtermWinopsTests.test_XtermWinops_ReportWindowLabel
+source: esctest2 esctest/tests/xterm_winops.py XtermWinopsTests.test_XtermWinops_ReportWindowLabel
+size: 80x25
+input: \e]2;test 1700000000.25\e\\
+title: test 1700000000.25

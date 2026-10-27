@@ -1,0 +1,23 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+wait id=signin-start 30000
+click id=signin-start
+wait id=signin-code 30000
+wait text "GMKF-JRTX" 5000
+is visible id=signin-open-browser
+is visible id=signin-private-tab
+is visible id=signin-status
+is visible id=signin-copy-link
+is visible id=signin-back
+screenshot ${AD_ARTIFACTS:-build/flows}/account-device-flow-code.png
+# The fake answers the first poll pending, as captured, and approves the second.
+wait id=signin-confirm-account 40000
+wait text "fake-1@example.com" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-device-flow-confirm.png
+click id=signin-confirm-account
+wait id=pane-sidebar 30000
+wait id=account-switcher 10000
+wait text "fake-1@example.com" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-device-flow-signed-in.png
+close

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="surface_widget_label">Amp threads</string>
+    <string name="surface_widget_description">Threads that need you and threads that are working</string>
+    <string name="surface_new_thread_short">New thread</string>
+    <string name="surface_new_thread_long">Start a new Amp thread</string>
+    <string name="surface_call_puck_short">Call Puck</string>
+    <string name="surface_call_puck_long">Start a voice call with Puck</string>
+    <string name="surface_tile_label">Call Puck</string>
+</resources>

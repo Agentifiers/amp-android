@@ -1,0 +1,36 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=new-thread 30000
+wait id=thread-list 30000
+wait 1500
+screenshot ${UX_OUT}/fleet-empty.png
+click id=new-thread
+wait id=new-thread-composer 15000
+wait 1500
+screenshot ${UX_OUT}/newthread-composer.png
+click id=composer-executor
+wait id=executor-runner-android-spike 15000
+wait 1500
+screenshot ${UX_OUT}/newthread-executor-picker.png
+click id=executor-runner-android-spike
+wait id=runner-directory-0 10000
+click id=runner-worktree-current
+wait absent id=executor-picker 10000
+click id=composer-project
+wait id=composer-project-none 10000
+wait 1500
+screenshot ${UX_OUT}/newthread-project-picker.png
+click id=composer-project-none
+wait absent id=composer-project-none 10000
+click id=composer-mode
+wait id=mode-picker 10000
+wait 1500
+screenshot ${UX_OUT}/newthread-mode-picker.png
+click id=mode-option-high
+wait absent id=mode-picker 10000
+trigger-app-event geometry-override {}
+close

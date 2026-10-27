@@ -1,0 +1,39 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"${AMP_SCENARIO:-fleet-basic}"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=column-machine 10000
+press id=window-arrangement
+wait id=arrangement-review 5000
+is selected id=arrangement-triage
+press id=arrangement-review
+wait id=sidebar-rail 5000
+wait text "Arrangement: Review" 5000
+press id=pane-collapse
+wait id=pane-sidebar 5000
+wait text "Arrangement: Triage" 5000
+press id=pane-expand
+wait id=pane-collapse 5000
+press id=pane-focus
+wait id=window-exit-focus 5000
+wait text "Arrangement: Focus" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/layout-window-bar-focus.png
+press id=window-exit-focus
+wait id=pane-collapse 5000
+wait text "Arrangement: Review" 5000
+press id=window-palette
+wait id=palette-input 5000
+# The list re-filters as each typed letter lands, so rows can still move when fill returns; let it finish first.
+fill id=palette-input read
+wait 1000
+press id=palette-item-arrange-read
+wait id=column-thread 5000
+wait text "Arrangement: Read" 5000
+trigger-app-event set-arrangement {"name":"Triage"}
+trigger-app-event geometry-override {}
+close

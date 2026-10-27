@@ -1,0 +1,31 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"outbox"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=composer-send 30000
+wait 1500
+screenshot ${UX_OUT}/composer-idle.png
+fill id=composer-input "List the files here, one tool call at a time"
+click id=composer-send
+wait id=composer-interrupt 30000
+wait id=composer-send 120000
+fill id=composer-input "Run the long job"
+click id=composer-send
+wait id=composer-queue 30000
+fill id=composer-input "Afterwards, summarize"
+wait 1500
+screenshot ${UX_OUT}/composer-busy.png
+click id=composer-queue
+wait id=queue-strip 15000
+wait 1500
+screenshot ${UX_OUT}/composer-busy-queued.png
+click id=composer-interrupt
+wait absent id=queue-strip 30000
+wait 1500
+screenshot ${UX_OUT}/composer-after-interrupt.png
+trigger-app-event geometry-override {}
+close

@@ -1,0 +1,23 @@
+name: REPTests.test_REP_DefaultParam
+source: esctest2 esctest/tests/rep.py REPTests.test_REP_DefaultParam
+size: 80x25
+input: a\e[b
+cell 0,0: char=a
+cell 1,0: char=a
+cell 2,0: char=
+---
+name: REPTests.test_REP_ExplicitParam
+source: esctest2 esctest/tests/rep.py REPTests.test_REP_ExplicitParam
+size: 80x25
+input: a\e[2b
+cell 0,0: char=a
+cell 1,0: char=a
+cell 2,0: char=a
+cell 3,0: char=
+---
+name: REPTests.test_REP_RespectsTopBottomMargins
+source: esctest2 esctest/tests/rep.py REPTests.test_REP_RespectsTopBottomMargins
+size: 80x25
+input: \e[2;4r\e[4;78Ha\e[3b
+row 2: |                                                                             aaa|
+row 3: |a|

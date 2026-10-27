@@ -1,0 +1,21 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"terminal"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"terminal"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=terminal-screen 30000
+wait "id=terminal-status text=ready" 30000
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"pwd\r"}
+wait text "/private/tmp/amp-scratch" 30000
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"echo\u0020hello\u0020from\u0020the\u0020relay\r"}
+wait 1500
+wait 1500
+screenshot ${UX_OUT}/terminal-triage.png
+trigger-app-event set-arrangement {"name":"Terminal"}
+wait 2500
+wait 1500
+screenshot ${UX_OUT}/terminal-arrangement.png
+trigger-app-event geometry-override {}
+close

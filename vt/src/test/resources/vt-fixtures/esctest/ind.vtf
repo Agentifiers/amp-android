@@ -1,0 +1,46 @@
+name: INDTests.test_IND_Basic
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_Basic
+size: 80x25
+input: \e[3;5H\eD\e[6n
+cursor: 4,3
+reply: \e[4;5R
+---
+name: INDTests.test_IND_Scrolls (check 1 of 2)
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_Scrolls
+size: 80x25
+input: \e[24;2Ha\e[25;2Hb\e[24;2H\eD
+cell 1,22: char=
+cell 1,23: char=a
+cell 1,24: char=b
+---
+name: INDTests.test_IND_Scrolls (check 2 of 2)
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_Scrolls
+size: 80x25
+input: \e[24;2Ha\e[25;2Hb\e[24;2H\eD\eD
+cell 1,22: char=a
+cell 1,23: char=b
+cell 1,24: char=
+---
+name: INDTests.test_IND_ScrollsInTopBottomRegionStartingAbove
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_ScrollsInTopBottomRegionStartingAbove
+size: 80x25
+input: \e[4;5r\e[5;2Hx\e[3;2H\eD\eD\eD\e[6n
+cursor: 1,4
+cell 1,3: char=x
+cell 1,4: char=
+reply: \e[5;2R
+---
+name: INDTests.test_IND_ScrollsInTopBottomRegionStartingWithin
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_ScrollsInTopBottomRegionStartingWithin
+size: 80x25
+input: \e[4;5r\e[5;2Hx\e[4;2H\eD\eD\e[6n
+cursor: 1,4
+cell 1,3: char=x
+cell 1,4: char=
+reply: \e[5;2R
+---
+name: INDTests.test_IND_StopsAtBottomLineWhenBegunBelowScrollRegion
+source: esctest2 esctest/tests/ind.py INDTests.test_IND_StopsAtBottomLineWhenBegunBelowScrollRegion
+size: 80x25
+input: \e[4;5r\e[6;1Hx\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD\eD
+cell 0,5: char=x

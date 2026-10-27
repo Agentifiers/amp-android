@@ -1,0 +1,99 @@
+name: EDTests.test_ED_0
+source: esctest2 esctest/tests/ed.py EDTests.test_ED_0
+size: 80x25
+input: \e[1;1Ha\e[3;1Hbcd\e[5;1He\e[3;2H\e[0J
+cell 0,0: char=a
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=b
+cell 1,2: char=
+cell 2,2: char=
+cell 0,3: char=
+cell 1,3: char=
+cell 2,3: char=
+cell 0,4: char=
+cell 1,4: char=
+cell 2,4: char=
+---
+name: EDTests.test_ED_1
+source: esctest2 esctest/tests/ed.py EDTests.test_ED_1
+size: 80x25
+input: \e[1;1Ha\e[3;1Hbcd\e[5;1He\e[3;2H\e[1J
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=d
+cell 0,3: char=
+cell 1,3: char=
+cell 2,3: char=
+cell 0,4: char=e
+cell 1,4: char=
+cell 2,4: char=
+---
+name: EDTests.test_ED_2
+source: esctest2 esctest/tests/ed.py EDTests.test_ED_2
+size: 80x25
+input: \e[1;1Ha\e[3;1Hbcd\e[5;1He\e[3;2H\e[2J
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=
+cell 0,3: char=
+cell 1,3: char=
+cell 2,3: char=
+cell 0,4: char=
+cell 1,4: char=
+cell 2,4: char=
+---
+name: EDTests.test_ED_3
+source: esctest2 esctest/tests/ed.py EDTests.test_ED_3
+size: 80x25
+input: \e[1;1Ha\e[3;1Hbcd\e[5;1He\e[3;2H\e[3J
+cell 0,0: char=a
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=b
+cell 1,2: char=c
+cell 2,2: char=d
+cell 0,3: char=
+cell 1,3: char=
+cell 2,3: char=
+cell 0,4: char=e
+cell 1,4: char=
+cell 2,4: char=
+---
+name: EDTests.test_ED_Default
+source: esctest2 esctest/tests/ed.py EDTests.test_ED_Default
+size: 80x25
+input: \e[1;1Ha\e[3;1Hbcd\e[5;1He\e[3;2H\e[J
+cell 0,0: char=a
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=b
+cell 1,2: char=
+cell 2,2: char=
+cell 0,3: char=
+cell 1,3: char=
+cell 2,3: char=
+cell 0,4: char=
+cell 1,4: char=
+cell 2,4: char=

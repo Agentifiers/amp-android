@@ -1,0 +1,30 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"${AMP_SCENARIO:-fleet-basic}"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=pane-sidebar 30000
+trigger-app-event set-arrangement {"name":"Review"}
+wait id=divider-0 10000
+is text id=divider-0 "Divider at 335dp"
+# Pan coordinates are device pixels at 320dpi (2 px per dp); the divider sits at 335dp = 670px. Its grip is in the
+# window bar, whose middle is at y 96px, below the status bar.
+# Released at 600dp, between the creases: snaps to the nearer one, 717dp.
+gesture pan 670 96 530 0 600
+wait 1500
+is text id=divider-0 "Divider at 717dp"
+screenshot ${AD_ARTIFACTS:-build/flows}/layout-divider-snap-717.png
+# Released at 300dp, left of the first crease: snaps back to 335dp.
+gesture pan 1434 96 -834 0 600
+wait 1500
+is text id=divider-0 "Divider at 335dp"
+# Triage's first divider has one crease between its neighbors, so a release at 600dp returns to 335dp.
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=divider-1 10000
+gesture pan 670 96 530 0 600
+wait 1500
+is text id=divider-0 "Divider at 335dp"
+is text id=divider-1 "Divider at 717dp"
+trigger-app-event geometry-override {}
+close

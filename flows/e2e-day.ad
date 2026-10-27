@@ -1,0 +1,100 @@
+context platform=android timeout=300000
+# A day on one e2e-day sign-in: tool cards, a gate, a hunk comment, the terminal, an attachment, a push opened from
+# the shade, an archive, an arrangement switch, and sign-out. Events only pick the server, sign in, and inject the push.
+open com.agentifiers.amp --relaunch
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"e2e-day"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+wait text "Arrangement: Triage" 10000
+click id=thread-row-T-0a0b0c0d-0000-7000-8000-000000000002
+wait id=step-TU-ToolsGallery0000000001 30000
+wait text "12 finished · 1 failed"
+press id=step-TU-ToolsGallery0000000001
+wait id=tool-card-TU-ToolsGallery0000000013-toggle 10000
+wait text "error: Unknown tool: read_thread_changes. Neither the server nor the connected executor provides a tool with this name."
+wait text "1 of 3 done"
+click id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079
+wait id=agent-status 30000
+wait 3000
+fill id=composer-input "clean up the build"
+click id=composer-send
+wait id=approval-allow 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/e2e-day-1-gate.png
+click id=approval-allow
+wait id=text-M-fakeApprovalReply00001-0 30000
+wait text "Bash: Allowed by you" 10000
+click id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721
+click id=tab-changes
+wait id=pane-changes 30000
+wait id=changes-toolbar 30000
+wait id=diff-file-calc.py 10000
+# The Triage machine pane's file list shows about three rows; the fling brings calc.py clear of the summary.
+swipe 1790 950 1790 750
+click id=diff-file-calc.py
+wait id=diff-hunk-calc.py-0 10000
+click id=diff-hunk-comment-calc.py-0
+wait id=diff-comment-input 10000
+fill id=diff-comment-input "Keep add as an alias."
+click id=diff-comment-add
+wait id=diff-comments-send 10000
+click id=diff-comments-send
+wait id=transcript-activity 30000
+wait text "calc.py:1-2 - Keep add as an alias." 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/e2e-day-2-hunk-comment.png
+click id=tab-terminal
+wait id=terminal-screen 30000
+wait "id=terminal-status text=ready" 30000
+# The banner's prompt line also starts with the working directory, so only a row that is exactly the path is pwd's output.
+is absent text="/private/tmp/amp-scratch"
+press id=terminal-input
+type "pwd"
+keyboard enter
+wait text="/private/tmp/amp-scratch" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/e2e-day-3-terminal-pwd.png
+click id=thread-row-T-e2ed0000-0000-7000-8000-000000000012
+wait id=composer-attach 30000
+click id=composer-attach
+click id=attach-photos
+# The Photo Picker is system UI with no test tags, so these two steps select by its own labels.
+wait text "Photo taken on" 30000
+find "Photo taken on" click --first
+wait label="Done" 30000
+click label="Done"
+wait id=attachment-0-remove 30000
+fill id=composer-input "What single color fills the attached image?"
+click id=composer-send
+wait id=text-M-034kiPr07BmkiGcd3C8Pek-0 30000
+wait text "blue" 30000
+is absent id=text-M-fakeApprovalReply00001-0
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Removed the build directory.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-e2edayflow00001\"}"
+wait 2000
+swipe 1080 2 1080 1200
+wait text "Removed the build directory." 15000
+press text="Removed the build directory."
+wait id=text-M-fakeApprovalReply00001-0 30000
+wait text "Bash: Allowed by you" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/e2e-day-4-opened-from-notification.png
+click id=thread-row-T-0a0b0c0d-0000-7000-8000-000000000002-more
+click id=thread-row-T-0a0b0c0d-0000-7000-8000-000000000002-archive
+wait id=sidebar-snackbar-undo 5000
+wait absent id=thread-row-T-0a0b0c0d-0000-7000-8000-000000000002 10000
+press id=window-arrangement
+wait id=arrangement-review 5000
+press id=arrangement-review
+wait id=sidebar-rail 5000
+wait text "Arrangement: Review" 5000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-page-accounts 10000
+wait text "fake-amp@example.com" 10000
+# One account, so the only account-menu-<id> and account-sign-out-<id> are this one's; .ad has no --first for find actions.
+find id account-menu- click
+wait 1000
+find id account-sign-out- click
+wait id=account-sign-out-confirm 10000
+click id=account-sign-out-confirm
+wait id=signin-start 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/e2e-day-5-signed-out.png
+close

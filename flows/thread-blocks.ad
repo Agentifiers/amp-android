@@ -1,0 +1,17 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-blocks"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000003"}
+wait id=transcript-recap 30000
+wait text "Goal: rename add. Latest outcome: renamed and verified."
+wait id=transcript-compaction 10000
+# On this screen agent-device's scroll reports the end of content without a gesture (it sees no vertical scroll
+# container), so swipe inside the Triage transcript (x 694-1410, y 240-1320) up to the thread's first message.
+swipe 1050 500 1050 1200 --count 3 --pause-ms 300
+wait text "Thinking (redacted)"
+wait text "Plan"
+wait id=image-M-Blocks0000000000000001-0 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-blocks.png
+close

@@ -1,0 +1,21 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"approvals"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=agent-status 30000
+wait 3000
+fill id=composer-input "clean up the build"
+click id=composer-send
+wait id=approval-allow 30000
+wait 1500
+screenshot ${UX_OUT}/gate-approval.png
+click id=approval-allow
+wait text "Bash: Allowed by you" 30000
+wait 1500
+screenshot ${UX_OUT}/gate-approval-settled.png
+trigger-app-event geometry-override {}
+close

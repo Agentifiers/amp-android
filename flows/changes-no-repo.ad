@@ -1,0 +1,17 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-no-repo"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","pane":"changes"}
+wait id=pane-changes 30000
+wait id=changes-no-repository 30000
+find text "No git repository" exists
+is absent id=changes-error
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-no-repo.png
+click id=changes-refresh
+wait id=changes-no-repository 30000
+is absent id=changes-error
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","pane":"files"}
+wait id=file-node-calc.py 30000
+close

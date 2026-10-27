@@ -1,0 +1,6 @@
+name: CUUTests.test_CUU_DefaultParam
+source: esctest2 esctest/tests/cuu.py CUUTests.test_CUU_DefaultParam
+size: 80x25
+input: \e[3;5H\e[A\e[6n
+cursor: 4,1
+reply: \e[2;5R

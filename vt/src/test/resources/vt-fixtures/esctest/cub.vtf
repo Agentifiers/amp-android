@@ -1,0 +1,6 @@
+name: CUBTests.test_CUB_DefaultParam
+source: esctest2 esctest/tests/cub.py CUBTests.test_CUB_DefaultParam
+size: 80x25
+input: \e[3;5H\e[D\e[6n
+cursor: 3,2
+reply: \e[3;4R

@@ -1,0 +1,71 @@
+name: show_test_pattern: 8x8 matrix of foreground/background colors
+source: vttest color.c:213-261 show_test_pattern (0229d7171a85)
+size: 80x24
+input: \e[0;40;37;39;49m\e[0m\e[2J\e[1;1HThere are 64 color combinations\e[2;1H8x8 matrix of foreground/background colors, bright *off*\e[3;9Hblack\e[3;17Hred\e[3;25Hgreen\e[3;33Hyellow\e[3;41Hblue\e[3;49Hmagenta\e[3;57Hcyan\e[3;65Hwhite\e[4;1Hblack\e[5;1Hred\e[6;1Hgreen\e[7;1Hyellow\e[8;1Hblue\e[9;1Hmagenta\e[10;1Hcyan\e[11;1Hwhite\e[30;40m\e[4;9HHello\e[0;40;37;39;49m\e[0m\e[31;40m\e[4;17HHello\e[0;40;37;39;49m\e[0m\e[32;40m\e[4;25HHello\e[0;40;37;39;49m\e[0m\e[33;40m\e[4;33HHello\e[0;40;37;39;49m\e[0m\e[34;40m\e[4;41HHello\e[0;40;37;39;49m\e[0m\e[35;40m\e[4;49HHello\e[0;40;37;39;49m\e[0m\e[36;40m\e[4;57HHello\e[0;40;37;39;49m\e[0m\e[37;40m\e[4;65HHello\e[0;40;37;39;49m\e[0m\e[30;41m\e[5;9HHello\e[0;40;37;39;49m\e[0m\e[31;41m\e[5;17HHello\e[0;40;37;39;49m\e[0m\e[32;41m\e[5;25HHello\e[0;40;37;39;49m\e[0m\e[33;41m\e[5;33HHello\e[0;40;37;39;49m\e[0m\e[34;41m\e[5;41HHello\e[0;40;37;39;49m\e[0m\e[35;41m\e[5;49HHello\e[0;40;37;39;49m\e[0m\e[36;41m\e[5;57HHello\e[0;40;37;39;49m\e[0m\e[37;41m\e[5;65HHello\e[0;40;37;39;49m\e[0m\e[30;42m\e[6;9HHello\e[0;40;37;39;49m\e[0m\e[31;42m\e[6;17HHello\e[0;40;37;39;49m\e[0m\e[32;42m\e[6;25HHello\e[0;40;37;39;49m\e[0m\e[33;42m\e[6;33HHello\e[0;40;37;39;49m\e[0m\e[34;42m\e[6;41HHello\e[0;40;37;39;49m\e[0m\e[35;42m\e[6;49HHello\e[0;40;37;39;49m\e[0m\e[36;42m\e[6;57HHello\e[0;40;37;39;49m\e[0m\e[37;42m\e[6;65HHello\e[0;40;37;39;49m\e[0m\e[30;43m\e[7;9HHello\e[0;40;37;39;49m\e[0m\e[31;43m\e[7;17HHello\e[0;40;37;39;49m\e[0m\e[32;43m\e[7;25HHello\e[0;40;37;39;49m\e[0m\e[33;43m\e[7;33HHello\e[0;40;37;39;49m\e[0m\e[34;43m\e[7;41HHello\e[0;40;37;39;49m\e[0m\e[35;43m\e[7;49HHello\e[0;40;37;39;49m\e[0m\e[36;43m\e[7;57HHello\e[0;40;37;39;49m\e[0m\e[37;43m\e[7;65HHello\e[0;40;37;39;49m\e[0m\e[30;44m\e[8;9HHello\e[0;40;37;39;49m\e[0m\e[31;44m\e[8;17HHello\e[0;40;37;39;49m\e[0m\e[32;44m\e[8;25HHello\e[0;40;37;39;49m\e[0m\e[33;44m\e[8;33HHello\e[0;40;37;39;49m\e[0m\e[34;44m\e[8;41HHello\e[0;40;37;39;49m\e[0m\e[35;44m\e[8;49HHello\e[0;40;37;39;49m\e[0m\e[36;44m\e[8;57HHello\e[0;40;37;39;49m\e[0m\e[37;44m\e[8;65HHello\e[0;40;37;39;49m\e[0m\e[30;45m\e[9;9HHello\e[0;40;37;39;49m\e[0m\e[31;45m\e[9;17HHello\e[0;40;37;39;49m\e[0m\e[32;45m\e[9;25HHello\e[0;40;37;39;49m\e[0m\e[33;45m\e[9;33HHello\e[0;40;37;39;49m\e[0m\e[34;45m\e[9;41HHello\e[0;40;37;39;49m\e[0m\e[35;45m\e[9;49HHello\e[0;40;37;39;49m\e[0m\e[36;45m\e[9;57HHello\e[0;40;37;39;49m\e[0m\e[37;45m\e[9;65HHello\e[0;40;37;39;49m\e[0m\e[30;46m\e[10;9HHello\e[0;40;37;39;49m\e[0m\e[31;46m\e[10;17HHello\e[0;40;37;39;49m\e[0m\e[32;46m\e[10;25HHello\e[0;40;37;39;49m\e[0m\e[33;46m\e[10;33HHello\e[0;40;37;39;49m\e[0m\e[34;46m\e[10;41HHello\e[0;40;37;39;49m\e[0m\e[35;46m\e[10;49HHello\e[0;40;37;39;49m\e[0m\e[36;46m\e[10;57HHello\e[0;40;37;39;49m\e[0m\e[37;46m\e[10;65HHello\e[0;40;37;39;49m\e[0m\e[30;47m\e[11;9HHello\e[0;40;37;39;49m\e[0m\e[31;47m\e[11;17HHello\e[0;40;37;39;49m\e[0m\e[32;47m\e[11;25HHello\e[0;40;37;39;49m\e[0m\e[33;47m\e[11;33HHello\e[0;40;37;39;49m\e[0m\e[34;47m\e[11;41HHello\e[0;40;37;39;49m\e[0m\e[35;47m\e[11;49HHello\e[0;40;37;39;49m\e[0m\e[36;47m\e[11;57HHello\e[0;40;37;39;49m\e[0m\e[37;47m\e[11;65HHello\e[0;40;37;39;49m\e[0m\e[13;1H8x8 matrix of foreground/background colors, bright *\e[1mon\e[0m*\e[14;9Hblack\e[14;17Hred\e[14;25Hgreen\e[14;33Hyellow\e[14;41Hblue\e[14;49Hmagenta\e[14;57Hcyan\e[14;65Hwhite\e[15;1Hblack\e[16;1Hred\e[17;1Hgreen\e[18;1Hyellow\e[19;1Hblue\e[20;1Hmagenta\e[21;1Hcyan\e[22;1Hwhite\e[1m\e[30;40m\e[15;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;40m\e[15;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;40m\e[15;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;40m\e[15;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;40m\e[15;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;40m\e[15;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;40m\e[15;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;40m\e[15;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;41m\e[16;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;41m\e[16;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;41m\e[16;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;41m\e[16;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;41m\e[16;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;41m\e[16;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;41m\e[16;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;41m\e[16;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;42m\e[17;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;42m\e[17;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;42m\e[17;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;42m\e[17;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;42m\e[17;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;42m\e[17;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;42m\e[17;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;42m\e[17;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;43m\e[18;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;43m\e[18;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;43m\e[18;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;43m\e[18;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;43m\e[18;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;43m\e[18;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;43m\e[18;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;43m\e[18;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;44m\e[19;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;44m\e[19;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;44m\e[19;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;44m\e[19;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;44m\e[19;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;44m\e[19;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;44m\e[19;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;44m\e[19;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;45m\e[20;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;45m\e[20;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;45m\e[20;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;45m\e[20;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;45m\e[20;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;45m\e[20;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;45m\e[20;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;45m\e[20;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;46m\e[21;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;46m\e[21;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;46m\e[21;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;46m\e[21;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;46m\e[21;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;46m\e[21;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;46m\e[21;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;46m\e[21;65HHello\e[0;40;37;39;49m\e[0m\e[1m\e[30;47m\e[22;9HHello\e[0;40;37;39;49m\e[0m\e[1m\e[31;47m\e[22;17HHello\e[0;40;37;39;49m\e[0m\e[1m\e[32;47m\e[22;25HHello\e[0;40;37;39;49m\e[0m\e[1m\e[33;47m\e[22;33HHello\e[0;40;37;39;49m\e[0m\e[1m\e[34;47m\e[22;41HHello\e[0;40;37;39;49m\e[0m\e[1m\e[35;47m\e[22;49HHello\e[0;40;37;39;49m\e[0m\e[1m\e[36;47m\e[22;57HHello\e[0;40;37;39;49m\e[0m\e[1m\e[37;47m\e[22;65HHello\e[0;40;37;39;49m\e[0m\e[0;40;37;39;49m\e[0m\e[23;1H
+row 0: |There are 64 color combinations|
+row 1: |8x8 matrix of foreground/background colors, bright *off*|
+row 2: |        black   red     green   yellow  blue    magenta cyan    white|
+row 3: |black   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 4: |red     Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 5: |green   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 6: |yellow  Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 7: |blue    Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 8: |magenta Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 9: |cyan    Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 10: |white   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 11: ||
+row 12: |8x8 matrix of foreground/background colors, bright *on*|
+row 13: |        black   red     green   yellow  blue    magenta cyan    white|
+row 14: |black   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 15: |red     Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 16: |green   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 17: |yellow  Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 18: |blue    Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 19: |magenta Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 20: |cyan    Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 21: |white   Hello   Hello   Hello   Hello   Hello   Hello   Hello   Hello|
+row 22: ||
+row 23: ||
+cell 8,3: char=H fg=0 bg=0
+cell 12,3: char=o fg=0 bg=0
+cell 64,3: char=H fg=7 bg=0
+cell 68,3: char=o fg=7 bg=0
+cell 16,4: char=H fg=1 bg=1
+cell 20,4: char=o fg=1 bg=1
+cell 24,5: char=H fg=2 bg=2
+cell 28,5: char=o fg=2 bg=2
+cell 32,6: char=H fg=3 bg=3
+cell 36,6: char=o fg=3 bg=3
+cell 40,7: char=H fg=4 bg=4
+cell 44,7: char=o fg=4 bg=4
+cell 48,8: char=H fg=5 bg=5
+cell 52,8: char=o fg=5 bg=5
+cell 56,9: char=H fg=6 bg=6
+cell 60,9: char=o fg=6 bg=6
+cell 8,10: char=H fg=0 bg=7
+cell 12,10: char=o fg=0 bg=7
+cell 64,10: char=H fg=7 bg=7
+cell 68,10: char=o fg=7 bg=7
+cell 8,14: char=H fg=0 bg=0 bold
+cell 12,14: char=o fg=0 bg=0 bold
+cell 64,14: char=H fg=7 bg=0 bold
+cell 68,14: char=o fg=7 bg=0 bold
+cell 16,15: char=H fg=1 bg=1 bold
+cell 20,15: char=o fg=1 bg=1 bold
+cell 24,16: char=H fg=2 bg=2 bold
+cell 28,16: char=o fg=2 bg=2 bold
+cell 32,17: char=H fg=3 bg=3 bold
+cell 36,17: char=o fg=3 bg=3 bold
+cell 40,18: char=H fg=4 bg=4 bold
+cell 44,18: char=o fg=4 bg=4 bold
+cell 48,19: char=H fg=5 bg=5 bold
+cell 52,19: char=o fg=5 bg=5 bold
+cell 56,20: char=H fg=6 bg=6 bold
+cell 60,20: char=o fg=6 bg=6 bold
+cell 8,21: char=H fg=0 bg=7 bold
+cell 12,21: char=o fg=0 bg=7 bold
+cell 64,21: char=H fg=7 bg=7 bold
+cell 68,21: char=o fg=7 bg=7 bold
+cell 52,12: char=o bold
+cell 0,3: char=b plain
+cursor: 0,22

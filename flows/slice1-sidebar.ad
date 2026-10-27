@@ -1,0 +1,12 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"${AMP_SCENARIO:-fleet-basic}"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+wait id=thread-list 30000
+# find does not wait, so the rows must be on screen first; the loading line leaves in the frame they arrive.
+wait absent id=sidebar-loading 30000
+# find with an id locator matches ids containing the query, so this needs at least one thread-row-<threadId>.
+find id thread-row- exists
+screenshot ${AD_ARTIFACTS:-build/flows}/slice1-sidebar.png
+close

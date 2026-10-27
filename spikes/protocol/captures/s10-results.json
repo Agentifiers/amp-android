@@ -1,0 +1,57 @@
+[
+  {
+    "op": "label android-spike (addThreadLabels -> getThreadLabels)",
+    "ok": true,
+    "evidence": "s10 line 6"
+  },
+  {
+    "op": "pin (updateThread pinned:true -> listThreads.pinned)",
+    "ok": true,
+    "evidence": "s10 lines 8,10"
+  },
+  {
+    "op": "unpin via userActor setThreadPinned (stateless action, write cap)",
+    "ok": true,
+    "evidence": "s10 lines 14,18,20 http 200"
+  },
+  {
+    "op": "rename (updateThread title -> listThreads.title)",
+    "ok": false,
+    "evidence": "s10 lines 22,42"
+  },
+  {
+    "op": "rename via WS client_set_thread_title",
+    "ok": true,
+    "evidence": "thread_title event line 114, listThreads line 133 title=\"android-spike runner 2026-10-23T04:38:05 (ws)\""
+  },
+  {
+    "op": "mark unread (WS client_mark_thread_unread -> getRecentThreads.hasUnreadMessages)",
+    "ok": true,
+    "evidence": "s10 line 139"
+  },
+  {
+    "op": "mark read (WS client_mark_message_read on last assistant msg)",
+    "ok": true,
+    "evidence": "s10 line 145 hasUnread=false"
+  },
+  {
+    "op": "snooze one_hour (updateThread snooze)",
+    "ok": true,
+    "evidence": "s10 line 148 echo=\"one_hour\" listThreads keys has snooze=false"
+  },
+  {
+    "op": "unsnooze (updateThread snooze off)",
+    "ok": true,
+    "evidence": "s10 line 152 echo=\"off\""
+  },
+  {
+    "op": "archive (archiveThread -> listThreads.archived)",
+    "ok": true,
+    "evidence": "s10 lines 154,156; default listThreads (no includeArchived) still returns it: true archived=true (line 158)"
+  },
+  {
+    "op": "archived thread refuses new thread-actor credentials",
+    "ok": true,
+    "evidence": "POST /api/thread-actors -> thread-actors 409 {\"error\":\"This thread is archived\",\"code\":\"THREAD_ARCHIVED\"}"
+  }
+]

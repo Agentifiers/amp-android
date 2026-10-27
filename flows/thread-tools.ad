@@ -1,0 +1,15 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-tools"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000002"}
+wait id=step-TU-ToolsGallery0000000001 30000
+wait text "12 finished · 1 failed"
+press id=step-TU-ToolsGallery0000000001
+wait id=tool-card-TU-ToolsGallery0000000013-toggle 10000
+wait text "error: Unknown tool: read_thread_changes. Neither the server nor the connected executor provides a tool with this name."
+wait text "1 of 3 done"
+press id=tool-card-TU-ToolsGallery0000000013-toggle
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-tools.png
+close

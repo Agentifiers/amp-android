@@ -1,0 +1,169 @@
+name: tst_movements: box of *'s and +'s around a frame of E's (80 columns)
+source: vttest main.c:341-432 tst_movements (0229d7171a85)
+size: 80x24
+input: \e#8\e[9;10H\e[1J\e[18;60H\e[0J\e[1K\e[9;71H\e[0K\e[10;10H\e[1K\e[10;71H\e[0K\e[11;10H\e[1K\e[11;71H\e[0K\e[12;10H\e[1K\e[12;71H\e[0K\e[13;10H\e[1K\e[13;71H\e[0K\e[14;10H\e[1K\e[14;71H\e[0K\e[15;10H\e[1K\e[15;71H\e[0K\e[16;10H\e[1K\e[16;71H\e[0K\e[17;30H\e[2K\e[24;1f*\e[1;1f*\e[24;2f*\e[1;2f*\e[24;3f*\e[1;3f*\e[24;4f*\e[1;4f*\e[24;5f*\e[1;5f*\e[24;6f*\e[1;6f*\e[24;7f*\e[1;7f*\e[24;8f*\e[1;8f*\e[24;9f*\e[1;9f*\e[24;10f*\e[1;10f*\e[24;11f*\e[1;11f*\e[24;12f*\e[1;12f*\e[24;13f*\e[1;13f*\e[24;14f*\e[1;14f*\e[24;15f*\e[1;15f*\e[24;16f*\e[1;16f*\e[24;17f*\e[1;17f*\e[24;18f*\e[1;18f*\e[24;19f*\e[1;19f*\e[24;20f*\e[1;20f*\e[24;21f*\e[1;21f*\e[24;22f*\e[1;22f*\e[24;23f*\e[1;23f*\e[24;24f*\e[1;24f*\e[24;25f*\e[1;25f*\e[24;26f*\e[1;26f*\e[24;27f*\e[1;27f*\e[24;28f*\e[1;28f*\e[24;29f*\e[1;29f*\e[24;30f*\e[1;30f*\e[24;31f*\e[1;31f*\e[24;32f*\e[1;32f*\e[24;33f*\e[1;33f*\e[24;34f*\e[1;34f*\e[24;35f*\e[1;35f*\e[24;36f*\e[1;36f*\e[24;37f*\e[1;37f*\e[24;38f*\e[1;38f*\e[24;39f*\e[1;39f*\e[24;40f*\e[1;40f*\e[24;41f*\e[1;41f*\e[24;42f*\e[1;42f*\e[24;43f*\e[1;43f*\e[24;44f*\e[1;44f*\e[24;45f*\e[1;45f*\e[24;46f*\e[1;46f*\e[24;47f*\e[1;47f*\e[24;48f*\e[1;48f*\e[24;49f*\e[1;49f*\e[24;50f*\e[1;50f*\e[24;51f*\e[1;51f*\e[24;52f*\e[1;52f*\e[24;53f*\e[1;53f*\e[24;54f*\e[1;54f*\e[24;55f*\e[1;55f*\e[24;56f*\e[1;56f*\e[24;57f*\e[1;57f*\e[24;58f*\e[1;58f*\e[24;59f*\e[1;59f*\e[24;60f*\e[1;60f*\e[24;61f*\e[1;61f*\e[24;62f*\e[1;62f*\e[24;63f*\e[1;63f*\e[24;64f*\e[1;64f*\e[24;65f*\e[1;65f*\e[24;66f*\e[1;66f*\e[24;67f*\e[1;67f*\e[24;68f*\e[1;68f*\e[24;69f*\e[1;69f*\e[24;70f*\e[1;70f*\e[24;71f*\e[1;71f*\e[24;72f*\e[1;72f*\e[24;73f*\e[1;73f*\e[24;74f*\e[1;74f*\e[24;75f*\e[1;75f*\e[24;76f*\e[1;76f*\e[24;77f*\e[1;77f*\e[24;78f*\e[1;78f*\e[24;79f*\e[1;79f*\e[24;80f*\e[1;80f*\e[2;2H+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD+\e[1D\eD\e[23;79H+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM+\e[1D\eM\e[2;1H*\e[2;80H*\e[10D\eE*\e[3;80H*\e[10D\eE*\e[4;80H*\e[10D\eE*\e[5;80H*\e[10D\eE*\e[6;80H*\e[10D\eE*\e[7;80H*\e[10D\eE*\e[8;80H*\e[10D\eE*\e[9;80H*\e[10D\eE*\e[10;80H*\e[10D\r\n
+input: *\e[11;80H*\e[10D\r\n
+input: *\e[12;80H*\e[10D\r\n
+input: *\e[13;80H*\e[10D\r\n
+input: *\e[14;80H*\e[10D\r\n
+input: *\e[15;80H*\e[10D\r\n
+input: *\e[16;80H*\e[10D\r\n
+input: *\e[17;80H*\e[10D\r\n
+input: *\e[18;80H*\e[10D\r\n
+input: *\e[19;80H*\e[10D\r\n
+input: *\e[20;80H*\e[10D\r\n
+input: *\e[21;80H*\e[10D\r\n
+input: *\e[22;80H*\e[10D\r\n
+input: *\e[23;80H*\e[10D\r\n
+input: \e[2;10H\e[42D\e[2C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C+\e[0C\e[2D\e[1C\e[23;70H\e[42C\e[2D+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b+\e[1D\e[1C\e[0D\b\e[1;1H\e[10A\e[1A\e[0A\e[24;80H\e[10B\e[1B\e[0B\e[10;12H                                                          \e[1B\e[58D                                                          \e[1B\e[58D                                                          \e[1B\e[58D                                                          \e[1B\e[58D                                                          \e[1B\e[58D                                                          \e[1B\e[58D\e[5A\e[1CThe screen should be cleared,  and have an unbroken bor-\e[12;13Hder of *'s and +'s around the edge,   and exactly in the\e[13;13Hmiddle  there should be a frame of E's around this  text\e[14;13Hwith  one (1) free position around it.   \x20
+row 0: |********************************************************************************|
+row 1: |*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*|
+row 2: |*+                                                                            +*|
+row 3: |*+                                                                            +*|
+row 4: |*+                                                                            +*|
+row 5: |*+                                                                            +*|
+row 6: |*+                                                                            +*|
+row 7: |*+                                                                            +*|
+row 8: |*+        EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE        +*|
+row 9: |*+        E                                                          E        +*|
+row 10: |*+        E The screen should be cleared,  and have an unbroken bor- E        +*|
+row 11: |*+        E der of *'s and +'s around the edge,   and exactly in the E        +*|
+row 12: |*+        E middle  there should be a frame of E's around this  text E        +*|
+row 13: |*+        E with  one (1) free position around it.                   E        +*|
+row 14: |*+        E                                                          E        +*|
+row 15: |*+        EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE        +*|
+row 16: |*+                                                                            +*|
+row 17: |*+                                                                            +*|
+row 18: |*+                                                                            +*|
+row 19: |*+                                                                            +*|
+row 20: |*+                                                                            +*|
+row 21: |*+                                                                            +*|
+row 22: |*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*|
+row 23: |********************************************************************************|
+cursor: 54,13
+---
+name: tst_movements: autowrap mixing control and print characters (80 columns)
+source: vttest main.c:456-495 tst_movements (0229d7171a85)
+size: 80x24
+input: Test of autowrap, mixing control and print characters.\r\n
+input: The left/right margins should have letters in order:\r\n
+input: \e[3;21r\e[?6h\e[19;1HA\e[19;80Ha\r\n
+input: \e[18;80HaB\e[19;80HB\b b\r\n
+input: \e[19;80HC\b\b\t\tc\e[19;2H\bC\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HD\e[18;80Hd\e[19;1HE\e[19;80He\r\n
+input: \e[18;80HeF\e[19;80HF\b f\r\n
+input: \e[19;80HG\b\b\t\tg\e[19;2H\bG\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HH\e[18;80Hh\e[19;1HI\e[19;80Hi\r\n
+input: \e[18;80HiJ\e[19;80HJ\b j\r\n
+input: \e[19;80HK\b\b\t\tk\e[19;2H\bK\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HL\e[18;80Hl\e[19;1HM\e[19;80Hm\r\n
+input: \e[18;80HmN\e[19;80HN\b n\r\n
+input: \e[19;80HO\b\b\t\to\e[19;2H\bO\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HP\e[18;80Hp\e[19;1HQ\e[19;80Hq\r\n
+input: \e[18;80HqR\e[19;80HR\b r\r\n
+input: \e[19;80HS\b\b\t\ts\e[19;2H\bS\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HT\e[18;80Ht\e[19;1HU\e[19;80Hu\r\n
+input: \e[18;80HuV\e[19;80HV\b v\r\n
+input: \e[19;80HW\b\b\t\tw\e[19;2H\bW\r\n
+input: \e[19;80H\r\n
+input: \e[18;1HX\e[18;80Hx\e[19;1HY\e[19;80Hy\r\n
+input: \e[18;80HyZ\e[19;80HZ\b z\r\n
+input: \e[?6l\e[r\e[22;1H
+row 0: |Test of autowrap, mixing control and print characters.|
+row 1: |The left/right margins should have letters in order:|
+row 2: |I                                                                              i|
+row 3: |J                                                                              j|
+row 4: |K                                                                              k|
+row 5: |L                                                                              l|
+row 6: |M                                                                              m|
+row 7: |N                                                                              n|
+row 8: |O                                                                              o|
+row 9: |P                                                                              p|
+row 10: |Q                                                                              q|
+row 11: |R                                                                              r|
+row 12: |S                                                                              s|
+row 13: |T                                                                              t|
+row 14: |U                                                                              u|
+row 15: |V                                                                              v|
+row 16: |W                                                                              w|
+row 17: |X                                                                              x|
+row 18: |Y                                                                              y|
+row 19: |Z                                                                              z|
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 0,21
+---
+name: tst_movements: cursor-control characters inside ESC sequences
+source: vttest main.c:503-529 tst_movements (0229d7171a85)
+size: 80x24
+input: \e[2J\e[1;1HTest of cursor-control characters inside ESC sequences.\r\n
+input: Below should be four identical lines:\r\n
+input: \r\n
+input: A B C D E F G H I\r\n
+input: A\e[2\bCB\e[2\bCC\e[2\bCD\e[2\bCE\e[2\bCF\e[2\bCG\e[2\bCH\e[2\bCI\e[2\bC\r\n
+input: A \e[\r2CB\e[\r4CC\e[\r6CD\e[\r8CE\e[\r10CF\e[\r12CG\e[\r14CH\e[\r16CI\r\n
+input: \e[20lA \e[1\x0bAB \e[1\x0bAC \e[1\x0bAD \e[1\x0bAE \e[1\x0bAF \e[1\x0bAG \e[1\x0bAH \e[1\x0bAI \e[1\x0bA\r\n
+input: \r\n
+row 0: |Test of cursor-control characters inside ESC sequences.|
+row 1: |Below should be four identical lines:|
+row 2: ||
+row 3: |A B C D E F G H I|
+row 4: |A B C D E F G H I|
+row 5: |A B C D E F G H I|
+row 6: |A B C D E F G H I|
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 0,8
+---
+name: tst_movements: leading zeros in ESC sequences
+source: vttest main.c:535-543 tst_movements (0229d7171a85)
+size: 80x24
+input: \e[2J\e[1;1HTest of leading zeros in ESC sequences.\r\n
+input: Two lines below you should see the sentence "This is a correct sentence".\e[00000000004;000000001HT\e[00000000004;000000002Hh\e[00000000004;000000003Hi\e[00000000004;000000004Hs\e[00000000004;000000005H \e[00000000004;000000006Hi\e[00000000004;000000007Hs\e[00000000004;000000008H \e[00000000004;000000009Ha\e[00000000004;0000000010H \e[00000000004;0000000011Hc\e[00000000004;0000000012Ho\e[00000000004;0000000013Hr\e[00000000004;0000000014Hr\e[00000000004;0000000015He\e[00000000004;0000000016Hc\e[00000000004;0000000017Ht\e[00000000004;0000000018H \e[00000000004;0000000019Hs\e[00000000004;0000000020He\e[00000000004;0000000021Hn\e[00000000004;0000000022Ht\e[00000000004;0000000023He\e[00000000004;0000000024Hn\e[00000000004;0000000025Hc\e[00000000004;0000000026He\e[20;1H
+row 0: |Test of leading zeros in ESC sequences.|
+row 1: |Two lines below you should see the sentence "This is a correct sentence".|
+row 2: ||
+row 3: |This is a correct sentence|
+row 4: ||
+row 5: ||
+row 6: ||
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 0,19

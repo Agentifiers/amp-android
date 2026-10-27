@@ -1,0 +1,21 @@
+context platform=android timeout=120000
+# Each account keeps its own layout in a window: a new account starts from the default, and switching back restores the old one.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+wait id=pane-sidebar 30000
+wait text "fake-1@example.com" 10000
+trigger-app-event set-arrangement {"name":"Review"}
+wait id=sidebar-rail 10000
+wait text "Arrangement: Review" 5000
+trigger-app-event sign-in-token {"token":"fake-user-2"}
+wait id=pane-sidebar 30000
+wait text "fake-2@example.com" 10000
+wait text "Arrangement: Triage" 5000
+click id=account-switcher
+wait text "fake-1@example.com" 10000
+click text="fake-1@example.com"
+wait id=sidebar-rail 15000
+wait text "Arrangement: Review" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-workspaces.png
+close

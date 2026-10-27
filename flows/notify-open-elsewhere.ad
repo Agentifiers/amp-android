@@ -1,0 +1,39 @@
+context platform=android timeout=120000
+# Amp sends no push for a thread while any client has it open (S23). With the app in front, its own user actor socket
+# posts the finished turn at once. With "Notify even when a thread is open elsewhere" off, nothing posts.
+open com.agentifiers.amp --relaunch
+settings clear-app-state com.agentifiers.amp
+home
+open com.agentifiers.amp --relaunch
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"push"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event fake-thread-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e163\",\"title\":\"Open in a browser\"}"
+trigger-app-event background-sync {}
+trigger-app-event fake-turn-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e163\",\"state\":\"working\",\"openElsewhere\":true}"
+trigger-app-event fake-turn-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e163\",\"text\":\"Finished in the browser.\"}"
+swipe 1080 2 1080 1200
+wait text "Ready for your next message" 15000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-open-elsewhere.png
+click text="Ready for your next message"
+wait id=thread-list 15000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-nav-notifications 10000
+click id=settings-nav-notifications
+wait id=settings-notifications-open-elsewhere 10000
+wait text "Notify even when a thread is open elsewhere" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-open-elsewhere-setting.png
+click id=settings-notifications-open-elsewhere
+trigger-app-event fake-thread-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e164\",\"title\":\"Still open in a browser\"}"
+trigger-app-event background-sync {}
+trigger-app-event fake-turn-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e164\",\"state\":\"working\",\"openElsewhere\":true}"
+trigger-app-event fake-turn-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e164\",\"text\":\"Finished with the setting off.\"}"
+wait 5000
+swipe 1080 2 1080 1200
+wait 1000
+is absent "text=\"Ready for your next message\""
+back
+close

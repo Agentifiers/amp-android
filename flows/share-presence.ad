@@ -1,0 +1,40 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"share-presence"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+# The 382dp Triage thread pane keeps Share and Multiplayer in its title bar beside the title's 160dp floor, so presence
+# is reached under "In the title bar" in More Actions (screens.md, "Title bar").
+wait id=thread-title 30000
+click id=thread-menu
+wait id=thread-menu-presence 30000
+click id=thread-menu-presence
+wait id=thread-presence-user_01JTEAMMATE00000000000000 5000
+back
+wait id=composer-typing 10000
+is text id=composer-typing "Ada Lovelace is typing"
+screenshot ${AD_ARTIFACTS:-build/flows}/share-presence.png
+fill id=thread-search "visibility:workspace"
+wait id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721 10000
+click id=thread-search-clear
+click id=thread-share
+wait id=share-sheet 10000
+click id=share-visibility-private
+screenshot ${AD_ARTIFACTS:-build/flows}/share-visibility-private.png
+back
+wait 3000
+click id=sidebar-refresh
+wait 3000
+fill id=thread-search "visibility:private"
+wait id=thread-row-T-01a16702-3202-73fb-8f52-e4498ccd3721 10000
+click id=thread-search-clear
+click id=thread-multiplayer
+wait id=multiplayer-enable 10000
+click id=multiplayer-enable
+wait 3000
+click id=thread-multiplayer
+wait id=multiplayer-time-left 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/share-multiplayer-on.png
+click id=multiplayer-end
+close

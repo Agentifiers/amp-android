@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:networkSecurityConfig="@xml/debug_network_security_config">
+        <activity
+            android:name=".debug.AppEventActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="amp-debug" android:host="event" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".debug.CatalogActivity"
+            android:exported="false"
+            android:label="Components" />
+    </application>
+</manifest>

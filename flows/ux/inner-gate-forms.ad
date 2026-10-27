@@ -1,0 +1,46 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"gate-plugins"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=agent-status 30000
+wait 3000
+trigger-app-event run-plugin-command {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","plugin":"linear","commandId":"mcp-question"}
+wait id=gate-field-title 30000
+wait 1500
+screenshot ${UX_OUT}/gate-elicitation.png
+scroll down 0.5 --until id=gate-submit
+click id=gate-submit
+wait 1500
+screenshot ${UX_OUT}/gate-elicitation-empty-submit.png
+# The dock holds at most half the Triage Thread pane (y 745-1380 here), and `scroll` swipes from the screen
+# centre, which is the transcript. Swipe inside the dock to bring the title field back. The keyboard halves the
+# pane and so the dock, so close it before reaching for the next field.
+swipe 1050 800 1050 1250 --count 2 --pause-ms 300
+wait id=gate-field-title 5000
+fill id=gate-field-title "Crash on launch"
+keyboard dismiss
+fill id=gate-field-points "3"
+keyboard dismiss
+scroll down 0.5 --until id=gate-field-team-option-1
+click id=gate-field-team-option-1
+scroll down 0.5 --until id=gate-submit
+click id=gate-submit
+wait id=gate-notice 30000
+trigger-app-event run-plugin-command {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","plugin":"deploy","commandId":"deploy-key"}
+wait id=gate-field-value 30000
+fill id=gate-field-value "fake-deploy-key-1234"
+wait 1500
+screenshot ${UX_OUT}/gate-secret.png
+scroll down 0.5 --until id=gate-submit
+click id=gate-submit
+wait text "deploy-key received 20 characters" 30000
+trigger-app-event run-plugin-command {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","plugin":"deploy","commandId":"deploy-wizard"}
+wait id=answer-on-web 30000
+wait 1500
+screenshot ${UX_OUT}/gate-unsupported.png
+trigger-app-event geometry-override {}
+close

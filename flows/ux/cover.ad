@@ -1,0 +1,29 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+wait 1500
+screenshot ${UX_OUT}/cover-threads.png
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+wait id=composer-input 30000
+wait 1500
+screenshot ${UX_OUT}/cover-thread.png
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=diff-file-calc.py 30000
+is selected id=nav-machine
+is absent id=tab-terminal
+wait 1500
+screenshot ${UX_OUT}/cover-changes.png
+click id=tab-files
+wait id=files-upload 10000
+is selected id=nav-machine
+wait 1500
+screenshot ${UX_OUT}/cover-files.png
+click id=nav-terminal
+wait id=tab-terminal 10000
+is selected id=tab-terminal
+is selected id=nav-terminal
+wait 1500
+screenshot ${UX_OUT}/cover-terminal.png
+close

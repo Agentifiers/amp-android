@@ -1,0 +1,14 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"live-turn"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+wait id=composer-input 30000
+fill id=composer-input "Rename add to add_numbers in calc.py and run it"
+press id=composer-send
+wait id=step-TU-034ki98eUguDMwxugsKU2a 60000
+wait text "3 finished" 60000
+wait text "it returned 5 as expected." 60000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-live-turn.png
+close

@@ -1,0 +1,22 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-follow"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000001"}
+wait id=step-TU-Long150000000000000021 30000
+wait 1500
+is absent id=transcript-jump-latest
+scroll up 0.5
+wait id=transcript-jump-latest 5000
+press id=transcript-jump-latest
+wait absent id=transcript-jump-latest 5000
+fill id=composer-input "Rename add to add_numbers in calc.py and run it"
+press id=composer-send
+wait id=step-TU-034ki98eUguDMwxugsKU2a 60000
+is absent id=transcript-jump-latest
+wait text "it returned 5 as expected." 60000
+wait 1500
+is absent id=transcript-jump-latest
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-jump-tap.png
+close

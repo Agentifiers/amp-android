@@ -1,0 +1,39 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"desktop"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"desktop"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=desktop-status 30000
+wait id=desktop-take-over 30000
+wait 1500
+screenshot ${UX_OUT}/desktop-tab.png
+click id=tab-space
+wait 2500
+screenshot ${UX_OUT}/space-tab.png
+trigger-app-event geometry-override {}
+trigger-app-event use-server {"scenario":"auth"}
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+wait id=account-switcher 30000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-nav-app 10000
+click id=settings-nav-app
+wait id=settings-page-app 10000
+click id=app-lock-toggle
+wait id=app-lock-after-five-minutes 10000
+screenshot ${UX_OUT}/settings-app.png
+trigger-app-event lock-now {}
+wait id=app-lock-unlock 10000
+wait 1000
+screenshot ${UX_OUT}/app-lock.png
+click id=app-lock-unlock
+wait 2000
+settings fingerprint match
+wait id=settings-page-app 15000
+click id=app-lock-toggle
+wait absent id=app-lock-after-five-minutes 10000
+close

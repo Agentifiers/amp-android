@@ -1,0 +1,27 @@
+name: DCHTests.test_DCH_DefaultParam
+source: esctest2 esctest/tests/dch.py DCHTests.test_DCH_DefaultParam
+size: 80x25
+input: abcd\e[1;2H\e[P
+cell 0,0: char=a
+cell 1,0: char=c
+cell 2,0: char=d
+cell 3,0: char=
+---
+name: DCHTests.test_DCH_ExplicitParam
+source: esctest2 esctest/tests/dch.py DCHTests.test_DCH_ExplicitParam
+size: 80x25
+input: abcd\e[1;2H\e[2P
+cell 0,0: char=a
+cell 1,0: char=d
+cell 2,0: char=
+cell 3,0: char=
+---
+name: DCHTests.test_DCH_WorksOutsideTopBottomMargin
+source: esctest2 esctest/tests/dch.py DCHTests.test_DCH_WorksOutsideTopBottomMargin
+size: 80x25
+input: abcde\e[2;3r\e[1;1H\e[99P\e[r
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 3,0: char=
+cell 4,0: char=

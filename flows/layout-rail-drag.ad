@@ -1,0 +1,16 @@
+context platform=android timeout=120000
+# A rail avatar is a drag source: long-press a thread and drop it on the thread column to open it there.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-basic"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+trigger-app-event set-arrangement {"name":"Review"}
+wait id=sidebar-rail 10000
+wait id=rail-thread-T-01a16738-2ec2-7354-98e9-688bc413f079 10000
+is text id=thread-title "Rename add to add_numbers"
+gesture drag id=rail-thread-T-01a16738-2ec2-7354-98e9-688bc413f079 id=column-thread 900 600 400
+wait 1500
+is text id=thread-title "Untitled"
+screenshot ${AD_ARTIFACTS:-build/flows}/layout-rail-drag.png
+close

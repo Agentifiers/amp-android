@@ -1,0 +1,24 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"approvals"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+wait id=agent-status 30000
+wait 3000
+fill id=composer-input "clean up the build"
+click id=composer-send
+wait id=approval-allow 30000
+# The open thread's approval puts its row in Needs you as "needs approval", with the command and Allow and Deny, while the agent's own state still says tool use.
+wait id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079-status-needs-approval 10000
+is text id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079-summary "Bash: rm -rf build"
+is visible id=needs-you-T-01a16738-2ec2-7354-98e9-688bc413f079-deny
+is visible id=needs-you-T-01a16738-2ec2-7354-98e9-688bc413f079-allow
+is absent id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079-status-working
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-needs-you-gates-1-approval.png
+click id=needs-you-T-01a16738-2ec2-7354-98e9-688bc413f079-allow
+wait id=text-M-fakeApprovalReply00001-0 30000
+wait absent id=thread-row-T-01a16738-2ec2-7354-98e9-688bc413f079-status-needs-approval 10000
+is absent id=needs-you-T-01a16738-2ec2-7354-98e9-688bc413f079-allow
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-needs-you-gates-2-allowed.png
+close

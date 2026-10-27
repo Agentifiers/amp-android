@@ -1,0 +1,19 @@
+context platform=android timeout=120000
+# A thread started on the web, which the app never opened, still notifies when its turn ends: background sync
+# subscribes it, and the fake hands its Web Push to the app as a relay or UnifiedPush message would.
+open com.agentifiers.amp --relaunch
+# Home collapses a notification shade an earlier failed flow left open; a relaunch alone stays under it.
+home
+open com.agentifiers.amp --relaunch
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"push"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event fake-thread-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e15e\",\"title\":\"Started on the web\"}"
+trigger-app-event background-sync {}
+trigger-app-event fake-turn-elsewhere "{\"threadId\":\"T-01a1a000-0e15-7e00-8000-00000000e15e\",\"text\":\"Finished outside the app.\"}"
+swipe 1080 2 1080 1200
+wait text "Finished outside the app." 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-outside-thread.png
+back
+close

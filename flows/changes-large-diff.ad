@@ -1,0 +1,31 @@
+context platform=android timeout=240000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-large"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=diff-file-src/Table.kt 30000
+click id=diff-file-src/Table.kt
+wait id=diff-hunk-src/Table.kt-0 30000
+wait id=diff-line-src/Table.kt-new-1 10000
+# agent-device cuts a snapshot past 5000 nodes from the end of document order. Review is the last button of the last
+# pane's action row that the 363dp pane shows whole; only Restack, Rebase, Sync, and the blocked-reasons line can follow
+# it. Finding it in each full snapshot proves the window stayed under the cap.
+snapshot --json --raw
+is exists id=changes-review
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-large-diff-top.png
+# Every swipe runs from y 1180 to 790, inside the Triage machine pane's diff viewport between its toolbar and the Ship
+# row. A swipe that short moves about 20 lines, and 3,000 lines take about 170.
+swipe 1780 1180 1780 790 --count 12 --pause-ms 120
+find id diff-line-src/Table.kt- exists
+snapshot --json --raw
+is exists id=changes-review
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-large-diff-middle.png
+swipe 1780 1180 1780 790 --count 120 --pause-ms 40
+swipe 1780 1180 1780 790 --count 120 --pause-ms 40
+wait id=diff-line-src/Table.kt-new-3000 30000
+snapshot --json --raw
+is exists id=changes-review
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-large-diff-bottom.png
+close

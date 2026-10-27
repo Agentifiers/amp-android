@@ -1,0 +1,13 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"orb-asleep"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=machine-orb-waking 30000
+find text "Waking orb" exists
+is absent id=machine-no-executor
+screenshot ${AD_ARTIFACTS:-build/flows}/orb-wake-waking.png
+wait id=diff-file-calc.py 30000
+is absent id=machine-orb-waking
+close

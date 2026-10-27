@@ -1,0 +1,13 @@
+name: VPATests.test_VPA_DoesNotChangeColumn
+source: esctest2 esctest/tests/vpa.py VPATests.test_VPA_DoesNotChangeColumn
+size: 80x25
+input: \e[5;6H\e[2d\e[6n
+cursor: 5,1
+reply: \e[2;6R
+---
+name: VPATests.test_VPA_StopsAtBottomEdge
+source: esctest2 esctest/tests/vpa.py VPATests.test_VPA_StopsAtBottomEdge
+size: 80x25
+input: \e[5;6H\e[35d\e[6n
+cursor: 5,24
+reply: \e[25;6R

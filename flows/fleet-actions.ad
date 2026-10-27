@@ -1,0 +1,96 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-organize"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+wait id=sidebar-section-needs-you 30000
+fill id=thread-search "Quick question"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000021 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000021-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000021-pin
+click id=thread-search-clear
+fill id=thread-search "Scratch notes"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000022 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000022-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000022-color
+# The row menu fades out while the dialog fades in. A tap resolved while both are in the tree can be refused as
+# covered, so each dialog tap waits for the menu item to leave first.
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000022-color 5000
+click id=organize-color-purple
+click id=thread-search-clear
+fill id=thread-search "Sidebar polish"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000008 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000008-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000008-labels
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000008-labels 5000
+fill id=organize-labels-field "release"
+click id=organize-labels-add
+wait id=organize-label-release-remove 5000
+click id=organize-labels-save
+click id=thread-search-clear
+fill id=thread-search "Keyboard shortcuts"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000012 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000012-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000012-rename
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000012-rename 5000
+fill id=organize-rename-field "Keyboard shortcuts v2"
+click id=organize-rename-save
+click id=thread-search-clear
+fill id=thread-search "Tablet layout"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000013 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000013-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000013-snooze
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000013-snooze 5000
+click id=organize-snooze-indefinitely
+click id=thread-search-clear
+fill id=thread-search "Notification channels"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000014 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000014-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000014-archive
+wait id=sidebar-snackbar-undo 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-actions-archive-undo.png
+click id=thread-search-clear
+fill id=thread-search "Widget refresh"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000015 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000015-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000015-delete
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000015-delete 5000
+click id=organize-delete-confirm
+click id=thread-search-clear
+fill id=thread-search "Dark theme"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000011 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000011-more
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000011-mark-unread
+click id=thread-search-clear
+# Writes settle (the rename holds a socket), then a reload reads the fake again; the device overlay is gone by then.
+wait 5000
+click id=sidebar-refresh
+wait 3000
+# Thread 11 is the fourth Needs you row. Compact rows (UX-05) keep it above the fold of the 335dp Triage sidebar, and
+# the search field, the list's first item, stays on screen for the fills below.
+wait id=needs-you-T-f1ee7000-0000-4000-8000-000000000011-read 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-actions-after-reload.png
+fill id=thread-search "pinned:true"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000021 10000
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000007 10000
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000006 10000
+click id=thread-search-clear
+fill id=thread-search "Scratch notes"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000022-stripe-purple 10000
+click id=thread-search-clear
+fill id=thread-search "label:release"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000008 10000
+click id=thread-search-clear
+fill id=thread-search "shortcuts v2"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000012 10000
+click id=thread-search-clear
+fill id=thread-search "snoozed:true"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000013 10000
+click id=thread-search-clear
+fill id=thread-search "archived:true"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000014 10000
+click id=thread-search-clear
+fill id=thread-search "Widget refresh"
+wait 2000
+is absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000015
+close

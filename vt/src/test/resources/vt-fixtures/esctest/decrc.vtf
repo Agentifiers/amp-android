@@ -1,0 +1,13 @@
+name: DECRCTests.test_SaveRestoreCursor_AltVsMain
+source: esctest2 esctest/tests/decrc.py DECRCTests.test_SaveRestoreCursor_AltVsMain
+size: 80x25
+input: \e[3;2H\e7\e[?47h\e[7;6H\e7\e[?47l\e8\e[6n\e[?47h\e8\e[6n
+cursor: 5,6
+reply: \e[3;2R\e[7;6R
+---
+name: DECRCTests.test_SaveRestoreCursor_Basic
+source: esctest2 esctest/tests/decrc.py DECRCTests.test_SaveRestoreCursor_Basic
+size: 80x25
+input: \e[6;5H\e7\e[1;1H\e8\e[6n
+cursor: 4,5
+reply: \e[6;5R

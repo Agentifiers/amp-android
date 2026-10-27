@@ -1,0 +1,38 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+# The auth scenario reads a pasted fake-user-<n> token as user n, so each one is a separate account.
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+trigger-app-event sign-in-token {"token":"fake-user-2"}
+trigger-app-event sign-in-token {"token":"fake-user-3"}
+trigger-app-event sign-in-token {"token":"fake-user-4"}
+wait id=account-switcher 30000
+wait text "fake-4@example.com" 10000
+click id=account-switcher
+wait id=account-add 10000
+click id=account-add
+wait id=signin-paste 10000
+click id=signin-paste
+wait id=signin-token-input 10000
+fill id=signin-token-input fake-user-5
+click id=signin-submit
+wait id=signin-confirm-account 20000
+wait text "fake-5@example.com" 5000
+click id=signin-confirm-account
+wait id=pane-sidebar 30000
+wait text "fake-5@example.com" 10000
+click id=account-switcher
+wait id=account-add 10000
+wait text "fake-1@example.com" 5000
+wait text "fake-2@example.com" 5000
+wait text "fake-3@example.com" 5000
+wait text "fake-4@example.com" 5000
+wait id=account-limit 5000
+wait text "You can keep up to 5 accounts signed in." 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-five-switcher.png
+# Row ids hash the fake's random port, so the row is picked by its email.
+find text "fake-2@example.com" click
+wait id=pane-sidebar 10000
+wait text "fake-2@example.com" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-five-switched.png
+close

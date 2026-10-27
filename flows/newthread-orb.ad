@@ -1,0 +1,31 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=sidebar-empty 30000
+is absent id=thread-no-selection
+click id=sidebar-empty-new-thread
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+wait id=orb-project-none 10000
+click id=orb-project-none
+click id=orb-size-a1-small
+scroll down 0.5 --until id=orb-use
+click id=orb-use
+wait absent id=executor-picker 10000
+click id=composer-mode
+wait id=mode-picker 10000
+click id=mode-option-low
+wait absent id=mode-picker 10000
+fill id=composer-input "Set up a clean orb and print uname -a"
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-orb-ready.png
+click id=composer-send
+wait id=pane-thread 30000
+wait id=thread-mode 30000
+wait text "Low" 10000
+wait text "Set up a clean orb and print uname -a" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-orb-landed.png
+close

@@ -1,0 +1,16 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"portal"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"portal"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=portal-item-8765 30000
+wait 1500
+screenshot ${UX_OUT}/portal-list.png
+click id=portal-item-8765
+wait text "Fake portal 8765" 30000
+wait 1500
+screenshot ${UX_OUT}/portal-open.png
+trigger-app-event geometry-override {}
+close

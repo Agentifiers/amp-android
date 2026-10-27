@@ -1,0 +1,34 @@
+name: CUPTests.test_CUP_ColumnOnly
+source: esctest2 esctest/tests/cup.py CUPTests.test_CUP_ColumnOnly
+size: 80x25
+input: \e[3;6H\e[6n\e[;2H\e[6n
+cursor: 1,0
+reply: \e[3;6R\e[1;2R
+---
+name: CUPTests.test_CUP_DefaultParams
+source: esctest2 esctest/tests/cup.py CUPTests.test_CUP_DefaultParams
+size: 80x25
+input: \e[3;6H\e[6n\e[H\e[6n
+cursor: 0,0
+reply: \e[3;6R\e[1;1R
+---
+name: CUPTests.test_CUP_OutOfBoundsParams
+source: esctest2 esctest/tests/cup.py CUPTests.test_CUP_OutOfBoundsParams
+size: 80x25
+input: \e[35;90H\e[6n
+cursor: 79,24
+reply: \e[25;80R
+---
+name: CUPTests.test_CUP_RowOnly
+source: esctest2 esctest/tests/cup.py CUPTests.test_CUP_RowOnly
+size: 80x25
+input: \e[3;6H\e[6n\e[2H\e[6n
+cursor: 0,1
+reply: \e[3;6R\e[2;1R
+---
+name: CUPTests.test_CUP_ZeroIsTreatedAsOne
+source: esctest2 esctest/tests/cup.py CUPTests.test_CUP_ZeroIsTreatedAsOne
+size: 80x25
+input: \e[3;6H\e[0;0H\e[6n
+cursor: 0,0
+reply: \e[1;1R

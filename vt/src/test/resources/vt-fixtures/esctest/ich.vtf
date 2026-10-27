@@ -1,0 +1,46 @@
+name: ICHTests.test_ICH_DefaultParam
+source: esctest2 esctest/tests/ich.py ICHTests.test_ICH_DefaultParam
+size: 80x25
+input: \e[1;1Habcdefg\e[1;2H\e[@
+cell 0,0: char=a
+cell 1,0: char=
+cell 2,0: char=b
+cell 3,0: char=c
+cell 4,0: char=d
+cell 5,0: char=e
+cell 6,0: char=f
+cell 7,0: char=g
+---
+name: ICHTests.test_ICH_ExplicitParam
+source: esctest2 esctest/tests/ich.py ICHTests.test_ICH_ExplicitParam
+size: 80x25
+input: \e[1;1Habcdefg\e[1;2H\e[2@
+cell 0,0: char=a
+cell 1,0: char=
+cell 2,0: char=
+cell 3,0: char=b
+cell 4,0: char=c
+cell 5,0: char=d
+cell 6,0: char=e
+cell 7,0: char=f
+cell 8,0: char=g
+---
+name: ICHTests.test_ICH_ScrollEntirelyOffRightEdge
+source: esctest2 esctest/tests/ich.py ICHTests.test_ICH_ScrollEntirelyOffRightEdge
+size: 80x25
+input: \e[1;1Hxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\e[1;1H\e[80@
+row 0: ||
+cell 0,1: char=
+---
+name: ICHTests.test_ICH_ScrollOffRightEdge
+source: esctest2 esctest/tests/ich.py ICHTests.test_ICH_ScrollOffRightEdge
+size: 80x25
+input: \e[1;74Habcdefg\e[1;75H\e[@
+cell 73,0: char=a
+cell 74,0: char=
+cell 75,0: char=b
+cell 76,0: char=c
+cell 77,0: char=d
+cell 78,0: char=e
+cell 79,0: char=f
+cell 0,1: char=

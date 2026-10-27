@@ -1,0 +1,27 @@
+context platform=android timeout=240000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"outbox"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event seed-outbox {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","delivery":"replayable","commands":[{"type":"Send","messageId":"M-seedReplayable000000001","mode":"Auto","text":"seeded-while-offline","attachments":[]}]}
+trigger-app-event seed-outbox {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","delivery":"guarded","commands":[{"type":"SteerQueued","queued":"M-goneFromTheQueue0000001"}]}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+wait text "seeded-while-offline" 30000
+wait text "Steer now was not sent: the queued message is gone." 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/seed-replayable-and-guarded.png
+# The seeded send plays a turn. When it ends the composer loses its Interrupt row and the notice moves down by that
+# row, so a Discard tap aimed during the turn can land on the field instead. Discard once the turn is over.
+wait id=composer-send 60000
+click id=composer-notice-discard
+wait absent id=composer-notice 10000
+trigger-app-event seed-outbox {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","delivery":"at-most-once","commands":[{"type":"RestartOrbProcesses"}]}
+wait text "not-found: No method restartOrbProcesses" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/seed-at-most-once-sent.png
+click id=composer-notice-discard
+wait absent id=composer-notice 10000
+trigger-app-event seed-outbox {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","delivery":"at-most-once","inFlight":true,"commands":[{"type":"Interrupt"}]}
+wait text "Interrupt sent, but the connection dropped before Amp answered." 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/seed-at-most-once-unknown.png
+click id=composer-notice-discard
+wait absent id=composer-notice 10000
+close

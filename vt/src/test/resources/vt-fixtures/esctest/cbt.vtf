@@ -1,0 +1,6 @@
+name: CBTTests.test_CBT_StopsAtLeftEdge
+source: esctest2 esctest/tests/cbt.py CBTTests.test_CBT_StopsAtLeftEdge
+size: 80x25
+input: \e[2;25H\e[5Z\e[6n
+cursor: 0,1
+reply: \e[2;1R

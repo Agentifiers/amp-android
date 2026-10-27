@@ -1,0 +1,195 @@
+name: tst_screen: three identical lines of *'s (wrap around)
+source: vttest main.c:621-634 tst_screen (0229d7171a85)
+size: 80x24
+input: \e[1;1H\e[?7h****************************************************************************************************************************************************************\e[?7l\e[3;1H****************************************************************************************************************************************************************\e[?7h\e[5;1HThis should be three identical lines of *'s completely filling\r\n
+input: the top of the screen without any empty lines between.\r\n
+input: (Test of WRAP AROUND mode setting.)\r\n
+row 0: |********************************************************************************|
+row 1: |********************************************************************************|
+row 2: |********************************************************************************|
+row 3: ||
+row 4: |This should be three identical lines of *'s completely filling|
+row 5: |the top of the screen without any empty lines between.|
+row 6: |(Test of WRAP AROUND mode setting.)|
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 0,7
+wrapped 0: true
+wrapped 1: false
+wrapped 2: false
+---
+name: tst_screen: TAB setting/resetting, two identical lines
+source: vttest main.c:621-660 tst_screen (0229d7171a85)
+size: 80x24
+input: \e[1;1H\e[?7h****************************************************************************************************************************************************************\e[?7l\e[3;1H****************************************************************************************************************************************************************\e[?7h\e[5;1HThis should be three identical lines of *'s completely filling\r\n
+input: the top of the screen without any empty lines between.\r\n
+input: (Test of WRAP AROUND mode setting.)\r\n
+input: Push <RETURN>\r\n
+input: \e[2J\e[3g\e[1;1H\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[3C\eH\e[1;4H\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[0g\e[6C\e[1;7H\e[1g\e[2g\e[1;1H\t*\t*\t*\t*\t*\t*\t*\t*\t*\t*\t*\t*\t*\e[2;2H     *     *     *     *     *     *     *     *     *     *     *     *     *\e[4;1HTest of TAB setting/resetting. These two lines\r\n
+input: should look the same.\x20
+row 0: |      *     *     *     *     *     *     *     *     *     *     *     *     *|
+row 1: |      *     *     *     *     *     *     *     *     *     *     *     *     *|
+row 2: ||
+row 3: |Test of TAB setting/resetting. These two lines|
+row 4: |should look the same.|
+row 5: ||
+row 6: ||
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 22,4
+---
+name: tst_screen: origin mode with a two-line region at the bottom
+source: vttest main.c:556,696-703 tst_screen (0229d7171a85)
+size: 80x24
+input: \e[?6h\e[2J\e[23;24r\r\n
+input: Origin mode test. This line should be at the bottom of the screen.\e[1;1HThis line should be the one above the bottom of the screen.\x20
+row 0: ||
+row 1: ||
+row 2: ||
+row 3: ||
+row 4: ||
+row 5: ||
+row 6: ||
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: |This line should be the one above the bottom of the screen.|
+row 23: |Origin mode test. This line should be at the bottom of the screen.|
+cursor: 60,22
+---
+name: tst_screen: absolute origin mode reaches the whole screen
+source: vttest main.c:556,696-711 tst_screen (0229d7171a85)
+size: 80x24
+input: \e[?6h\e[2J\e[23;24r\r\n
+input: Origin mode test. This line should be at the bottom of the screen.\e[1;1HThis line should be the one above the bottom of the screen. Push <RETURN>\r\n
+input: \e[2J\e[?6l\e[24;1HOrigin mode test. This line should be at the bottom of the screen.\e[1;1HThis line should be at the top of the screen.\x20
+row 0: |This line should be at the top of the screen.|
+row 1: ||
+row 2: ||
+row 3: ||
+row 4: ||
+row 5: ||
+row 6: ||
+row 7: ||
+row 8: ||
+row 9: ||
+row 10: ||
+row 11: ||
+row 12: ||
+row 13: ||
+row 14: ||
+row 15: ||
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: |Origin mode test. This line should be at the bottom of the screen.|
+cursor: 46,0
+---
+name: tst_screen: graphic rendition test pattern
+source: vttest main.c:714-740 tst_screen (0229d7171a85)
+size: 80x24
+input: \e[2J\e[1;20HGraphic rendition test pattern:\e[4;1H\e[0mvanilla\e[4;40H\e[0;1mbold\e[6;6H\e[;4munderline\e[6;45H\e[;1m\e[4mbold underline\e[8;1H\e[0;5mblink\e[8;40H\e[0;5;1mbold blink\e[10;6H\e[0;4;5munderline blink\e[10;45H\e[0;1;4;5mbold underline blink\e[12;1H\e[1;4;5;0;7mnegative\e[12;40H\e[0;1;7mbold negative\e[14;6H\e[0;4;7munderline negative\e[14;45H\e[0;1;4;7mbold underline negative\e[16;1H\e[1;4;;5;7mblink negative\e[16;40H\e[0;1;5;7mbold blink negative\e[18;6H\e[0;4;5;7munderline blink negative\e[18;45H\e[0;1;4;5;7mbold underline blink negative\e[m\e[?5l\e[23;1H\e[0KDark background.\x20
+row 0: |                   Graphic rendition test pattern:|
+row 1: ||
+row 2: ||
+row 3: |vanilla                                bold|
+row 4: ||
+row 5: |     underline                              bold underline|
+row 6: ||
+row 7: |blink                                  bold blink|
+row 8: ||
+row 9: |     underline blink                        bold underline blink|
+row 10: ||
+row 11: |negative                               bold negative|
+row 12: ||
+row 13: |     underline negative                     bold underline negative|
+row 14: ||
+row 15: |blink negative                         bold blink negative|
+row 16: ||
+row 17: |     underline blink negative               bold underline blink negative|
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: |Dark background.|
+row 23: ||
+cell 0,3: char=v plain
+cell 6,3: char=a plain
+cell 39,3: char=b bold
+cell 42,3: char=d bold
+cell 5,5: char=u underline
+cell 13,5: char=e underline
+cell 44,5: char=b bold underline
+cell 57,5: char=e bold underline
+cell 0,7: char=b
+cell 4,7: char=k
+cell 39,7: char=b bold
+cell 48,7: char=k bold
+cell 5,9: char=u underline
+cell 19,9: char=k underline
+cell 44,9: char=b bold underline
+cell 63,9: char=k bold underline
+cell 0,11: char=n inverse
+cell 7,11: char=e inverse
+cell 39,11: char=b bold inverse
+cell 51,11: char=e bold inverse
+cell 5,13: char=u underline inverse
+cell 22,13: char=e underline inverse
+cell 44,13: char=b bold underline inverse
+cell 66,13: char=e bold underline inverse
+cell 0,15: char=b inverse
+cell 13,15: char=e inverse
+cell 39,15: char=b bold inverse
+cell 57,15: char=e bold inverse
+cell 5,17: char=u underline inverse
+cell 28,17: char=e underline inverse
+cell 44,17: char=b bold underline inverse
+cell 72,17: char=e bold underline inverse
+cell 0,22: char=D plain
+cursor: 17,22

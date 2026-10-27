@@ -1,0 +1,181 @@
+name: banner: first relay frame clears the screen and draws the Orb banner
+source: spikes/protocol/captures/s08-terminal.jsonl:61 (first 778-byte output frame of line 96 data.ptyOutput)
+size: 80x24
+input: \e[H\e[2J     Welcome to the Orb.\r\n\r\n            .●••••.\r\n        •●••••••••::··:\r\n      •●●••••●●●●●●●••:··.\r\n    ●••●••••●●●●●●●••:::•::\r\n   •●●•••••●●••••••::··..·::\r\n   •••••●●●•••••●●●••::·..··.\r\n  ·•:•●●●●●●●••●•••••:::·..··\r\n  ·•::•●●●●●●•••:::······..··\r\n   :•::::••••••::··...··...·.\r\n   :.·::::::····.....·....·:\r\n    .··...........··......:\r\n      ..········..........\r\n        ...............\r\n             ......\r\n\r\n\r\n\r\n\r\n\r\n\r\n\e[18;1H\e[?1l\e[?25h\e[?1000l\e[?1002l\e[?1003l\e[?1005l\e[?1006l
+row 0: |     Welcome to the Orb.|
+row 1: ||
+row 2: |            .●••••.|
+row 3: |        •●••••••••::··:|
+row 4: |      •●●••••●●●●●●●••:··.|
+row 5: |    ●••●••••●●●●●●●••:::•::|
+row 6: |   •●●•••••●●••••••::··..·::|
+row 7: |   •••••●●●•••••●●●••::·..··.|
+row 8: |  ·•:•●●●●●●●••●•••••:::·..··|
+row 9: |  ·•::•●●●●●●•••:::······..··|
+row 10: |   :•::::••••••::··...··...·.|
+row 11: |   :.·::::::····.....·....·:|
+row 12: |    .··...........··......:|
+row 13: |      ..········..........|
+row 14: |        ...............|
+row 15: |             ......|
+row 16: ||
+row 17: ||
+row 18: ||
+row 19: ||
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 0,17
+history: 0
+mode: bracketed-paste off
+mode: cursor-keys-app off
+mode: cursor-visible on
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+mode: sgr-mouse off
+mode: alt-screen off
+---
+name: first prompt: the zsh marker at the right margin leaves no blank line
+source: spikes/protocol/captures/s08-terminal.jsonl:61-63 (frames of line 96 data.ptyOutput); docs/design/terminal.md, Conformance fixtures 2
+size: 80x24
+input: \e[H\e[2J     Welcome to the Orb.\r\n\r\n            .●••••.\r\n        •●••••••••::··:\r\n      •●●••••●●●●●●●••:··.\r\n    ●••●••••●●●●●●●••:::•::\r\n   •●●•••••●●••••••::··..·::\r\n   •••••●●●•••••●●●••::·..··.\r\n  ·•:•●●●●●●●••●•••••:::·..··\r\n  ·•::•●●●●●●•••:::······..··\r\n   :•::::••••••::··...··...·.\r\n   :.·::::::····.....·....·:\r\n    .··...........··......:\r\n      ..········..........\r\n        ...............\r\n             ......\r\n\r\n\r\n\r\n\r\n\r\n\r\n\e[18;1H\e[?1l\e[?25h\e[?1000l\e[?1002l\e[?1003l\e[?1005l\e[?1006l
+input: \e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r
+input: \r\e[0m\e[27m\e[24m\e[J  | \r\n\e[37m/private/tmp/amp-scratch\e[0m  | \e[1;35m🔀 main\e[0m \r\n\e[1;30m$\e[0m \e[K\e[?2004h
+row 0: |     Welcome to the Orb.|
+row 1: ||
+row 2: |            .●••••.|
+row 3: |        •●••••••••::··:|
+row 4: |      •●●••••●●●●●●●••:··.|
+row 5: |    ●••●••••●●●●●●●••:::•::|
+row 6: |   •●●•••••●●••••••::··..·::|
+row 7: |   •••••●●●•••••●●●••::·..··.|
+row 8: |  ·•:•●●●●●●●••●•••••:::·..··|
+row 9: |  ·•::•●●●●●●•••:::······..··|
+row 10: |   :•::::••••••::··...··...·.|
+row 11: |   :.·::::::····.....·....·:|
+row 12: |    .··...........··......:|
+row 13: |      ..········..........|
+row 14: |        ...............|
+row 15: |             ......|
+row 16: ||
+row 17: |  ||
+row 18: |/private/tmp/amp-scratch  | 🔀 main|
+row 19: |$|
+row 20: ||
+row 21: ||
+row 22: ||
+row 23: ||
+cursor: 2,19
+wrapped 17: false
+history: 0
+mode: bracketed-paste on
+cell 0,17: char= plain
+cell 2,17: char=| plain
+cell 0,18: char=/ fg=7
+cell 28,18: char=🔀 width=2 bold fg=5
+cell 29,18: width=0
+cell 31,18: char=m bold fg=5
+cell 0,19: char=$ bold fg=0
+cell 1,19: char= plain
+mode: cursor-keys-app off
+mode: cursor-visible on
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+mode: sgr-mouse off
+mode: alt-screen off
+---
+name: whole session: pwd && git status --short at 80x24
+source: spikes/protocol/captures/s08-terminal.jsonl:96 data.ptyOutput; docs/design/terminal.md, Conformance fixtures 1-2
+size: 80x24
+input: \e[H\e[2J     Welcome to the Orb.\r\n\r\n            .●••••.\r\n        •●••••••••::··:\r\n      •●●••••●●●●●●●••:··.\r\n    ●••●••••●●●●●●●••:::•::\r\n   •●●•••••●●••••••::··..·::\r\n   •••••●●●•••••●●●••::·..··.\r\n  ·•:•●●●●●●●••●•••••:::·..··\r\n  ·•::•●●●●●●•••:::······..··\r\n   :•::::••••••::··...··...·.\r\n   :.·::::::····.....·....·:\r\n    .··...........··......:\r\n      ..········..........\r\n        ...............\r\n             ......\r\n\r\n\r\n\r\n\r\n\r\n\r\n\e[18;1H\e[?1l\e[?25h\e[?1000l\e[?1002l\e[?1003l\e[?1005l\e[?1006l
+input: \e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r
+input: \r\e[0m\e[27m\e[24m\e[J  | \r\n\e[37m/private/tmp/amp-scratch\e[0m  | \e[1;35m🔀 main\e[0m \r\n\e[1;30m$\e[0m \e[K\e[?2004h
+input: p
+input: \bpw
+input: d
+input: \x20
+input: &
+input: &
+input: \x20
+input: g
+input: i
+input: t
+input: \x20
+input: s
+input: t
+input: a
+input: t
+input: u
+input: s
+input: \x20
+input: -
+input: -
+input: s
+input: h
+input: o
+input: r
+input: t
+input: \e[25D\e[32mp\e[32mw\e[32md\e[39m\e[4C\e[32mg\e[32mi\e[32mt\e[39m\e[15C
+input: \e[?2004l\r\r\n
+input: /private/tmp/amp-scratch\r\n
+input: \x20\e[31mM\e[m calc.py\r\n\e[31m??\e[m __pycache__/\r\n
+input: \e[1m\e[7m%\e[27m\e[1m\e[0m                                                                               \r \r
+input: \r\e[0m\e[27m\e[24m\e[J  | \r\n\e[37m/private/tmp/amp-scratch\e[0m  | \e[1;35m🔀 main\e[0m \r\n\e[1;30m$\e[0m \e[K\e[?2004h
+row 0: |            .●••••.|
+row 1: |        •●••••••••::··:|
+row 2: |      •●●••••●●●●●●●••:··.|
+row 3: |    ●••●••••●●●●●●●••:::•::|
+row 4: |   •●●•••••●●••••••::··..·::|
+row 5: |   •••••●●●•••••●●●••::·..··.|
+row 6: |  ·•:•●●●●●●●••●•••••:::·..··|
+row 7: |  ·•::•●●●●●●•••:::······..··|
+row 8: |   :•::::••••••::··...··...·.|
+row 9: |   :.·::::::····.....·....·:|
+row 10: |    .··...........··......:|
+row 11: |      ..········..........|
+row 12: |        ...............|
+row 13: |             ......|
+row 14: ||
+row 15: |  ||
+row 16: |/private/tmp/amp-scratch  | 🔀 main|
+row 17: |$ pwd && git status --short|
+row 18: |/private/tmp/amp-scratch|
+row 19: | M calc.py|
+row 20: |?? __pycache__/|
+row 21: |  ||
+row 22: |/private/tmp/amp-scratch  | 🔀 main|
+row 23: |$|
+cursor: 2,23
+history: 2
+history-row 0: |     Welcome to the Orb.|
+history-row 1: ||
+wrapped 15: false
+wrapped 20: false
+wrapped 21: false
+mode: bracketed-paste on
+cell 2,17: char=p fg=2
+cell 4,17: char=d fg=2
+cell 5,17: char= fg=default
+cell 9,17: char=g fg=2
+cell 11,17: char=t fg=2
+cell 13,17: char=s fg=default
+cell 1,19: char=M fg=1
+cell 3,19: char=c plain
+cell 0,20: char=? fg=1
+cell 1,20: char=? fg=1
+cell 3,20: char=_ plain
+cell 0,21: char= plain
+cell 0,22: char=/ fg=7
+cell 28,22: char=🔀 width=2 bold fg=5
+cell 29,22: width=0
+cell 0,23: char=$ bold fg=0
+mode: cursor-keys-app off
+mode: cursor-visible on
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+mode: sgr-mouse off
+mode: alt-screen off

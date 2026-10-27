@@ -1,0 +1,6 @@
+name: CRTests.test_CR_Basic
+source: esctest2 esctest/tests/cr.py CRTests.test_CR_Basic
+size: 80x25
+input: \e[3;3H\r\e[6n
+cursor: 0,2
+reply: \e[3;1R

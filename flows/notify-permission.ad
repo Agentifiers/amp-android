@@ -1,0 +1,34 @@
+context platform=android timeout=120000
+# The app asks once per install, so the flow starts from cleared app data with the permission reset (notifications.md, "Permission").
+open com.agentifiers.amp --relaunch
+settings clear-app-state com.agentifiers.amp
+settings permission reset notifications
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+wait id=signin-paste 20000
+click id=signin-paste
+wait id=signin-token-input 10000
+fill id=signin-token-input fake-user-1
+click id=signin-submit
+wait id=signin-confirm-account 20000
+click id=signin-confirm-account
+wait id=notifications-ask 20000
+wait text "Get notified when a thread needs you or finishes." 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-permission-ask.png
+click id=notifications-ask-turn-on
+wait id=com.android.permissioncontroller:id/permission_allow_button 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-permission-system.png
+click id=com.android.permissioncontroller:id/permission_allow_button
+wait id=pane-sidebar 10000
+is absent id=notifications-ask
+is absent id=sidebar-notifications-off
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-nav-notifications 10000
+click id=settings-nav-notifications
+wait id=settings-notifications-state 10000
+wait text "Amp can post notifications on this device." 5000
+is absent id=settings-notifications-turn-on
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-permission-allowed.png
+close

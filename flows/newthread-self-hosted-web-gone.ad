@@ -1,0 +1,50 @@
+context platform=android timeout=240000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread-self-hosted-web-gone"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=sidebar-empty 30000
+click id=sidebar-empty-new-thread
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+scroll down 0.5 --until id=orb-provider-sign-in
+click id=orb-provider-sign-in
+wait id=fake-web-sign-in 20000
+click id=fake-web-sign-in
+wait absent id=web-pane 20000
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+scroll down 0.5 --until id=orb-provider-self-hosted-example-orbs-2
+wait id=orb-provider-self-hosted-example-orbs-1 20000
+back
+wait absent id=executor-picker 10000
+# Every layout read after the first answers 404: the picker keeps the cached list and says why it could not refresh.
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+click id=orb-project-none
+click id=orb-size-a1-small
+scroll down 0.5 --until id=orb-provider-status
+wait text "ampcode.com no longer serves the orb list (404)." 20000
+is visible id=orb-provider-self-hosted-example-orbs-1
+is visible id=orb-provider-self-hosted-example-orbs-2
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-self-hosted-web-gone-cached.png
+scroll down 0.5 --until id=orb-provider-add
+click id=orb-provider-add
+fill id=orb-provider-name "example-orbs-3"
+click id=orb-provider-save
+wait id=orb-provider-self-hosted-example-orbs-3 10000
+scroll down 0.5 --until id=orb-use
+click id=orb-use
+wait absent id=executor-picker 10000
+wait text "Executor: Orb · example-orbs-3 · a1.small" 10000
+fill id=composer-input "Print uname -a on the typed provider"
+click id=composer-send
+wait id=pane-thread 30000
+wait text "Print uname -a on the typed provider" 30000
+is absent id=new-thread-notice
+close

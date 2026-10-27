@@ -1,0 +1,44 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"auth"}
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+wait id=pane-sidebar 30000
+wait id=thread-list 30000
+# A notification, push keys and a WebView profile for fake-1, so sign-out has each of them to remove.
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Signed-out account\",\"body\":\"This notification leaves with its account.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-signoutflow0001\"}"
+swipe 1080 2 1080 1200
+wait text "This notification leaves with its account." 15000
+back
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-page-accounts 10000
+# The index's 52dp rows put the ampcode.com links below the fold of the Triage column.
+scroll down 0.6
+wait id=settings-web-account 10000
+click id=settings-web-account
+wait id=web-pane 15000
+# The web page opens over Settings in its column; Back returns to Settings, Accounts, which lists the same roster.
+back
+scroll up 0.6
+wait id=settings-nav-accounts 10000
+click id=settings-nav-accounts
+wait id=settings-page-accounts 10000
+wait text "fake-1@example.com" 10000
+# One account, so the only account-menu-<id> and account-sign-out-<id> are fake-1's; .ad has no --first for find actions.
+find id account-menu- click
+wait 1000
+find id account-sign-out- click
+wait id=account-sign-out-confirm 10000
+wait text "This token still works until you revoke it in Settings, Security, Access Token on ampcode.com." 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/account-sign-out-confirm.png
+click id=account-sign-out-confirm
+wait id=signin-start 30000
+trigger-app-event sign-in-token {"token":"fake-user-2"}
+wait id=pane-sidebar 30000
+click id=account-switcher
+wait text "fake-2@example.com" 10000
+is absent text="fake-1@example.com"
+screenshot ${AD_ARTIFACTS:-build/flows}/account-sign-out-after.png
+close

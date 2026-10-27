@@ -1,0 +1,6 @@
+name: CUFTests.test_CUF_DefaultParam
+source: esctest2 esctest/tests/cuf.py CUFTests.test_CUF_DefaultParam
+size: 80x25
+input: \e[3;5H\e[C\e[6n
+cursor: 5,2
+reply: \e[3;6R

@@ -1,0 +1,34 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=pane-changes 30000
+wait id=diff-file-calc.py 30000
+wait 1500
+screenshot ${UX_OUT}/changes-list.png
+click id=diff-file-calc.py
+wait id=diff-line-calc.py-new-1 10000
+wait 1500
+screenshot ${UX_OUT}/changes-diff-unified.png
+is absent id=changes-layout
+click id=pane-more
+wait text "Order Files Alphabetically" 10000
+is absent "text=\"Show Split Diff\""
+wait 1500
+screenshot ${UX_OUT}/changes-diff-narrow-menu.png
+back
+trigger-app-event set-arrangement {"name":"Review"}
+wait 2000
+wait id=diff-line-calc.py-old-1 10000
+wait 1500
+screenshot ${UX_OUT}/changes-diff-split-review.png
+click id=changes-layout
+wait 1500
+wait 1500
+screenshot ${UX_OUT}/changes-diff-unified-review.png
+trigger-app-event geometry-override {}
+close

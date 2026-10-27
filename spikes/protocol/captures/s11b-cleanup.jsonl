@@ -1,0 +1,2 @@
+{"n":1,"t":"2026-10-23T16:07:28.550Z","ch":"internal.archiveThread","dir":"send","data":{"method":"POST","url":"https://ampcode.com/api/internal?archiveThread","body":{"method":"archiveThread","params":{"thread":"T-01a16982-8ee9-7426-b211-f2c9767971aa","archived":true}}}}
+{"n":2,"t":"2026-10-23T16:07:28.792Z","ch":"internal.archiveThread","dir":"recv","data":{"status":200,"contentType":"application/json","body":{"ok":true}}}

@@ -1,0 +1,22 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-long"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000001"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=transcript 30000
+click id=thread-menu
+click id=thread-menu-find
+wait id=thread-find-input 10000
+type "the"
+wait text "1 of 23 in loaded messages" 10000
+wait 1500
+screenshot ${UX_OUT:-build/flows}/thread-find.png
+click id=thread-find-next
+wait text "2 of 23 in loaded messages" 10000
+click id=thread-find-close
+wait id=thread-title 10000
+trigger-app-event geometry-override {}
+close

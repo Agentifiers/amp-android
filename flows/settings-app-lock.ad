@@ -1,0 +1,30 @@
+context platform=android timeout=120000
+# Needs a fingerprint enrolled on the emulator: enroll one in Settings, and touch the sensor with `adb -s <serial> emu finger touch 1`.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+wait id=account-switcher 30000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-nav-app 10000
+click id=settings-nav-app
+wait id=settings-page-app 10000
+click id=app-lock-toggle
+wait id=app-lock-after-five-minutes 10000
+click id=app-lock-after-immediately
+screenshot ${AD_ARTIFACTS:-build/flows}/settings-app-lock-on.png
+trigger-app-event lock-now {}
+wait id=app-lock-unlock 10000
+is absent id=settings-page-app
+screenshot ${AD_ARTIFACTS:-build/flows}/settings-app-lock-locked.png
+click id=app-lock-unlock
+wait 2000
+settings fingerprint match
+# Unlocking returns to the window as it was: Settings, App, beside the Sidebar.
+wait id=settings-page-app 15000
+is absent id=app-lock-unlock
+# Leave the lock off so later flows start unlocked.
+click id=app-lock-toggle
+wait absent id=app-lock-after-immediately 10000
+close

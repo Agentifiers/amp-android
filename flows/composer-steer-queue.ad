@@ -1,0 +1,33 @@
+context platform=android timeout=300000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"outbox"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+wait id=composer-send 30000
+fill id=composer-input "List the files here, one tool call at a time"
+click id=composer-send
+wait id=composer-queue 30000
+# The steer must land before the turn's first tool boundary, a few seconds in. While a turn runs, each snapshot takes
+# 1 to 3 s instead of 0.2 s, so fill (four snapshots) took 3 to 10 s and often missed it. The field keeps focus after
+# Send, so type needs no snapshot.
+type "Also count them"
+longpress id=composer-queue 800
+wait text "Steered" 60000
+screenshot ${AD_ARTIFACTS:-build/flows}/composer-steered.png
+wait id=composer-send 120000
+fill id=composer-input "Run the long job"
+click id=composer-send
+wait id=composer-queue 30000
+fill id=composer-input "Afterwards, summarize"
+click id=composer-queue
+wait id=queue-strip 15000
+wait text "After this turn" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/composer-queued.png
+click id=composer-interrupt
+wait absent id=queue-strip 30000
+wait id=composer-interrupt 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/composer-queued-delivered.png
+wait id=composer-send 120000
+screenshot ${AD_ARTIFACTS:-build/flows}/composer-idle.png
+close

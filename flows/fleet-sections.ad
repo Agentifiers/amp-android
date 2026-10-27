@@ -1,0 +1,32 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-organize"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+wait id=sidebar-section-needs-you 30000
+is text id=sidebar-section-needs-you "Needs you (3)"
+is visible id=thread-row-T-f1ee7000-0000-4000-8000-000000000003
+is visible id=thread-row-T-f1ee7000-0000-4000-8000-000000000004
+is visible id=thread-row-T-f1ee7000-0000-4000-8000-000000000005
+is text id=sidebar-section-pinned "Pinned (2)"
+is absent id=sidebar-empty
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-sections-top.png
+is text id=thread-row-T-f1ee7000-0000-4000-8000-000000000005-project "No Project"
+# The sidebar is the left column; a slow pan there scrolls it (scroll targets the screen centre, the thread pane).
+gesture pan 300 1300 0 -500 700
+is text id=sidebar-section-project-proj-android "amp-android (10)"
+gesture pan 300 1300 0 -500 700
+gesture pan 300 1300 0 -500 700
+gesture pan 300 1300 0 -500 700
+is text id=sidebar-section-project-proj-relay "relay (6)"
+gesture pan 300 1300 0 -500 700
+is text id=sidebar-section-project-none "No Project (4)"
+gesture pan 300 1300 0 -500 700
+is text id=sidebar-section-inactive "Inactive Last 72h (8)"
+gesture pan 300 1300 0 -500 700
+wait id=sidebar-section-archived 5000
+is text id=sidebar-section-archived "Archived (3)"
+# Empty sections are left out (UX-08), so Snoozed, with no rows here, has no header.
+is absent id=sidebar-section-snoozed
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-sections-bottom.png
+close

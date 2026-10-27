@@ -1,0 +1,23 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"gate-choice"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+wait id=agent-status 30000
+wait 3000
+fill id=composer-input "set up the service"
+click id=composer-send
+wait id=gate-option-0 30000
+click id=gate-option-1
+scroll down 0.5 --until id=gate-option-2
+click id=gate-option-2
+scroll down 0.5 --until id=gate-option-3
+click id=gate-option-3
+screenshot ${AD_ARTIFACTS:-build/flows}/gate-choice-1-selected.png
+scroll down 0.5 --until id=gate-submit
+click id=gate-submit
+wait id=text-M-fakeChoiceReply0000001-0 30000
+wait text "Which database should the service use?: Answered by you" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/gate-choice-2-settled.png
+close

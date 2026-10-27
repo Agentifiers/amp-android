@@ -1,0 +1,16 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"orb-wake-fails"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=machine-orb-wake-failed 30000
+wait id=machine-orb-retry 10000
+wait id=machine-orb-open-web 10000
+is absent id=machine-no-executor
+find text "Orb asleep" exists
+screenshot ${AD_ARTIFACTS:-build/flows}/orb-wake-failed.png
+click id=machine-orb-retry
+wait id=machine-orb-waking 10000
+wait id=machine-orb-wake-failed 30000
+close

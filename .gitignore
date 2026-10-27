@@ -1,0 +1,10 @@
+.gradle/
+.kotlin/
+build/
+*.apk
+local.properties
+app/google-services.json
+.idea/
+__pycache__/
+relay/node_modules/
+relay/.wrangler/

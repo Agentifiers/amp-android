@@ -1,0 +1,75 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-organize"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=pane-sidebar 30000
+wait id=sidebar-section-needs-you 30000
+wait 1500
+screenshot ${UX_OUT}/fleet-sidebar-1-top.png
+gesture pan 300 1300 0 -700 700
+gesture pan 300 1300 0 -700 700
+wait 1500
+screenshot ${UX_OUT}/fleet-sidebar-2-projects.png
+gesture pan 300 1300 0 -700 700
+gesture pan 300 1300 0 -700 700
+gesture pan 300 1300 0 -700 700
+wait 1500
+screenshot ${UX_OUT}/fleet-sidebar-3-inactive.png
+gesture pan 300 1300 0 -700 700
+gesture pan 300 1300 0 -700 700
+gesture pan 300 1300 0 -700 700
+wait id=sidebar-section-archived 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-sidebar-4-bottom.png
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+gesture pan 300 700 0 800 400
+wait id=sidebar-section-needs-you 10000
+click id=thread-row-T-f1ee7000-0000-4000-8000-000000000003-more
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000003-pin 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-row-menu.png
+back
+wait absent id=thread-row-T-f1ee7000-0000-4000-8000-000000000003-pin 10000
+click id=sidebar-collapse
+wait id=sidebar-rail 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-rail.png
+click id=sidebar-collapse
+wait id=sidebar-section-needs-you 10000
+fill id=thread-search "label:bug"
+wait id=thread-row-T-f1ee7000-0000-4000-8000-000000000009 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-search-results.png
+click id=thread-search-clear
+fill id=thread-search "nothing-matches-this-query"
+wait 2000
+wait 1500
+screenshot ${UX_OUT}/fleet-search-no-results.png
+click id=thread-search-clear
+click id=nav-activity
+wait id=activity-row-T-f1ee7000-0000-4000-8000-000000000001 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-activity.png
+fill id=activity-query "label:infra"
+click id=activity-time-more
+click id=activity-time-72h
+wait id=activity-row-T-f1ee7000-0000-4000-8000-000000000016 10000
+wait 1500
+screenshot ${UX_OUT}/fleet-activity-search.png
+click id=activity-back
+wait id=sidebar-section-needs-you 10000
+click id=window-palette
+wait id=palette-input 10000
+wait 1500
+screenshot ${UX_OUT}/shell-palette.png
+back
+trigger-app-event geometry-override {}
+close

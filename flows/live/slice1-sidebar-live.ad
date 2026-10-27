@@ -1,0 +1,8 @@
+context platform=android timeout=120000
+# Live read-only check. Sign in first with scripts/sign-in-live.sh <serial>; a flow never carries a real token.
+open com.agentifiers.amp --relaunch
+wait id=pane-sidebar 30000
+wait id=thread-list 30000
+find id thread-row- exists
+screenshot ${AD_ARTIFACTS:-build/flows}/slice1-sidebar-live.png
+close

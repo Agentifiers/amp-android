@@ -1,0 +1,20 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-follow"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000002"}
+wait id=step-TU-ToolsGallery0000000001 30000
+wait 1500
+is absent id=transcript-jump-latest
+press id=step-TU-ToolsGallery0000000001
+wait id=tool-card-TU-ToolsGallery0000000013-toggle 10000
+wait 1500
+is absent id=transcript-jump-latest
+scroll up 0.3 --until id=step-TU-ToolsGallery0000000001
+wait id=transcript-jump-latest 5000
+# Collapsing the group leaves a transcript that fits the pane, so nothing newer can be out of view.
+press id=step-TU-ToolsGallery0000000001
+wait absent id=transcript-jump-latest 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-jump-collapse.png
+close

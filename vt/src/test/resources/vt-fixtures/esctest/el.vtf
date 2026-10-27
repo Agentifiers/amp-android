@@ -1,0 +1,59 @@
+name: ELTests.test_EL_0
+source: esctest2 esctest/tests/el.py ELTests.test_EL_0
+size: 80x25
+input: \e[1;1Habcdefghij\e[1;5H\e[0K
+cell 0,0: char=a
+cell 1,0: char=b
+cell 2,0: char=c
+cell 3,0: char=d
+cell 4,0: char=
+cell 5,0: char=
+cell 6,0: char=
+cell 7,0: char=
+cell 8,0: char=
+cell 9,0: char=
+---
+name: ELTests.test_EL_1
+source: esctest2 esctest/tests/el.py ELTests.test_EL_1
+size: 80x25
+input: \e[1;1Habcdefghij\e[1;5H\e[1K
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 3,0: char=
+cell 4,0: char=
+cell 5,0: char=f
+cell 6,0: char=g
+cell 7,0: char=h
+cell 8,0: char=i
+cell 9,0: char=j
+---
+name: ELTests.test_EL_2
+source: esctest2 esctest/tests/el.py ELTests.test_EL_2
+size: 80x25
+input: \e[1;1Habcdefghij\e[1;5H\e[2K
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 3,0: char=
+cell 4,0: char=
+cell 5,0: char=
+cell 6,0: char=
+cell 7,0: char=
+cell 8,0: char=
+cell 9,0: char=
+---
+name: ELTests.test_EL_Default
+source: esctest2 esctest/tests/el.py ELTests.test_EL_Default
+size: 80x25
+input: \e[1;1Habcdefghij\e[1;5H\e[K
+cell 0,0: char=a
+cell 1,0: char=b
+cell 2,0: char=c
+cell 3,0: char=d
+cell 4,0: char=
+cell 5,0: char=
+cell 6,0: char=
+cell 7,0: char=
+cell 8,0: char=
+cell 9,0: char=

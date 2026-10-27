@@ -1,0 +1,6 @@
+{"n":1,"t":"2026-10-23T04:41:19.922Z","ch":"user-actor-credentials","dir":"send","data":{"method":"POST","url":"https://ampcode.com/api/user-actor-credentials","body":{"capability":"read"}}}
+{"n":2,"t":"2026-10-23T04:41:20.065Z","ch":"user-actor-credentials","dir":"recv","data":{"status":201,"contentType":"application/json","body":{"poolName":"k8s","userId":"user_01EXAMPLE00000000000000000","wsToken":"<redacted>"}}}
+{"n":3,"t":"2026-10-23T04:41:20.065Z","ch":"userActor.action.listRunners","dir":"send","data":{"method":"POST","url":"https://ampcode.com/actors/gateway/userActor/action/listRunners?rvt-namespace=default&rvt-method=get&rvt-key=user_01EXAMPLE00000000000000000&rvt-token=<rivet-pk>&rvt-skip-ready-wait=true","body":{"args":[]}}}
+{"n":4,"t":"2026-10-23T04:41:20.716Z","ch":"userActor.action.listRunners","dir":"recv","data":{"status":200,"contentType":"application/json","body":{"output":[]}}}
+{"n":5,"t":"2026-10-23T04:41:20.716Z","ch":"internal.listRunners","dir":"send","data":{"method":"POST","url":"https://ampcode.com/api/internal?listRunners","body":{"method":"listRunners","params":{}}}}
+{"n":6,"t":"2026-10-23T04:41:20.881Z","ch":"internal.listRunners","dir":"recv","data":{"status":200,"contentType":"application/json","body":{"ok":true,"result":{"runners":[]}}}}

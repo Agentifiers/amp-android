@@ -1,0 +1,13 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"portal"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"portal"}
+wait id=portal-item-8765 30000
+click id=portal-item-8765
+wait id=portal-title 30000
+wait text "Fake portal 8765" 30000
+is text id=portal-title "Fake portal 8765"
+find id portal-address exists
+screenshot ${AD_ARTIFACTS:-build/flows}/portal-open.png
+close

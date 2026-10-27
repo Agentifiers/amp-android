@@ -1,0 +1,17 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=new-thread 30000
+wait 1500
+screenshot ${UX_OUT}/portrait-fleet.png
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=diff-file-calc.py 30000
+wait 1500
+screenshot ${UX_OUT}/portrait-thread-changes.png
+click id=diff-file-calc.py
+wait id=diff-line-calc.py-new-1 10000
+wait 1500
+screenshot ${UX_OUT}/portrait-diff.png
+close

@@ -1,0 +1,21 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"approvals"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079"}
+wait id=agent-status 30000
+wait 3000
+fill id=composer-input "clean up the build"
+click id=composer-send
+wait id=approval-deny 30000
+click id=approval-deny
+wait id=approval-deny-feedback 10000
+fill id=approval-deny-feedback "use make clean instead"
+screenshot ${AD_ARTIFACTS:-build/flows}/gate-approval-deny-1-feedback.png
+click id=approval-deny-send
+wait text "Bash: Denied by you" 30000
+wait id=step-TU-fakeApprovalShell00001 10000
+wait text "rejected" 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/gate-approval-deny-2-settled.png
+close

@@ -1,0 +1,57 @@
+context platform=android timeout=120000
+# Notifications are system UI with no app resource ids, so this flow asserts on their text (notifications.md, "Testing notifications").
+# --no-test-ime: agent-device's test IME commits text into whatever editor the IME is bound to. SystemUI can focus the reply
+# field before it binds the IME, and the text then goes to the app's window, which drops it. With the real keyboard, `type`
+# sends key events to the focused window instead, and the focused reply field takes them whether or not an IME is bound.
+open com.agentifiers.amp --relaunch --no-test-ime
+# Home collapses a notification shade an earlier failed flow left open; a relaunch alone stays under it.
+home
+open com.agentifiers.amp --relaunch --no-test-ime
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"push-gates"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Ready when you are.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-notifyflow00001\"}"
+swipe 1080 2 1080 1200
+wait text "Ready when you are." 15000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-thread-idle.png
+press label=Reply
+# The reply field takes key events only once it has focus.
+wait id=com.android.systemui:id/remote_input_text focused=true 10000
+type "clean up please"
+# Send enables once the field holds the text, and a tap before that sends nothing.
+wait label=Send enabled=true 10000
+press label=Send
+wait text "You: clean up please" 20000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-reply-sent.png
+back
+# The reply started the push-gates turn on the fake; it stops on its approval about 9 s later.
+wait 12000
+trigger-app-event inject-push "{\"kind\":\"approval_required\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Waiting for approval\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-approval-notifyflow1\"}"
+swipe 1080 2 1080 1200
+wait text "Bash: rm -rf build" 20000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-approval.png
+press label=Allow
+wait text "Allowed · Bash: rm -rf build" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-allowed.png
+back
+wait 16000
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Removed the build directory.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-notifyflow00002\"}"
+swipe 1080 2 1080 1200
+wait text "Removed the build directory." 15000
+press label=Reply
+wait id=com.android.systemui:id/remote_input_text focused=true 10000
+type "once more"
+wait label=Send enabled=true 10000
+press label=Send
+wait text "You: once more" 20000
+back
+wait 12000
+trigger-app-event inject-push "{\"kind\":\"approval_required\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Waiting for approval\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-approval-notifyflow2\"}"
+swipe 1080 2 1080 1200
+wait text "Bash: rm -rf build" 20000
+press label=Deny
+wait text "Denied · Bash: rm -rf build" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-denied.png
+back
+close

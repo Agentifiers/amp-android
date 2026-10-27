@@ -1,0 +1,46 @@
+name: LFTests.test_LF_Basic
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_Basic
+size: 80x25
+input: \e[3;5H\n\e[6n
+cursor: 4,3
+reply: \e[4;5R
+---
+name: LFTests.test_LF_Scrolls (check 1 of 2)
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_Scrolls
+size: 80x25
+input: \e[24;2Ha\e[25;2Hb\e[24;2H\n
+cell 1,22: char=
+cell 1,23: char=a
+cell 1,24: char=b
+---
+name: LFTests.test_LF_Scrolls (check 2 of 2)
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_Scrolls
+size: 80x25
+input: \e[24;2Ha\e[25;2Hb\e[24;2H\n\n
+cell 1,22: char=a
+cell 1,23: char=b
+cell 1,24: char=
+---
+name: LFTests.test_LF_ScrollsInTopBottomRegionStartingAbove
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_ScrollsInTopBottomRegionStartingAbove
+size: 80x25
+input: \e[4;5r\e[5;2Hx\e[3;2H\n\n\n\e[6n
+cursor: 1,4
+cell 1,3: char=x
+cell 1,4: char=
+reply: \e[5;2R
+---
+name: LFTests.test_LF_ScrollsInTopBottomRegionStartingWithin
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_ScrollsInTopBottomRegionStartingWithin
+size: 80x25
+input: \e[4;5r\e[5;2Hx\e[4;2H\n\n\e[6n
+cursor: 1,4
+cell 1,3: char=x
+cell 1,4: char=
+reply: \e[5;2R
+---
+name: LFTests.test_LF_StopsAtBottomLineWhenBegunBelowScrollRegion
+source: esctest2 esctest/tests/lf.py LFTests.test_LF_StopsAtBottomLineWhenBegunBelowScrollRegion
+size: 80x25
+input: \e[4;5r\e[6;1Hx\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
+cell 0,5: char=x

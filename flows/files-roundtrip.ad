@@ -1,0 +1,25 @@
+context platform=android timeout=120000
+# scripts/flows.sh runs scripts/seed-fixtures.sh first: it puts roundtrip-1mib.txt in Download.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"files"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event open-thread {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","pane":"files"}
+wait id=file-node-calc.py 30000
+click id=file-node-calc.py
+wait id=file-viewer-summary 30000
+is text id=file-viewer-summary "calc.py · 2 lines"
+click id=file-viewer-close
+click id=files-upload
+# The document picker is system UI with no test tags, so this step selects the seeded file by its name.
+wait text "roundtrip-1mib.txt" 30000
+find "roundtrip-1mib.txt" click --first
+# The status line reads "Uploading …" first. With animations off this step comes sooner, so wait for the final words.
+wait text "Uploaded roundtrip-1mib.txt" 60000
+is text id=files-upload-status "Uploaded roundtrip-1mib.txt"
+click id=file-node-roundtrip-1mib.txt
+wait id=file-viewer-summary 60000
+is text id=file-viewer-summary "roundtrip-1mib.txt · 13619 lines"
+# Logs the size and SHA-256 of the fake's stored copy, to compare with the SHA-256 scripts/seed-fixtures.sh prints.
+trigger-app-event files-stored {"threadId":"T-01a16738-2ec2-7354-98e9-688bc413f079","path":"roundtrip-1mib.txt"}
+screenshot ${AD_ARTIFACTS:-build/flows}/files-roundtrip.png
+close

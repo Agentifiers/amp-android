@@ -1,0 +1,21 @@
+context platform=android timeout=120000
+# scripts/flows.sh runs scripts/seed-fixtures.sh first: it seeds the only photo the Photo Picker shows.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"attachments"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+wait id=composer-attach 30000
+click id=composer-attach
+click id=attach-photos
+# The Photo Picker is system UI with no test tags, so these two steps select by its own labels.
+wait text "Photo taken on" 30000
+find "Photo taken on" click --first
+wait label="Done" 30000
+click label="Done"
+wait id=attachment-0-remove 30000
+fill id=composer-input "What single color fills the attached image?"
+click id=composer-send
+wait id=text-M-034kiPr07BmkiGcd3C8Pek-0 30000
+wait text "blue" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/attach-image.png
+close

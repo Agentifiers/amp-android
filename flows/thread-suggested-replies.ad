@@ -1,0 +1,32 @@
+context platform=android timeout=120000
+# The agent's <suggested-replies> block never shows as text, even mid-stream, and an idle thread offers its lines as
+# replies above the composer. A long press puts one in the composer, which hides the replies until the draft is empty.
+# A tap sends the reply without its ** marks, as Amp's web does, and the fake echoes it as the next prompt.
+# `is absent` matches a label exactly, so these name the labels the raw block rendered as before U44.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"suggested-replies"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000045"}
+wait id=composer-input 30000
+wait text "Deploying the console now. Two follow-ups are worth doing next." 30000
+is absent "label=\"<suggested-replies>\n**Register a fixed console hostname** for sign ▍\""
+is absent id=suggested-replies
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000044"}
+wait id=suggested-reply-0 30000
+is absent "label=\"<suggested-replies>\n**Register a fixed console hostname** for sign-in and deploy dev\nCommit and push everything to both repos\n**Tunnel the apps database** too\n</suggested-replies>\""
+is exists "label=\"Both apps now deploy from the console. Sign-in still points at the preview hostname, so a dev deploy signs you in to the wrong app.\""
+is exists "label=\"Register a fixed console hostname for sign-in and deploy dev\""
+is exists "label=\"Commit and push everything to both repos\""
+is exists "label=\"Tunnel the apps database too\""
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-suggested-replies.png
+longpress id=suggested-reply-1
+wait absent id=suggested-replies 10000
+is text id=composer-input "Commit and push everything to both repos"
+is focused id=composer-input
+fill id=composer-input ""
+wait id=suggested-reply-0 10000
+press id=suggested-reply-0
+wait absent id=suggested-replies 30000
+is exists "label=\"Register a fixed console hostname for sign-in and deploy dev\""
+close

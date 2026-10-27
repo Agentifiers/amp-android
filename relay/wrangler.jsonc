@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "amp-push-relay",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-08-01",
+	"workers_dev": true,
+	"observability": { "enabled": true },
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "amp-push-relay",
+			"database_id": "<your-d1-database-id>",
+			"migrations_dir": "migrations"
+		}
+	],
+	"ratelimits": [
+		{ "name": "REGISTRATION_LIMITER", "namespace_id": "40421", "simple": { "limit": 10, "period": 60 } },
+		{ "name": "PUSH_LIMITER", "namespace_id": "40422", "simple": { "limit": 120, "period": 60 } }
+	],
+	"vars": { "AMP_VAPID_PUBLIC_KEY": "" }
+}

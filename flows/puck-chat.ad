@@ -1,0 +1,28 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"puck-chat"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+click id=nav-puck
+wait id=pane-puck 30000
+wait id=puck-input 30000
+click id=puck-switcher
+wait id=puck-conversation-T-f1ee7000-0000-4000-8000-000000000037 10000
+wait id=puck-conversation-T-f1ee7000-0000-4000-8000-000000000038 10000
+click id=puck-conversation-T-f1ee7000-0000-4000-8000-000000000037
+wait id=puck-input 10000
+fill id=puck-input "Start a thread to fix the rail"
+click id=puck-send
+wait text "I can start an agent for that. Which project?" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/puck-chat-reply.png
+click id=puck-new-chat
+wait 3000
+fill id=puck-input "Hello again"
+click id=puck-send
+wait text "I can start an agent for that. Which project?" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/puck-chat-new-conversation.png
+click id=puck-switcher
+wait id=puck-conversation-T-f1ee7000-0000-4000-8000-000000000038 10000
+is absent id=puck-conversation-T-f1ee7000-0000-4000-8000-000000000037
+screenshot ${AD_ARTIFACTS:-build/flows}/puck-chat-switcher.png
+close

@@ -1,0 +1,34 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-ahead"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=pane-changes 30000
+wait id=diff-file-zigzag.py 30000
+# The All Changes option exists only once the three ahead commits have loaded, and with them the picker's ahead count.
+click id=changes-scope
+wait id=changes-scope-all 10000
+back
+wait 1000
+is visible id=changes-ship
+is absent id=changes-rebase
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-ship-ahead.png
+click id=pane-more
+wait id=changes-rebase-menu 10000
+is absent id=changes-ship-menu
+back
+click id=changes-scope
+wait id=changes-scope-ahead-of-base 10000
+find text "3 commits ahead of origin/release/2026-10" exists
+click id=changes-scope-commit-3a9b8c7d6e5f40312a2b3c4d5e6f708192a3b4c5
+wait id=diff-file-zigzag.py 10000
+wait 1000
+is visible id=changes-ship
+is absent id=changes-review
+click id=changes-scope
+click id=changes-scope-uncommitted
+wait 1000
+is visible id=changes-review
+close

@@ -1,0 +1,36 @@
+name: DECOM homes to the top margin and CPR counts from it
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (Origin Mode, DECSTBM, CPR: line numbering depends on DECOM)
+size: 80x24
+input: \e[5;10r\e[?6h\e[6n
+cursor: 0,4
+reply: \e[1;1R
+---
+name: CUP under DECOM is relative to the margins
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (Origin Mode, DECSTBM, CPR: line numbering depends on DECOM)
+size: 80x24
+input: \e[5;10r\e[?6h\e[3;7Hx\e[6n
+cell 6,6: char=x
+cursor: 7,6
+reply: \e[3;8R
+---
+name: DECOM keeps the cursor inside the margins
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (Origin Mode, DECSTBM, CPR: line numbering depends on DECOM)
+size: 80x24
+input: \e[5;10r\e[?6h\e[20;1H\e[6n
+cursor: 0,9
+reply: \e[6;1R
+---
+name: resetting DECOM moves the cursor to the screen's home
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (Origin Mode, DECSTBM, CPR: line numbering depends on DECOM)
+size: 80x24
+input: \e[5;10r\e[?6h\e[3;3H\e[?6l\e[6n
+cursor: 0,0
+reply: \e[1;1R
+---
+name: DECSC and DECRC save and restore the cursor and its rendition
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (DECSC, DECRC)
+size: 80x24
+input: \e[3;4H\e[1;31m\e7\e[0m\e[10;10Hz\e8y
+cell 3,2: char=y bold fg=1
+cell 9,9: char=z plain
+cursor: 4,2

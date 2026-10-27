@@ -1,0 +1,15 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch --no-test-ime
+trigger-app-event use-server {"scenario":"changes"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=thread-search 30000
+click id=thread-search
+wait 3000
+screenshot ${UX_OUT}/keyboard-search.png
+back
+trigger-app-event geometry-override {}
+close

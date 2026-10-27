@@ -1,0 +1,139 @@
+name: DECSETTests.test_DECSET_ALTBUF (check 1 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?47h\e[2J\e[2;1Hdef\r\ndef
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=d
+cell 1,1: char=e
+cell 2,1: char=f
+cell 0,2: char=d
+cell 1,2: char=e
+cell 2,2: char=f
+---
+name: DECSETTests.test_DECSET_ALTBUF (check 2 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?47h\e[2J\e[2;1Hdef\r\ndef\e[?47l
+cell 0,0: char=a
+cell 1,0: char=b
+cell 2,0: char=c
+cell 0,1: char=a
+cell 1,1: char=b
+cell 2,1: char=c
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=
+---
+name: DECSETTests.test_DECSET_ALTBUF (check 3 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?47h\e[2J\e[2;1Hdef\r\ndef\e[?47l\e[?47h
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=d
+cell 1,1: char=e
+cell 2,1: char=f
+cell 0,2: char=d
+cell 1,2: char=e
+cell 2,2: char=f
+---
+name: DECSETTests.test_DECSET_DECAWM (check 1 of 2)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_DECAWM
+size: 80x25
+input: \e[1;79H\e[?7habc
+cell 0,1: char=c
+---
+name: DECSETTests.test_DECSET_DECAWM (check 2 of 2)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_DECAWM
+size: 80x25
+input: \e[1;79H\e[?7habc\e[1;79H\e[?7lABC
+cell 78,0: char=A
+cell 79,0: char=C
+cell 0,1: char=c
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF (check 1 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?1047h\e[2J\e[2;1Hdef\r\ndef
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=d
+cell 1,1: char=e
+cell 2,1: char=f
+cell 0,2: char=d
+cell 1,2: char=e
+cell 2,2: char=f
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF (check 2 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?1047h\e[2J\e[2;1Hdef\r\ndef\e[?1047l
+cell 0,0: char=a
+cell 1,0: char=b
+cell 2,0: char=c
+cell 0,1: char=a
+cell 1,1: char=b
+cell 2,1: char=c
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF (check 3 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF
+size: 80x25
+input: abc\r\nabc\e[?1047h\e[2J\e[2;1Hdef\r\ndef\e[?1047l\e[?1047h
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR (check 1 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR
+size: 80x25
+input: abc\r\nabc\e[?1049h\e[2J\e[2;1Hdef\r\ndef
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=d
+cell 1,1: char=e
+cell 2,1: char=f
+cell 0,2: char=d
+cell 1,2: char=e
+cell 2,2: char=f
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR (check 2 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR
+size: 80x25
+input: abc\r\nabc\e[?1049h\e[2J\e[2;1Hdef\r\ndef\e[?1049l
+cell 0,0: char=a
+cell 1,0: char=b
+cell 2,0: char=c
+cell 0,1: char=a
+cell 1,1: char=b
+cell 2,1: char=c
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=
+---
+name: DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR (check 3 of 3)
+source: esctest2 esctest/tests/decset.py DECSETTests.test_DECSET_OPT_ALTBUF_CURSOR
+size: 80x25
+input: abc\r\nabc\e[?1049h\e[2J\e[2;1Hdef\r\ndef\e[?1049l\e[?1049h
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=
+cell 0,1: char=
+cell 1,1: char=
+cell 2,1: char=
+cell 0,2: char=
+cell 1,2: char=
+cell 2,2: char=

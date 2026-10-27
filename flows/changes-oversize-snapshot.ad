@@ -1,0 +1,19 @@
+context platform=android timeout=240000
+# The snapshot of src/Huge.kt is over Android's 2 MB CursorWindow. Before the 1 MiB row cap the app cached it, and the
+# next process to open the Changes pane read it and died of SQLiteBlobTooBigException.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-oversize-snapshot"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=diff-file-src/Huge.kt 60000
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-oversize-snapshot-live.png
+# A relaunch keeps the account and its database, so the new process paints the pane from the cache first.
+open com.agentifiers.amp --relaunch
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait 3000
+is exists id=pane-changes
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-oversize-snapshot-reopened.png
+close

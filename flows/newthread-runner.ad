@@ -1,0 +1,27 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=new-thread 30000
+click id=new-thread
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+wait id=executor-runner-android-spike 15000
+click id=executor-runner-android-spike
+wait id=runner-directory-0 10000
+click id=runner-worktree-current
+wait absent id=executor-picker 10000
+click id=composer-mode
+wait id=mode-picker 10000
+click id=mode-option-high
+wait absent id=mode-picker 10000
+fill id=composer-input "Rename add to add_numbers in calc.py and run it"
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-runner-ready.png
+click id=composer-send
+wait id=pane-thread 30000
+wait id=thread-mode 30000
+wait text "High" 10000
+wait text "Rename add to add_numbers in calc.py and run it" 30000
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-runner-landed.png
+close

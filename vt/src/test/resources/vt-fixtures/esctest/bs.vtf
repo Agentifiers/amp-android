@@ -1,0 +1,27 @@
+name: BSTests.test_BS_Basic
+source: esctest2 esctest/tests/bs.py BSTests.test_BS_Basic
+size: 80x25
+input: \e[3;3H\b\e[6n
+cursor: 1,2
+reply: \e[3;2R
+---
+name: BSTests.test_BS_CursorStartsInDoWrapPosition
+source: esctest2 esctest/tests/bs.py BSTests.test_BS_CursorStartsInDoWrapPosition
+size: 80x25
+input: \e[1;79Hab\bX
+cell 78,0: char=X
+cell 79,0: char=b
+---
+name: BSTests.test_BS_NoWrapByDefault
+source: esctest2 esctest/tests/bs.py BSTests.test_BS_NoWrapByDefault
+size: 80x25
+input: \e[3;1H\b\e[6n
+cursor: 0,2
+reply: \e[3;1R
+---
+name: BSTests.test_BS_StopsAtOrigin
+source: esctest2 esctest/tests/bs.py BSTests.test_BS_StopsAtOrigin
+size: 80x25
+input: \e[1;1H\b\e[6n
+cursor: 0,0
+reply: \e[1;1R

@@ -1,0 +1,22 @@
+context platform=android timeout=240000
+# The intelligent order of src/Small.kt lists 70,000 more paths, so its file order row is over Android's 2 MB
+# CursorWindow. Before the 1 MiB row cap the next process to open the Changes pane painted the cached snapshot, read that
+# row for its ranking, and died of SQLiteBlobTooBigException.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-oversize-order"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=diff-file-src/Small.kt 30000
+wait 3000
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-oversize-order-live.png
+# The relaunched process has no server, so the file it shows comes from the cached snapshot.
+open com.agentifiers.amp --relaunch
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=diff-file-src/Small.kt 30000
+wait 3000
+is exists id=diff-file-src/Small.kt
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-oversize-order-reopened.png
+close

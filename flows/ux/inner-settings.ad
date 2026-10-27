@@ -1,0 +1,37 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"settings"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=account-switcher 30000
+click id=account-switcher
+wait id=account-settings 10000
+wait 1500
+screenshot ${UX_OUT}/settings-account-switcher-one.png
+click id=account-settings
+wait id=settings-page-accounts 10000
+wait 1500
+screenshot ${UX_OUT}/settings-accounts.png
+# Settings is wide on a three-panel window, so the index sits beside the page with no Back.
+wait id=settings-nav-secrets 10000
+wait 1500
+screenshot ${UX_OUT}/settings-index.png
+click id=settings-nav-secrets
+wait text "GITHUB_TOKEN" 10000
+wait 1500
+screenshot ${UX_OUT}/settings-secrets.png
+click id=settings-nav-notifications
+wait id=settings-notifications-system 10000
+wait 1500
+screenshot ${UX_OUT}/settings-notifications.png
+click id=settings-nav-about
+wait id=settings-service-status 10000
+wait 1500
+screenshot ${UX_OUT}/settings-about.png
+click id=settings-close
+wait id=pane-sidebar 10000
+wait 1500
+screenshot ${UX_OUT}/settings-closed.png
+trigger-app-event geometry-override {}
+close

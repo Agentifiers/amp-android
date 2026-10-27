@@ -1,0 +1,31 @@
+context platform=android timeout=180000
+# --no-test-ime: the reply goes in as key events, which do not depend on SystemUI binding the IME (see flows/notify-inject.ad).
+open com.agentifiers.amp --relaunch --no-test-ime
+swipe 1080 1400 1080 200
+settings permission grant notifications
+trigger-app-event use-server {"scenario":"push-gates"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event inject-push "{\"kind\":\"thread_idle\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Ready when you are.\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-idle-M-uxshots0000001\"}"
+swipe 1080 2 1080 1200
+wait text "Ready when you are." 15000
+wait 1500
+screenshot ${UX_OUT}/notify-shade-idle.png
+press label=Reply
+# The reply field takes text only once it has focus, and Send enables once the field holds the text.
+wait id=com.android.systemui:id/remote_input_text focused=true 10000
+type "clean up please"
+wait label=Send enabled=true 10000
+wait 1000
+screenshot ${UX_OUT}/notify-shade-reply.png
+press label=Send
+wait 5000
+back
+wait 12000
+trigger-app-event inject-push "{\"kind\":\"approval_required\",\"threadId\":\"T-01a16738-2ec2-7354-98e9-688bc413f079\",\"title\":\"Clean the build directory\",\"body\":\"Waiting for approval\",\"tag\":\"amp-thread-T-01a16738-2ec2-7354-98e9-688bc413f079-approval-uxshots01\"}"
+swipe 1080 2 1080 1200
+wait text "Bash: rm -rf build" 20000
+wait 1500
+screenshot ${UX_OUT}/notify-shade-approval.png
+back
+close

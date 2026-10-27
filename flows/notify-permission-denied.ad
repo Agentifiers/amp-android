@@ -1,0 +1,47 @@
+context platform=android timeout=120000
+# Not Now, then two denials: the app never asks on its own again, and Turn On ends at Android's settings (notifications.md, "Permission").
+open com.agentifiers.amp --relaunch
+settings clear-app-state com.agentifiers.amp
+settings permission reset notifications
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+wait id=signin-paste 20000
+click id=signin-paste
+wait id=signin-token-input 10000
+fill id=signin-token-input fake-user-1
+click id=signin-submit
+wait id=signin-confirm-account 20000
+click id=signin-confirm-account
+wait id=notifications-ask 20000
+click id=notifications-ask-not-now
+wait id=sidebar-notifications-off 10000
+is absent id=com.android.permissioncontroller:id/permission_deny_button
+open com.agentifiers.amp --relaunch
+wait id=sidebar-notifications-off 20000
+is absent id=notifications-ask
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-permission-notice.png
+click id=sidebar-notifications-turn-on
+wait id=com.android.permissioncontroller:id/permission_deny_button 10000
+click id=com.android.permissioncontroller:id/permission_deny_button
+wait id=sidebar-notifications-off 10000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-nav-notifications 10000
+click id=settings-nav-notifications
+wait id=settings-notifications-turn-on 10000
+wait text "Notifications are off. Amp cannot tell you when a thread needs you or finishes." 5000
+click id=settings-notifications-turn-on
+# After one denial Android's prompt offers "Don't allow" as don't-ask-again, under its own id.
+wait id=com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button 10000
+click id=com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button
+wait text "Notifications are off for Amp in Android settings. Turn On opens them." 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/notify-permission-denied.png
+# Turn On now opens Amp's page in com.android.settings. agent-device fails any tap that foregrounds that package, so the flow stops short of it.
+wait id=settings-notifications-turn-on 5000
+click id=settings-close
+wait id=sidebar-notifications-off 10000
+click id=sidebar-notifications-dismiss
+is absent id=sidebar-notifications-off
+settings permission grant notifications
+close

@@ -1,0 +1,6 @@
+name: CUDTests.test_CUD_DefaultParam
+source: esctest2 esctest/tests/cud.py CUDTests.test_CUD_DefaultParam
+size: 80x25
+input: \e[3;5H\e[B\e[6n
+cursor: 4,3
+reply: \e[4;5R

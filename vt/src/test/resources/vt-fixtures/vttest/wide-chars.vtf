@@ -1,0 +1,88 @@
+name: emoji 🔀 takes two cells, as in the spike's prompt
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); spikes/protocol/captures/s08-terminal.jsonl:96 `🔀 main`; Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+1F500 is W)
+size: 80x24
+input: 🔀 main
+row 0: |🔀 main|
+cursor: 7,0
+cell 0,0: char=🔀 width=2
+cell 1,0: width=0
+cell 2,0: char=
+cell 3,0: char=m width=1
+---
+name: CJK ideographs are wide
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+65E5, U+672C, U+8A9E are W)
+size: 80x24
+input: 日本語x
+row 0: |日本語x|
+cursor: 7,0
+cell 0,0: char=日 width=2
+cell 1,0: width=0
+cell 2,0: char=本 width=2
+cell 4,0: char=語 width=2
+cell 6,0: char=x width=1
+---
+name: Hangul syllables are wide
+source: Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+D55C, U+AE00 are W)
+size: 80x24
+input: 한글
+row 0: |한글|
+cursor: 4,0
+cell 0,0: char=한 width=2
+cell 2,0: char=글 width=2
+---
+name: fullwidth Latin forms are wide
+source: Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+FF21, U+FF22 are F)
+size: 80x24
+input: ＡＢc
+row 0: |ＡＢc|
+cursor: 5,0
+cell 0,0: char=Ａ width=2
+cell 2,0: char=Ｂ width=2
+cell 4,0: char=c width=1
+---
+name: ambiguous-width symbols take one cell
+source: Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+25CF, U+2022 are A; narrow outside East Asian contexts); spikes/protocol/captures/s08-terminal.jsonl:96 banner
+size: 80x24
+input: ●•x
+row 0: |●•x|
+cursor: 3,0
+cell 0,0: char=● width=1
+cell 1,0: char=• width=1
+---
+name: combining acute joins the previous cell
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+0301 is a nonspacing mark, width 0)
+size: 80x24
+input: éx
+row 0: |éx|
+cursor: 2,0
+cell 0,0: char=é width=1
+cell 1,0: char=x
+---
+name: two combining marks stack on one base
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/) (U+0323, U+0302 are nonspacing marks)
+size: 80x24
+input: ậb
+row 0: |ậb|
+cursor: 2,0
+cell 0,0: char=ậ width=1
+cell 1,0: char=b
+---
+name: combining mark after a wide glyph joins the wide cell
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/)
+size: 80x24
+input: 日́x
+row 0: |日́x|
+cursor: 3,0
+cell 0,0: char=日́ width=2
+cell 1,0: width=0
+cell 2,0: char=x
+---
+name: cursor movement counts cells, not characters
+source: docs/design/terminal.md, What the VT core handles (wide cells, combining marks); Unicode UAX #11 East Asian Width (https://www.unicode.org/reports/tr11/)
+size: 80x24
+input: 日本\e[1;5Hx
+row 0: |日本x|
+cursor: 5,0
+cell 0,0: char=日 width=2
+cell 2,0: char=本 width=2
+cell 4,0: char=x width=1

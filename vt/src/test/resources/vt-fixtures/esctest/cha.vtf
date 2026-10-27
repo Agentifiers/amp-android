@@ -1,0 +1,27 @@
+name: CHATests.test_CHA_DefaultParam
+source: esctest2 esctest/tests/cha.py CHATests.test_CHA_DefaultParam
+size: 80x25
+input: \e[3;5H\e[G\e[6n
+cursor: 0,2
+reply: \e[3;1R
+---
+name: CHATests.test_CHA_ExplicitParam
+source: esctest2 esctest/tests/cha.py CHATests.test_CHA_ExplicitParam
+size: 80x25
+input: \e[3;5H\e[10G\e[6n
+cursor: 9,2
+reply: \e[3;10R
+---
+name: CHATests.test_CHA_OutOfBoundsLarge
+source: esctest2 esctest/tests/cha.py CHATests.test_CHA_OutOfBoundsLarge
+size: 80x25
+input: \e[3;5H\e[9999G\e[6n
+cursor: 79,2
+reply: \e[3;80R
+---
+name: CHATests.test_CHA_ZeroParam
+source: esctest2 esctest/tests/cha.py CHATests.test_CHA_ZeroParam
+size: 80x25
+input: \e[3;5H\e[0G\e[6n
+cursor: 0,2
+reply: \e[3;1R

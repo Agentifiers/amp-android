@@ -1,0 +1,25 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"terminal"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+# Three 360dp panels: the layout prototype measured 48 columns for a 360dp terminal pane at 12sp.
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[360,720]}
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"terminal"}
+wait id=terminal-screen 30000
+wait "id=terminal-status text=ready" 30000
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"pwd\r"}
+wait text "/private/tmp/amp-scratch" 30000
+# No creases: the Expanded plan gives the machine pane 380dp, which the prototype measured at 50 columns.
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[]}
+wait 1500
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"stty\u0020size\r"}
+wait text " 50" 30000
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"cat\r"}
+wait 1500
+trigger-app-event terminal-paste {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"one\ntwo\nthree"}
+wait id=paste-confirm-paste 10000
+press id=paste-confirm-paste
+wait text "three" 30000
+trigger-app-event terminal-type {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","text":"\u0003"}
+screenshot ${AD_ARTIFACTS:-build/flows}/terminal-basic.png
+close

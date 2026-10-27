@@ -1,0 +1,76 @@
+name: SGR 1, 2, 3, 4, 7, 9 set bold, faint, italic, underline, inverse, crossed-out
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[1ma\e[2mb\e[0;3mc\e[0;4md\e[0;7me\e[0;9mf\e[0mg
+row 0: |abcdefg|
+cell 0,0: char=a bold
+cell 1,0: char=b bold dim
+cell 2,0: char=c italic
+cell 3,0: char=d underline
+cell 4,0: char=e inverse
+cell 5,0: char=f strike
+cell 6,0: char=g plain
+---
+name: SGR 22, 23, 24, 27, 29 each clear one attribute
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[1;3;4;7;9mA\e[22mB\e[23mC\e[24mD\e[27mE\e[29mF
+row 0: |ABCDEF|
+cell 0,0: char=A bold italic underline inverse strike
+cell 1,0: char=B italic underline inverse strike
+cell 2,0: char=C underline inverse strike
+cell 3,0: char=D inverse strike
+cell 4,0: char=E strike
+cell 5,0: char=F plain
+---
+name: SGR with no parameter is SGR 0
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[1;4;31mA\e[mB
+row 0: |AB|
+cell 0,0: char=A bold underline fg=1
+cell 1,0: char=B plain
+---
+name: SGR 30-37, 40-47, 39, 49 and aixterm 90-97, 100-107 select palette colors
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[31;42mR\e[39mD\e[49mN\e[91;102mB\e[37;40mW
+row 0: |RDNBW|
+cell 0,0: char=R fg=1 bg=2
+cell 1,0: char=D fg=default bg=2
+cell 2,0: char=N plain
+cell 3,0: char=B fg=9 bg=10
+cell 4,0: char=W fg=7 bg=0
+---
+name: SGR 38;5 and 48;5 select 256-color palette entries
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[38;5;196mX\e[48;5;21mY\e[38;5;7;48;5;232mZ
+row 0: |XYZ|
+cell 0,0: char=X fg=196 bg=default
+cell 1,0: char=Y fg=196 bg=21
+cell 2,0: char=Z fg=7 bg=232
+---
+name: SGR 38;2 and 48;2 select 24-bit colors
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[38;2;255;128;0mT\e[48;2;0;64;255mU\e[0mV
+row 0: |TUV|
+cell 0,0: char=T fg=#ff8000 bg=default
+cell 1,0: char=U fg=#ff8000 bg=#0040ff
+cell 2,0: char=V plain
+---
+name: SGR colon subparameters: 38:5:Ps and 48:2:Pi:Pr:Pg:Pb
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[38:5:208mC\e[48:2::10:20:30mD
+row 0: |CD|
+cell 0,0: char=C fg=208
+cell 1,0: char=D fg=208 bg=#0a141e
+---
+name: SGR attributes and colors combine in one sequence
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1189-1324 CSI Pm m (SGR)
+size: 80x24
+input: \e[0;1;4;38;5;100;48;2;1;2;3mQ
+row 0: |Q|
+cell 0,0: char=Q bold underline fg=100 bg=#010203

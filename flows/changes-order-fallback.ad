@@ -1,0 +1,15 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"changes-order-fails"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"changes"}
+wait id=pane-changes 30000
+wait id=changes-order-reason 30000
+find text "Intelligent order isn't available for this thread." exists
+is absent "text=\"Changes file order failed: model returned no sections\""
+wait id=diff-file-__pycache__/calc.cpython-312.pyc 10000
+wait id=diff-file-calc.py 10000
+is absent id=changes-section-summary-unstaged
+screenshot ${AD_ARTIFACTS:-build/flows}/changes-order-fallback.png
+close

@@ -1,0 +1,45 @@
+context platform=android timeout=240000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread-self-hosted-web"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=sidebar-empty 30000
+click id=sidebar-empty-new-thread
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+scroll down 0.5 --until id=orb-provider-sign-in
+wait id=orb-provider-sign-in 20000
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-self-hosted-web-signed-out.png
+click id=orb-provider-sign-in
+wait id=web-pane 15000
+wait id=fake-web-sign-in 20000
+click id=fake-web-sign-in
+# Signed in, the page leaves /auth and the app closes the web pane by itself.
+wait absent id=web-pane 20000
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-picker 10000
+click id=executor-orb
+click id=orb-project-none
+click id=orb-size-a1-small
+scroll down 0.5 --until id=orb-provider-self-hosted-example-orbs-2
+wait id=orb-provider-self-hosted-example-orbs-1 20000
+wait text "Workspace Default" 10000
+wait text "Personal" 10000
+is absent id=orb-provider-sign-in
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-self-hosted-web-listed.png
+click id=orb-provider-self-hosted-example-orbs-2
+scroll down 0.5 --until id=orb-use
+click id=orb-use
+wait absent id=executor-picker 10000
+wait text "Executor: Orb · example-orbs-2 · a1.small" 10000
+fill id=composer-input "Print uname -a on the personal provider"
+click id=composer-send
+# This workspace's createRemoteExecutorThread resolves only {configID}, so the thread lands only if the app sent it.
+wait id=pane-thread 30000
+wait text "Print uname -a on the personal provider" 30000
+is absent id=new-thread-notice
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-self-hosted-web-landed.png
+close

@@ -1,0 +1,34 @@
+name: HVPTests.test_HVP_ColumnOnly
+source: esctest2 esctest/tests/hvp.py HVPTests.test_HVP_ColumnOnly
+size: 80x25
+input: \e[3;6f\e[6n\e[;2H\e[6n
+cursor: 1,0
+reply: \e[3;6R\e[1;2R
+---
+name: HVPTests.test_HVP_DefaultParams
+source: esctest2 esctest/tests/hvp.py HVPTests.test_HVP_DefaultParams
+size: 80x25
+input: \e[3;6f\e[6n\e[H\e[6n
+cursor: 0,0
+reply: \e[3;6R\e[1;1R
+---
+name: HVPTests.test_HVP_OutOfBoundsParams
+source: esctest2 esctest/tests/hvp.py HVPTests.test_HVP_OutOfBoundsParams
+size: 80x25
+input: \e[35;90f\e[6n
+cursor: 79,24
+reply: \e[25;80R
+---
+name: HVPTests.test_HVP_RowOnly
+source: esctest2 esctest/tests/hvp.py HVPTests.test_HVP_RowOnly
+size: 80x25
+input: \e[3;6f\e[6n\e[2H\e[6n
+cursor: 0,1
+reply: \e[3;6R\e[2;1R
+---
+name: HVPTests.test_HVP_ZeroIsTreatedAsOne
+source: esctest2 esctest/tests/hvp.py HVPTests.test_HVP_ZeroIsTreatedAsOne
+size: 80x25
+input: \e[3;6f\e[0;0H\e[6n
+cursor: 0,0
+reply: \e[1;1R

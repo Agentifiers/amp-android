@@ -1,0 +1,43 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"settings"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=account-switcher 30000
+click id=account-switcher
+wait id=account-settings 10000
+click id=account-settings
+wait id=settings-page-accounts 10000
+wait text "fake-amp@example.com" 5000
+# Settings spans two panels on the three-panel window, so the index stays beside every page.
+click id=settings-nav-dictation
+wait id=settings-page-dictation 10000
+wait text "Ghostty" 10000
+fill id=settings-vocabulary-input Compose
+click id=settings-vocabulary-add
+wait id=settings-vocabulary-remove-compose 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/settings-pages-dictation.png
+click id=settings-nav-secrets
+wait id=settings-page-secrets 10000
+wait text "GITHUB_TOKEN" 10000
+wait text "NODE_ENV" 5000
+click id=settings-nav-automations
+wait id=settings-page-automations 10000
+wait text "Nightly dependency check" 10000
+wait text "Weekly changelog" 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/settings-pages-automations.png
+click id=settings-nav-mcp-servers
+wait id=settings-page-mcp-servers 10000
+wait text "sentry" 10000
+click id=settings-nav-oauth-clients
+wait id=settings-page-oauth-clients 10000
+wait text "Release dashboard" 10000
+click id=settings-nav-portal-hostnames
+wait id=settings-page-portal-hostnames 10000
+wait text "preview.example.dev" 10000
+click id=settings-nav-notifications
+wait id=settings-notifications-system 10000
+click id=settings-nav-about
+wait id=settings-data-retention 10000
+wait id=settings-service-status 5000
+screenshot ${AD_ARTIFACTS:-build/flows}/settings-pages-about.png
+close

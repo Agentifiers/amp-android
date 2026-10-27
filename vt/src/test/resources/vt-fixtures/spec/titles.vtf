@@ -1,0 +1,32 @@
+name: OSC 0 sets the title, BEL-terminated
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:2010-2036 OSC Ps ; Pt BEL / ST
+size: 80x24
+input: \e]0;hello\a
+title: hello
+row 0: ||
+---
+name: OSC 2 sets the title, ST-terminated
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:2010-2036 OSC Ps ; Pt BEL / ST
+size: 80x24
+input: \e]2;world\e\\
+title: world
+row 0: ||
+---
+name: the last title wins
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:2010-2036 OSC Ps ; Pt BEL / ST
+size: 80x24
+input: \e]2;first\a\e]0;second\ax
+title: second
+row 0: |x|
+---
+name: OSC 1 changes only the icon name
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:2010-2036 OSC Ps ; Pt BEL / ST
+size: 80x24
+input: \e]2;kept\a\e]1;icon\a
+title: kept
+---
+name: a UTF-8 title
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:2010-2036 OSC Ps ; Pt BEL / ST; spikes/protocol/captures/s08-terminal.jsonl:96 (prompt text)
+size: 80x24
+input: \e]2;🔀 main\a
+title: 🔀 main

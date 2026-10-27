@@ -1,0 +1,23 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+wait id=signin-start 30000
+wait 1500
+screenshot ${UX_OUT}/signin-welcome.png
+click id=signin-advanced
+wait id=signin-server-url 10000
+wait 1500
+screenshot ${UX_OUT}/signin-advanced.png
+click id=signin-server-cancel
+wait id=signin-start 10000
+click id=signin-start
+wait id=signin-code 30000
+wait id=signin-copy-link 30000
+wait 1500
+screenshot ${UX_OUT}/signin-device-code.png
+wait id=signin-confirm-account 40000
+wait 1500
+screenshot ${UX_OUT}/signin-confirm-account.png
+click id=signin-confirm-account
+wait id=pane-sidebar 30000
+close

@@ -1,0 +1,42 @@
+name: DECSET 1049 switches to a cleared alternate screen
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1026-1030,1168-1170 DECSET/DECRST 1049
+size: 80x24
+input: main\e[?1049h
+row 0: ||
+mode: alt-screen on
+---
+name: DECRST 1049 restores the main screen and the saved cursor
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1026-1030,1168-1170 DECSET/DECRST 1049
+size: 80x24
+input: main\e[?1049h\e[5;5Halt\e[?1049l
+row 0: |main|
+row 4: ||
+cursor: 4,0
+mode: alt-screen off
+---
+name: DECSET 1049 clears the alternate screen each time
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1026-1030,1168-1170 DECSET/DECRST 1049
+size: 80x24
+input: \e[?1049hold\e[?1049l\e[?1049h
+row 0: ||
+mode: alt-screen on
+---
+name: DECSET 47 switches screens without clearing or saving
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:958,1105 DECSET 47
+size: 80x24
+input: a\e[?47hb
+row 0: | b|
+cursor: 2,0
+mode: alt-screen on
+---
+name: lines scrolled on the alternate screen never reach scrollback
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:1026-1030,1168-1170 DECSET/DECRST 1049; vt/src/main/kotlin/com/agentifiers/amp/vt/Vt.kt ScreenSnapshot (history is the primary screen's scrollback)
+size: 80x3
+input: \e[?1049h1\r\n
+input: 2\r\n
+input: 3\r\n
+input: 4\r\n
+input: 5\r\n
+input: 6\e[?1049l
+history: 0
+row 0: ||

@@ -1,0 +1,52 @@
+name: lines scrolled off the top become scrollback, oldest first
+source: docs/design/terminal.md, What the VT core handles (scrollback ring)
+size: 10x3
+input: 1\r\n
+input: 2\r\n
+input: 3\r\n
+input: 4\r\n
+input: 5
+history: 2
+history-row 0: |1|
+history-row 1: |2|
+row 0: |3|
+row 1: |4|
+row 2: |5|
+---
+name: ED 2 clears the screen without moving it to scrollback
+source: docs/design/terminal.md, Reconnect and scrollback recovery
+size: 10x3
+input: a\r\n
+input: b\e[2J
+history: 0
+row 0: ||
+row 1: ||
+---
+name: LF at the bottom margin scrolls only the region's rows
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (DECSTBM, LF/IND)
+size: 10x3
+input: top\e[2;3r\e[3;1H1\r\n
+input: 2\r\n
+input: 3
+row 0: |top|
+row 1: |2|
+row 2: |3|
+cursor: 1,2
+---
+name: an autowrapped row keeps its wrapped flag
+source: docs/design/terminal.md, What the VT core handles (each row keeps a wrapped flag)
+size: 10x3
+input: abcdefghijKL
+row 0: |abcdefghij|
+row 1: |KL|
+wrapped 0: true
+wrapped 1: false
+---
+name: filling the last column without wrapping leaves the flag clear
+source: docs/design/terminal.md, What the VT core handles (pending wrap)
+size: 10x3
+input: abcdefghij\r\n
+input: x
+row 0: |abcdefghij|
+row 1: |x|
+wrapped 0: false

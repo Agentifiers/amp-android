@@ -1,0 +1,17 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"auth"}
+trigger-app-event sign-in-token {"token":"fake-user-1"}
+trigger-app-event sign-in-token {"token":"fake-user-2"}
+trigger-app-event sign-in-token {"token":"fake-user-3"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=account-switcher 30000
+wait text "fake-3@example.com" 10000
+click id=account-switcher
+wait id=account-add 10000
+wait 1500
+screenshot ${UX_OUT}/settings-account-switcher-three.png
+back
+trigger-app-event geometry-override {}
+close

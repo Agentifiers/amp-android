@@ -1,0 +1,22 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-blocks"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000003"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=transcript-recap 30000
+click id=thread-menu
+wait id=thread-menu-find 10000
+wait id=thread-menu-mode 10000
+wait text "Fixed after the first message" 10000
+wait 1000
+screenshot ${UX_OUT}/thread-menu.png
+back
+wait absent id=thread-menu-find 10000
+click id=thread-mode
+wait 1000
+wait absent id=thread-menu-mode 10000
+trigger-app-event geometry-override {}
+close

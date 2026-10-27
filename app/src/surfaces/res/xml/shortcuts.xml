@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/surface_new_thread"
+        android:shortcutId="new-thread"
+        android:shortcutLongLabel="@string/surface_new_thread_long"
+        android:shortcutShortLabel="@string/surface_new_thread_short">
+        <intent
+            android:action="com.agentifiers.amp.surface.NEW_THREAD"
+            android:targetClass="com.agentifiers.amp.surfaces.SurfaceActivity"
+            android:targetPackage="com.agentifiers.amp" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/surface_puck"
+        android:shortcutId="call-puck"
+        android:shortcutLongLabel="@string/surface_call_puck_long"
+        android:shortcutShortLabel="@string/surface_call_puck_short">
+        <intent
+            android:action="com.agentifiers.amp.surface.CALL_PUCK"
+            android:targetClass="com.agentifiers.amp.surfaces.SurfaceActivity"
+            android:targetPackage="com.agentifiers.amp" />
+    </shortcut>
+</shortcuts>

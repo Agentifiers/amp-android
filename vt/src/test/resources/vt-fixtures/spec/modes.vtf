@@ -1,0 +1,99 @@
+name: a fresh terminal: cursor visible, every other mode off
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST); docs/design/terminal.md, What the VT core handles
+size: 80x24
+input: a
+row 0: |a|
+mode: cursor-visible on
+mode: cursor-keys-app off
+mode: bracketed-paste off
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+mode: sgr-mouse off
+mode: focus-events off
+mode: alt-screen off
+---
+name: DECSET 1 application cursor keys
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1, DECCKM)
+size: 80x24
+input: \e[?1h
+mode: cursor-keys-app on
+---
+name: DECRST 25 hides the cursor
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 25, DECTCEM)
+size: 80x24
+input: \e[?25l
+mode: cursor-visible off
+---
+name: DECSET 25 after DECRST 25 shows it again
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 25, DECTCEM)
+size: 80x24
+input: \e[?25l\e[?25h
+mode: cursor-visible on
+---
+name: DECSET 2004 bracketed paste
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 2004)
+size: 80x24
+input: \e[?2004h
+mode: bracketed-paste on
+---
+name: DECRST 2004 ends bracketed paste
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 2004)
+size: 80x24
+input: \e[?2004h\e[?2004l
+mode: bracketed-paste off
+---
+name: DECSET 1000 click tracking
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1000)
+size: 80x24
+input: \e[?1000h
+mode: mouse-click on
+---
+name: DECSET 1002 cell-motion tracking
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1002)
+size: 80x24
+input: \e[?1002h
+mode: mouse-drag on
+---
+name: DECSET 1003 all-motion tracking
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1003)
+size: 80x24
+input: \e[?1003h
+mode: mouse-any on
+---
+name: DECRST 1003 turns mouse tracking off
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1003)
+size: 80x24
+input: \e[?1003h\e[?1003l
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+---
+name: DECSET 1006 SGR mouse encoding
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1006)
+size: 80x24
+input: \e[?1006h
+mode: sgr-mouse on
+---
+name: DECSET 1004 focus events
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Ps = 1004)
+size: 80x24
+input: \e[?1004h
+mode: focus-events on
+---
+name: one DECSET with several parameters sets each
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:917-1185 CSI ? Pm h / CSI ? Pm l (DECSET/DECRST) (Pm)
+size: 80x24
+input: \e[?1;1006;2004h
+mode: cursor-keys-app on
+mode: sgr-mouse on
+mode: bracketed-paste on
+---
+name: the s08 spike's mouse resets leave tracking off
+source: spikes/protocol/captures/s08-terminal.jsonl:96
+size: 80x24
+input: \e[?1000h\e[?1006h\e[?1000l\e[?1002l\e[?1003l\e[?1005l\e[?1006l
+mode: mouse-click off
+mode: mouse-drag off
+mode: mouse-any off
+mode: sgr-mouse off

@@ -1,0 +1,19 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"share-presence"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=pane-sidebar 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721"}
+trigger-app-event set-arrangement {"name":"Triage"}
+wait id=thread-title 30000
+click id=thread-menu
+wait id=thread-menu-presence 30000
+click id=thread-menu-presence
+wait id=thread-presence-user_01JTEAMMATE00000000000000 5000
+wait 1000
+screenshot ${UX_OUT}/thread-presence-menu.png
+back
+wait absent id=thread-presence-user_01JTEAMMATE00000000000000 10000
+trigger-app-event geometry-override {}
+close

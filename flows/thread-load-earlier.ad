@@ -1,0 +1,33 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"thread-long"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000001"}
+wait id=transcript 30000
+wait id=step-TU-Long150000000000000021 15000
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+scroll up 0.5
+wait id=transcript-load-earlier 15000
+is visible id=step-TU-Long130000000000000016
+press id=transcript-load-earlier
+wait 3000
+is visible id=step-TU-Long130000000000000016
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-load-earlier-kept.png
+scroll up 0.5
+scroll up 0.5
+wait id=step-TU-Long120000000000000021 15000
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-load-earlier.png
+close

@@ -1,0 +1,17 @@
+# Known non-secrets, so `gitleaks detect --no-git --source .` reports 0.
+# RFC 8291 Appendix A test vectors.
+sync/src/test/kotlin/com/agentifiers/amp/sync/internal/push/WebPushDecryptorTest.kt:generic-api-key:21
+sync/src/test/kotlin/com/agentifiers/amp/sync/internal/push/WebPushDecryptorTest.kt:generic-api-key:23
+sync/src/test/kotlin/com/agentifiers/amp/sync/internal/push/WebPushDecryptorTest.kt:generic-api-key:35
+sync/src/test/kotlin/com/agentifiers/amp/sync/internal/push/WebPushDecryptorTest.kt:generic-api-key:37
+# The relay tests generate their RSA key at run time; this is the PEM template, and a fake VAPID key.
+relay/test/helpers.ts:private-key:77
+relay/test/push.test.ts:generic-api-key:250
+# Model ids, not keys: a runner's mode list names models under "key".
+spikes/protocol/captures/s03-runner.live.jsonl:generic-api-key:8
+# Content hashes of a diff in the spike's scratch repo.
+spikes/protocol/captures/s07-changes.jsonl:generic-api-key:71
+# Amp's VAPID public key, which every push carries.
+spikes/protocol/captures/s23b-push-no-viewer.jsonl:generic-api-key:113
+spikes/protocol/captures/s23b-push-no-viewer.jsonl:generic-api-key:114
+spikes/protocol/captures/s23b-push-no-viewer.jsonl:generic-api-key:115

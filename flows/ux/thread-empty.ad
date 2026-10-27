@@ -1,0 +1,12 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-basic"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+trigger-app-event geometry-override {"widthDp":1080,"creasesDp":[335,717]}
+wait id=pane-sidebar 30000
+trigger-app-event set-arrangement {"name":"Triage"}
+wait text "No thread selected" 30000
+wait 1500
+screenshot ${UX_OUT}/thread-empty.png
+trigger-app-event geometry-override {}
+close

@@ -1,0 +1,38 @@
+context platform=android timeout=120000
+# Amp's :::gallery directive renders as a gallery and its fences never show as text. The last reply has the shape of
+# the user's real message: prose, a carousel of three attachment images with alt text, prose. `is absent` matches a
+# label exactly, so these name the paragraphs the fences rendered as before U51.
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"gallery"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000051"}
+wait id=composer-input 30000
+wait text "The sidebar opens on the left of each one." 30000
+is absent "label=\":::gallery carousel\""
+is absent "label=\":::\""
+wait id=gallery 10000
+is text id=gallery-position "1 / 3"
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-gallery-carousel.png
+# A swipe across the carousel in the Triage thread pane (x 694-1410) moves one image.
+swipe 1250 950 750 950
+wait 1000
+is text id=gallery-position "2 / 3"
+press id=gallery-next
+wait 1000
+is text id=gallery-position "3 / 3"
+press id=gallery-item-2
+wait id=lightbox 10000
+press id=lightbox-close
+wait absent id=lightbox 10000
+# The first reply's grid names an image the server does not have; it shows as a labeled placeholder.
+scroll up 0.5 --until id=image-broken
+is exists id=image-broken-open-web
+is absent "label=\":::gallery grid\""
+# Mid-stream, the carousel's closing fence has not arrived: its image shows as a plain image and no fence shows.
+trigger-app-event open-thread {"threadId":"T-0a0b0c0d-0000-7000-8000-000000000052"}
+wait text "Here is the sidebar." 30000
+is absent "label=\":::gallery carousel\""
+is absent id=gallery
+screenshot ${AD_ARTIFACTS:-build/flows}/thread-gallery-streaming.png
+close

@@ -1,0 +1,25 @@
+context platform=android timeout=180000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"newthread-spawn-fails"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=new-thread 30000
+click id=new-thread
+wait id=new-thread-composer 15000
+click id=composer-executor
+wait id=executor-runner-android-spike 15000
+click id=executor-runner-android-spike
+wait id=runner-directory-0 10000
+click id=runner-worktree-current
+wait absent id=executor-picker 10000
+fill id=composer-input "This spawn is refused"
+click id=composer-send
+wait text "Runner android-spike is not connected." 30000
+wait id=composer-spawn-retry 10000
+wait id=composer-spawn-other 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/newthread-spawn-failed.png
+click id=composer-spawn-retry
+wait text "Runner android-spike is not connected." 30000
+click id=composer-spawn-discard
+wait absent id=composer-spawn-discard 15000
+wait id=composer-send 10000
+close

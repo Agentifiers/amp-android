@@ -1,0 +1,29 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"fleet-organize"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=pane-sidebar 30000
+wait id=sidebar-section-needs-you 30000
+click id=nav-activity
+wait id=activity-time-more 10000
+wait id=activity-row-T-f1ee7000-0000-4000-8000-000000000001 10000
+is visible id=activity-search-web
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-activity-24h.png
+fill id=activity-query "Relay cost"
+wait 2000
+is absent id=activity-row-T-f1ee7000-0000-4000-8000-000000000019
+click id=activity-time-more
+click id=activity-time-72h
+wait id=activity-row-T-f1ee7000-0000-4000-8000-000000000019 10000
+fill id=activity-query "label:infra"
+wait id=activity-row-T-f1ee7000-0000-4000-8000-000000000016 10000
+is absent id=activity-row-T-f1ee7000-0000-4000-8000-000000000001
+click id=activity-back
+wait id=sidebar-section-needs-you 10000
+click id=sidebar-collapse
+wait id=sidebar-rail 10000
+wait id=rail-thread-T-f1ee7000-0000-4000-8000-000000000003 10000
+screenshot ${AD_ARTIFACTS:-build/flows}/fleet-rail.png
+click id=sidebar-collapse
+wait id=sidebar-section-needs-you 10000
+close

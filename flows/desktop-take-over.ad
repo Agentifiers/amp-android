@@ -1,0 +1,28 @@
+context platform=android timeout=120000
+open com.agentifiers.amp --relaunch
+trigger-app-event use-server {"scenario":"desktop"}
+trigger-app-event sign-in-token {"token":"fake-amp-accepts-any-bearer"}
+wait id=thread-list 30000
+trigger-app-event open-thread {"threadId":"T-01a16702-3202-73fb-8f52-e4498ccd3721","pane":"desktop"}
+wait id=tab-desktop 30000
+wait id=desktop-status 30000
+wait id=desktop-take-over 30000
+# Six icon tabs leave no room beside the strip in the 363dp Triage pane, so Expand lives in More Actions.
+is absent id=pane-expand
+click id=pane-more
+wait id=pane-expand-menu 10000
+back
+is selected id=desktop-hand-back
+click id=desktop-take-over
+wait 2000
+is selected id=desktop-take-over
+click id=desktop-display-picker
+wait id=desktop-display-1 10000
+click id=desktop-display-1
+wait 2000
+is selected id=desktop-take-over
+screenshot ${AD_ARTIFACTS:-build/flows}/desktop-take-over.png
+click id=desktop-hand-back
+wait 2000
+is selected id=desktop-hand-back
+close

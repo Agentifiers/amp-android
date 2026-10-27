@@ -1,0 +1,62 @@
+name: HT moves to the next default stop every 8 columns
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (HT: next tab stop, or the right margin)
+size: 80x24
+input: \tx\ty
+row 0: |        x       y|
+cursor: 17,0
+---
+name: HT with no further stop goes to the right margin and stays
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (HT: next tab stop, or the right margin); vttest main.c:478-481 (tab to right margin)
+size: 80x24
+input: \e[1;75H\t\tx
+cell 79,0: char=x
+cursor: 79,0
+---
+name: CHT moves forward Ps tab stops
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:612 CHT
+size: 80x24
+input: \e[3Ix
+cell 24,0: char=x
+cursor: 25,0
+---
+name: CBT moves back Ps tab stops
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:755 CBT
+size: 80x24
+input: \e[1;30H\e[2Zx
+cell 16,0: char=x
+cursor: 17,0
+---
+name: CBT stops at the left margin
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:755 CBT
+size: 80x24
+input: \e[1;5H\e[3Zx
+cell 0,0: char=x
+cursor: 1,0
+---
+name: HTS sets a stop at the cursor column
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (HTS)
+size: 80x24
+input: \e[1;5H\eH\e[1;1H\tx
+cell 4,0: char=x
+cursor: 5,0
+---
+name: TBC 0 clears the stop at the cursor
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:877-881 TBC
+size: 80x24
+input: \e[1;9H\e[0g\e[1;1H\tx
+cell 16,0: char=x
+cursor: 17,0
+---
+name: TBC 3 clears every stop
+source: xterm ctlseqs (Patch #411) https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt:877-881 TBC; DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (HT: next tab stop, or the right margin)
+size: 80x24
+input: \e[3g\e[1;1H\tx
+cell 79,0: char=x
+cursor: 79,0
+---
+name: TBC with another parameter is ignored
+source: DEC VT100 User Guide ch. 3 https://vt100.net/docs/vt100-ug/chapter3.html (TBC: any other parameter values are ignored)
+size: 80x24
+input: \e[1;9H\e[2g\e[1g\e[1;1H\tx
+cell 8,0: char=x
+cursor: 9,0

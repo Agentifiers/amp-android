@@ -1,0 +1,15 @@
+name: ECHTests.test_ECH_DefaultParam
+source: esctest2 esctest/tests/ech.py ECHTests.test_ECH_DefaultParam
+size: 80x25
+input: abc\e[1;1H\e[X
+cell 0,0: char=
+cell 1,0: char=b
+cell 2,0: char=c
+---
+name: ECHTests.test_ECH_ExplicitParam
+source: esctest2 esctest/tests/ech.py ECHTests.test_ECH_ExplicitParam
+size: 80x25
+input: abc\e[1;1H\e[2X
+cell 0,0: char=
+cell 1,0: char=
+cell 2,0: char=c
