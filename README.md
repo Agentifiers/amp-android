@@ -84,7 +84,7 @@ A fresh clone builds and runs with no extra files. The debug build talks to `:fa
 
 | Key | What it does | When it is missing |
 |---|---|---|
-| `amp.rivetPublishableToken` | The Rivet publishable token embedded in the Amp CLI. The app opens thread sockets with it. `scripts/rivet-token.sh` copies it from the Amp CLI at `~/.amp/bin/amp`, or from `$AMP_CLI`, and never prints it. | The build succeeds, but no thread socket opens, against `:fake-amp` or live. |
+| `amp.rivetPublishableToken` | The Rivet publishable token embedded in the Amp CLI. The app opens thread sockets with it. `scripts/rivet-token.sh` copies it from the Amp CLI at `~/.amp/bin/amp`, or from `$AMP_CLI`, and never prints it. | The build succeeds, and the debug build still opens thread sockets to `:fake-amp` on this machine (`localhost`, `127.0.0.1`, or the emulator's `10.0.2.2`), so the flows run. No thread socket opens to ampcode.com. |
 | `amp.pushRelayUrl` | The base URL of your deployment of the push relay in `relay/`, for example `https://amp-push-relay.<your-subdomain>.workers.dev/`. It must start with `http://` or `https://` and end with `/`, or the build fails. The app registers each account's Web Push endpoint there, and the relay forwards Amp's pushes over FCM. | The app never uses a relay. It receives notifications through UnifiedPush when a distributor is installed, and otherwise by polling. |
 | `amp.releaseSigning` | The path to a Java properties file with `storeFile`, `storePassword`, `keyAlias`, and `keyPassword`. The release build is signed with that key. | `assembleRelease` writes an unsigned `app-release-unsigned.apk`. |
 
